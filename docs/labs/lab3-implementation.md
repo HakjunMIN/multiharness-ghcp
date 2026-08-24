@@ -105,7 +105,7 @@
 
 ## 끝난 뒤 상태
 
-map 아래의 모든 `wf:task` 이슈가 task별 커밋과 검증 결과를 남긴 채 닫혀 있다. `cd seed && npm test && cd ..`와 `./scripts/check-repo.sh`가 통과하며, 지역별 정책에 따른 라우팅과 텔레메트리 opt-out이 모두 동작한다.
+map 아래의 모든 `wf:task` 이슈가 task별 커밋과 검증 결과를 남긴 채 닫혀 있다. `cd seed && npm test && cd ..`와 `./scripts/check-repo.sh`가 통과하며, 지역별 정책에 따른 라우팅과 텔레메트리 opt-out이 모두 동작한다. 마지막으로 map Issue에 검증자가 그대로 따라 할 수 있는 `## HANDOFF` 코멘트가 게시되어 있다 — Lab 4는 이 브리프만 보고 시작한다.
 
 ## 흔한 실패
 
