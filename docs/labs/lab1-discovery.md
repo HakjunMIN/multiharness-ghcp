@@ -19,16 +19,18 @@ Lab 0의 프리플라이트가 `FAIL` 0개이고 seed 테스트가 통과하며,
 1. 실행 과제로 map issue를 만들고, 출력되는 이슈 번호를 현재 셸에 저장한다.
 
    ```bash
-   cd /Users/andy/works/ai/multiharness-ghcp
+   cd "$(git rev-parse --show-toplevel)"
    export MAP_ISSUE="$(./scripts/new-map.sh "지역별 프라이버시 규제에 따른 추론 라우팅과 텔레메트리 옵트아웃")"
    printf 'MAP_ISSUE=%s\n' "$MAP_ISSUE"
    ```
 
-2. Claude 하네스에서 architect 프로파일을 선택한다.
+2. VS Code에서 **New Chat → Session Type: Claude → Model: Claude Opus 5 → Permission mode: Plan**을 선택한다. 모델 표시에서 `Claude Opus 5`를 확인할 수 없으면 진행하지 말고 강사에게 알린다.
 
    ```text
-   /agent architect
+   CLAUDE.md, AGENTS.md, docs/prompts/claude-architect.md를 읽고 Claude Architect Contract를 따르세요.
    ```
+
+   `/agent architect`는 Copilot 전용 명령이므로 Claude 세션에서 사용하지 않는다.
 
 3. architect에게 `seed/src/`를 읽고 실행 과제를 막는 미결정 사항을 찾도록 요청한다. 해결책을 구현하거나 코드를 수정하지 말고, 각 질문이 왜 결정되어야 하는지 설명하게 한다.
 
@@ -58,16 +60,29 @@ Lab 0의 프리플라이트가 `FAIL` 0개이고 seed 테스트가 통과하며,
 
    mutation 규약은 [GitHub Issue 운영 규칙](../reference/issue-conventions.md)을 따른다.
 
-6. `handoff-brief` 스킬로 map issue에 게시할 인계 브리프를 만들고 파일로 저장한다.
-
-   ```text
-   handoff-brief 스킬을 사용해 현재 discovery 결과를 다음 Claude/Claude Opus 5 아키텍처 세션으로 넘기는 브리프를 작성하고 handoff-lab1.md에 저장하세요. artifacts는 커밋된 경로만 포함하고 verify는 복사해 실행할 수 있게 작성하세요.
-   ```
-
-7. 브리프를 map issue에 게시하고 `## HANDOFF` 코멘트가 보이는지 확인한다.
+6. 발견 결과를 커밋된 요구사항 문서로 고정한다.
 
    ```bash
-   ./scripts/handoff.sh "$MAP_ISSUE" handoff-lab1.md
+   cp docs/templates/spec.md docs/spec.md
+   ```
+
+   Claude에게 decision Issue와 합의한 지역 정책, 수락 기준을 `docs/spec.md`에 반영하게 한다. 파일의 UAT 기준은 `docs/uat/acceptance-matrix.md`와 일치해야 한다.
+
+   ```bash
+   git add docs/spec.md
+   git commit -m "docs: record feature gate requirements"
+   ```
+
+7. Claude에게 Handoff Contract 형식의 브리프를 `/tmp/handoff-lab1.md`에 작성하게 한다. Copilot repo skill을 호출하는 것이 아니라 `docs/reference/handoff-contract.md`의 공개 규약을 직접 따른다.
+
+   ```text
+   docs/reference/handoff-contract.md 형식으로 현재 discovery 결과를 다음 Claude/Claude Opus 5 아키텍처 세션에 넘기는 브리프를 /tmp/handoff-lab1.md에 작성하세요. artifacts에는 커밋된 docs/spec.md만 포함하고 verify에는 복사해 실행할 수 있는 명령만 쓰세요.
+   ```
+
+8. 브리프를 map issue에 게시하고 `## HANDOFF` 코멘트가 보이는지 확인한다.
+
+   ```bash
+   ./scripts/handoff.sh "$MAP_ISSUE" /tmp/handoff-lab1.md
    gh issue view "$MAP_ISSUE" --comments
    ```
 
@@ -77,11 +92,11 @@ Lab 0의 프리플라이트가 `FAIL` 0개이고 seed 테스트가 통과하며,
 
 ## 끝난 뒤 상태
 
-실행 과제를 나타내는 map issue 1개 아래에 최소 3개의 열린 `wf:decision` 자식 이슈가 연결되어 있다. map issue 코멘트에는 다음 세션이 실행 가능한 검증 명령을 포함한 `## HANDOFF` 브리프가 1개 존재한다.
+실행 과제를 나타내는 map issue 1개 아래에 최소 3개의 열린 `wf:decision` 자식 이슈가 연결되어 있다. 요구사항과 수락 기준이 `docs/spec.md`에 커밋되어 있고, map issue 코멘트에는 다음 세션이 실행 가능한 검증 명령을 포함한 `## HANDOFF` 브리프가 1개 존재한다.
 
 ## 흔한 실패
 
 - **증상:** map issue 번호 대신 설명 문장이 변수에 들어간다 → **원인:** 지정된 `./scripts/new-map.sh` 대신 다른 명령으로 이슈를 만들었다 → **조치:** 정확한 스크립트를 실행하고 숫자만 출력되는지 확인한다.
 - **증상:** decision issue는 있지만 map에서 자식으로 보이지 않는다 → **원인:** 레이블만 붙이고 `addSubIssue` mutation을 실행하지 않았다 → **조치:** 각 이슈의 node ID를 조회한 뒤 `addSubIssue`를 실행한다.
-- **증상:** architect가 바로 코드를 수정한다 → **원인:** architect 프로파일을 선택하지 않았거나 질문을 구현 요청으로 전달했다 → **조치:** `/agent architect`를 다시 선택하고 “코드는 수정하지 말라”고 명시한다.
+- **증상:** Claude가 바로 코드를 수정한다 → **원인:** Plan mode 또는 Claude Architect Contract를 적용하지 않았다 → **조치:** 새 Claude 세션을 Plan mode로 열고 `docs/prompts/claude-architect.md`를 먼저 읽게 한다.
 - **증상:** `handoff.sh`가 브리프를 거부한다 → **원인:** 필수 필드가 빠졌거나 `artifacts`에 미커밋 경로가 있다 → **조치:** [하네스 간 인계 계약](../reference/handoff-contract.md)의 모든 필드를 채우고 경로의 Git 추적 상태를 확인한다.

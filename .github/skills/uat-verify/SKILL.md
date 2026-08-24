@@ -14,16 +14,23 @@ description: 검증, UAT, 수락 테스트, 리뷰 요청이 나오면 요구사
 5. 실패마다 재현 절차와 기대 결과를 담은 새 이슈를 `wf:verify` 라벨로 발행한다.
 
 ```bash
-ISSUE=123
-gh issue view "$ISSUE" --comments
-cd seed && npm test
+: "${MAP_ISSUE:?MAP_ISSUE를 먼저 설정하세요}"
+[[ "$MAP_ISSUE" =~ ^[0-9]+$ ]] || { echo "MAP_ISSUE는 숫자여야 합니다" >&2; exit 2; }
+gh issue view "$MAP_ISSUE" --comments
+(cd seed && npm test)
 ./scripts/check-repo.sh
-gh issue create --title "검증 실패: <acceptance criterion>" --label "wf:verify,phase:verification,harness:codex" --body-file verification-failure.md
 ```
+
+실패가 확인된 경우에만 `verification-failure.md`를 작성하고 Issue를 만든다. 선택한 경로가 Copilot이면 `harness:copilot`, Codex이면 `harness:codex`를 사용한다. Issue 생성 전에 대상 리포, 제목, 라벨을 표시한다.
 
 ## 세션 규칙
 
-검증은 구현과 최소 한 축, 즉 하네스 또는 모델 이상이 다른 조합에서 수행한다. 반드시 새 세션을 시작한다. 기본 조합은 `Codex`와 `GPT-5.6 Terra` 또는 `Copilot`과 `GPT-5.6 Terra`다.
+검증은 구현과 최소 한 축, 즉 하네스 또는 모델 이상이 다른 조합에서 수행한다. 반드시 새 세션을 시작한다.
+
+- **경로 A:** Codex 하네스 + Codex가 실제 제공하는 모델
+- **경로 B:** Copilot 하네스 + `GPT-5.6 Terra`
+
+`Codex + GPT-5.6 Terra`는 지원 조합으로 취급하지 않는다.
 
 ## 금지
 

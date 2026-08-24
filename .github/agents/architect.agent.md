@@ -13,19 +13,23 @@ description: 요구사항을 탐색하고 대안을 비교해 아키텍처 결�
 
 ```bash
 ./scripts/preflight.sh
-./scripts/bootstrap-labels.sh
-MAP_ISSUE="$(./scripts/new-map.sh "지역별 프라이버시 규제에 따라 추론 라우팅을 강제하고, 텔레메트리 옵트아웃을 지원하라.")"
+: "${MAP_ISSUE:?MAP_ISSUE를 먼저 설정하세요}"
+[[ "$MAP_ISSUE" =~ ^[0-9]+$ ]] || { echo "MAP_ISSUE는 숫자여야 합니다" >&2; exit 2; }
+gh repo view --json nameWithOwner
+gh issue view "$MAP_ISSUE" --json number,title,state,labels
 ./scripts/frontier.sh "$MAP_ISSUE"
-gh issue create --title "결정: 지역별 추론 라우팅과 텔레메트리 옵트아웃" --label "wf:decision,phase:architecture,harness:claude" --body-file decision.md
 ```
+
+이슈 생성·수정은 대상 리포와 번호를 사용자에게 보여 준 뒤 수행한다. 맵이 이미 있으면 새 맵을 만들지 않는다. 결정 Issue는 실제 열린 질문과 본문 파일이 준비된 경우에만 생성한다.
 
 ## 종료 조건
 
-대안 2~3개, 트레이드오프, 선택, 근거, 수락 기준을 담은 `wf:decision` 이슈와 이를 가리키는 맵 이슈를 남긴 뒤 종료한다.
+대안 2~3개, 트레이드오프, 선택, 근거, 수락 기준을 담은 `wf:decision` Issue와 이를 가리키는 map Issue를 남긴 뒤 종료한다.
 
 ## 금지
 
 - 코드를 수정하지 않는다.
 - 채팅만으로 결정을 남기지 않는다.
 - 근거 없이 단일 해법을 확정하지 않는다.
-
+- Issue 번호나 리포를 추측하지 않는다.
+- 확인 없이 Issue를 생성·수정·종료하지 않는다.

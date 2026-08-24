@@ -19,7 +19,7 @@
 1. 저장소 루트에서 map issue 번호를 복구하고 GPT-5.6 Sol을 지정한 **새 Copilot 세션**을 시작한다.
 
    ```bash
-   cd /Users/andy/works/ai/multiharness-ghcp
+   cd "$(git rev-parse --show-toplevel)"
    printf 'Map issue number: '
    read -r MAP_ISSUE
    export MAP_ISSUE
@@ -101,6 +101,17 @@
 
     ```bash
     ./scripts/frontier.sh "$MAP_ISSUE"
+    ```
+
+12. 모든 task가 닫히면 검증 세션용 HANDOFF를 게시한다. Copilot에서는 자연어로 `handoff-brief` skill을 사용하라고 요청한다.
+
+    ```text
+    handoff-brief skill을 사용해 Copilot/GPT-5.6 Sol에서 독립 검증 세션으로 넘길 브리프를 /tmp/handoff-lab3.md에 작성하세요. artifacts에는 실제 변경해 커밋한 개별 파일 경로를 쓰세요. 예: docs/spec.md, docs/plan.md, seed/src/policy.ts, seed/src/router.ts, seed/src/gate.ts, seed/src/index.ts, seed/tests/router.test.ts, seed/tests/gate.test.ts. 디렉터리는 쓰지 말고 verify에는 단위 테스트, 독립 UAT, repo gate 명령을 넣으세요.
+    ```
+
+    ```bash
+    ./scripts/handoff.sh "$MAP_ISSUE" /tmp/handoff-lab3.md
+    gh issue view "$MAP_ISSUE" --comments
     ```
 
 ## 끝난 뒤 상태

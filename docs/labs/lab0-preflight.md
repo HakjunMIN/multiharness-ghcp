@@ -16,17 +16,20 @@
 
 ## 단계
 
-1. 저장소 루트에서 프리플라이트를 실행한다.
+1. 저장소 루트에서 strict 프리플라이트를 실행한다. 워크샵 전날 확인한 모델 경로를 환경 변수로 지정한다.
 
    ```bash
-   cd /Users/andy/works/ai/multiharness-ghcp
-   ./scripts/preflight.sh
+   cd "$(git rev-parse --show-toplevel)"
+   export WORKSHOP_CLAUDE_OPUS5_CONFIRMED=1
+   export WORKSHOP_VERIFY_ROUTE=copilot-terra  # 또는 codex
+   export WORKSHOP_VERIFY_MODEL_CONFIRMED=1
+   ./scripts/preflight.sh --strict
    ```
 
 2. 출력된 모든 `FAIL`의 안내에 따라 환경을 수정하고, `FAIL`이 0개가 될 때까지 다시 실행한다.
 
    ```bash
-   ./scripts/preflight.sh
+   ./scripts/preflight.sh --strict
    ```
 
 3. 의존성을 설치하지 말고 seed 테스트 기준선을 확인한다.
@@ -41,7 +44,7 @@
    gh repo view --json nameWithOwner,url
    ```
 
-   저장소가 아직 없다면 GitHub에서 빈 저장소를 만든 뒤 현재 저장소의 remote를 연결한다. 이미 올바른 저장소가 표시되면 새로 만들지 않는다.
+   저장소가 아직 없다면 GitHub에서 빈 저장소를 만든 뒤 현재 저장소의 remote를 연결한다. 이미 올바른 저장소가 표시되면 새로 만들지 않는다. 참가자는 강사가 미리 만든 실습 리포를 clone하는 경로를 기본으로 사용한다.
 
 5. 워크숍 레이블을 생성하거나 기존 정의를 확인한다.
 
@@ -57,7 +60,7 @@
 
 ## 끝난 뒤 상태
 
-`./scripts/preflight.sh`가 `FAIL` 0개를 보고하고 seed 테스트가 통과한다. 현재 GitHub 저장소에는 `wf:` 4개, `phase:` 4개, `harness:` 3개로 총 11개의 워크숍 레이블이 존재한다.
+`./scripts/preflight.sh --strict`가 `FAIL` 0개를 보고하고 seed 테스트가 통과한다. Claude Opus 5와 선택한 검증 경로가 실제 계정에서 열리며, 현재 GitHub 저장소에는 `wf:` 4개, `phase:` 4개, `harness:` 3개로 총 11개의 워크숍 레이블이 존재한다.
 
 ## 흔한 실패
 

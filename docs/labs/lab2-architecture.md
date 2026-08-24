@@ -19,7 +19,7 @@ map issue 1개에 최소 3개의 열린 `wf:decision` 자식 이슈가 연결되
 1. 새 Claude 세션에서 map과 decision 이슈 번호를 복구한 뒤 architect 프로파일을 선택하고 해당 이슈들을 읽는다.
 
    ```bash
-   cd /Users/andy/works/ai/multiharness-ghcp
+   cd "$(git rev-parse --show-toplevel)"
    printf 'Map issue number: '
    read -r MAP_ISSUE
    export MAP_ISSUE
@@ -29,8 +29,10 @@ map issue 1개에 최소 3개의 열린 `wf:decision` 자식 이슈가 연결되
    ```
 
    ```text
-   /agent architect
+   CLAUDE.md, AGENTS.md, docs/prompts/claude-architect.md, docs/spec.md를 읽고 Claude Architect Contract를 따르세요.
    ```
+
+   이 세션도 Claude Opus 5와 Plan mode인지 확인한다. `/agent architect`는 Copilot 전용이므로 사용하지 않는다.
 
    ```text
    현재 map issue와 모든 wf:decision 자식 이슈를 읽고, 아직 코드를 수정하지 않은 채 결정 순서를 제안하세요.
@@ -78,27 +80,40 @@ map issue 1개에 최소 3개의 열린 `wf:decision` 자식 이슈가 연결되
    ./scripts/frontier.sh "$MAP_ISSUE"
    ```
 
-9. `handoff-brief` 스킬로 구현 세션에 전달할 브리프를 만들고 map issue에 게시한다.
+9. 확정된 아키텍처와 작업 순서를 커밋한다.
+
+   ```bash
+   cp docs/templates/architecture-plan.md docs/plan.md
+   ```
+
+   Claude에게 결정 Issue, 구성 요소, `wf:task` 및 blocker를 `docs/plan.md`에 반영하게 한 뒤 커밋한다.
+
+   ```bash
+   git add docs/plan.md
+   git commit -m "docs: record feature gate architecture plan"
+   ```
+
+10. 공개 Handoff Contract로 구현 세션에 전달할 브리프를 만들고 map issue에 게시한다.
 
    ```text
-   handoff-brief 스킬을 사용해 Claude/Claude Opus 5에서 Copilot/GPT-5.6 Sol로 넘길 브리프를 작성하고 handoff-lab2.md에 저장하세요. 확정된 결정 이슈, 시작 가능한 task, 검증 명령, 남은 위험을 포함하세요.
+   docs/reference/handoff-contract.md 형식으로 Claude/Claude Opus 5에서 Copilot/GPT-5.6 Sol로 넘길 브리프를 /tmp/handoff-lab2.md에 작성하세요. artifacts에는 커밋된 docs/spec.md와 docs/plan.md만 쓰고, 확정된 결정 Issue, 시작 가능한 task, 검증 명령, 남은 위험을 포함하세요.
    ```
 
    ```bash
-   ./scripts/handoff.sh "$MAP_ISSUE" handoff-lab2.md
+   ./scripts/handoff.sh "$MAP_ISSUE" /tmp/handoff-lab2.md
    ```
 
 **이 랩에서도 코드를 수정하지 않는다.** `architect` 프로파일이 이 규칙을 강제한다. 이 단계의 산출물은 코드가 아니라 결정 기록, 구현 이슈, 의존성 그래프다.
 
 ## 끝난 뒤 상태
 
-모든 `wf:decision` 이슈가 대안·trade-off·선택 근거를 남긴 채 닫혀 있고, map의 `## Decisions so far`에 각 결정이 한 줄로 기록되어 있다. 파생된 `wf:task` 이슈가 map에 연결되고 필요한 `addBlockedBy` 순서가 설정되어, `./scripts/frontier.sh <map>`이 시작 가능한 `wf:task`를 최소 1개 출력한다.
+모든 `wf:decision` 이슈가 대안·trade-off·선택 근거를 남긴 채 닫혀 있고, map의 `## Decisions so far`에 각 결정이 한 줄로 기록되어 있다. `docs/plan.md`가 커밋되어 있으며, 파생된 `wf:task` 이슈가 map에 연결되고 필요한 `addBlockedBy` 순서가 설정되어 `./scripts/frontier.sh <map>`이 시작 가능한 `wf:task`를 최소 1개 출력한다.
 
 ## 흔한 실패
 
 - **증상:** 결정 코멘트에 선택안만 있고 비교 근거가 없다 → **원인:** 대안 탐색과 선택을 한 단계로 합쳤다 → **조치:** 2~3개 대안과 trade-off를 먼저 기록하고 별도 코멘트로 선택 근거를 남긴다.
 - **증상:** 닫힌 decision issue의 결정을 map에서 찾을 수 없다 → **원인:** `## Decisions so far` 인덱스를 갱신하지 않았다 → **조치:** 결정 요약과 원본 이슈 링크를 map에 한 줄씩 추가한다.
 - **증상:** `frontier.sh` 출력이 비어 있다 → **원인:** 모든 task가 닫히지 않은 작업에 막혔거나 담당자가 이미 지정되어 있다 → **조치:** `addBlockedBy` 방향과 assignee를 확인해 적어도 하나의 시작점을 만든다.
-- **증상:** 작업 전환 전에 구현 파일이 변경되었다 → **원인:** architect에게 코드 수정을 허용했다 → **조치:** 변경을 되돌리고 `/agent architect`를 선택한 새 세션에서 이슈 산출물만 작성한다.
+- **증상:** 작업 전환 전에 구현 파일이 변경되었다 → **원인:** Claude Plan mode 또는 Architect Contract를 적용하지 않았다 → **조치:** 변경을 되돌리고 새 Claude Opus 5 Plan 세션에서 문서와 Issue 산출물만 작성한다.
 
 이슈 계층과 frontier 정의는 [GitHub Issue 운영 규칙](../reference/issue-conventions.md)을 따른다.

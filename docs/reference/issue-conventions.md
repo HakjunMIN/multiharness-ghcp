@@ -34,6 +34,8 @@ GitHub Issues는 하네스 전환을 견디는 유일한 지속 상태 저장소
 
 `gh` 2.65.0에는 `gh issue create --parent`와 `--blocked-by` 옵션이 없다. 이 때문에 워크숍 스크립트는 GraphQL API를 직접 호출한다. 아래 예제의 `OWNER`, `REPO`, 이슈 번호, 노드 ID를 실제 값으로 바꾸면 그대로 실행할 수 있다.
 
+Mutation 이름과 입력 필드는 [참고 자료](sources.md)에 연결된 GitHub GraphQL mutation reference에서 행사 전날 다시 확인한다.
+
 ### 이슈 번호를 노드 ID로 변환
 
 ```bash

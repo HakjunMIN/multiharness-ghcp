@@ -30,14 +30,16 @@
 
 1. **기존 구현 세션을 완전히 종료하고 새 검증 세션을 연다.**
 
-   경로 A는 Codex 하네스 UI에서 **New session**을 선택한다. 경로 B는 구현 세션을 종료한 별도 터미널에서 다음 명령을 실행한다.
+   경로 A는 Codex 하네스 UI에서 **New session**을 선택하고 `AGENTS.md`와 `docs/prompts/codex-verifier.md`를 읽게 한다. Codex에서는 Copilot 전용 `/agent`와 `/skills`를 사용하지 않는다.
+
+   경로 B는 구현 세션을 종료한 별도 터미널에서 다음 명령을 실행한다.
 
    ```bash
-   cd /path/to/your/workshop-repo
+   cd "$(git rev-parse --show-toplevel)"
    copilot --model gpt-5.6-terra
    ```
 
-   새 세션에서 verifier profile을 선택한다.
+   경로 B의 Copilot 새 세션에서만 verifier profile을 선택한다.
 
    ```text
    /agent verifier
@@ -48,9 +50,9 @@
    map, decision, task Issue 번호를 인수인계 브리프에서 찾은 뒤 조회한다. 이 단계가 끝날 때까지 `seed/src/`를 읽지 않는다.
 
    ```bash
-   MAP_ISSUE=<map-issue-number>
-   DECISION_ISSUE=<decision-issue-number>
-   TASK_ISSUE=<task-issue-number>
+   printf 'Map issue number: '; read -r MAP_ISSUE
+   printf 'Decision issue number: '; read -r DECISION_ISSUE
+   printf 'Task issue number: '; read -r TASK_ISSUE
    gh issue view "$MAP_ISSUE" --comments
    gh issue view "$DECISION_ISSUE" --comments
    gh issue view "$TASK_ISSUE" --comments
@@ -58,42 +60,34 @@
 
    지역별 cloud 전송 허용·차단, on-device fallback, telemetry opt-out 각각에 대해 기대 결과와 실행 방법을 먼저 적는다.
 
-3. **`uat-verify` skill로 독립 검증을 실행한다.**
+3. **고정 UAT 기준으로 독립 검증을 실행한다.**
 
-   ```text
-   /uat-verify
-   ```
+   먼저 `docs/uat/acceptance-matrix.md`를 읽고 구현과 독립적으로 확정된 다섯 기준을 확인한다.
 
-   skill에 map Issue 번호와 추출한 기준을 제공하고, 아래 기본 검증도 실행한다.
+   경로 A는 `docs/prompts/codex-verifier.md` 절차를 수동으로 따른다. 경로 B는 Copilot에 “`uat-verify` skill을 사용하세요”라고 자연어로 요청한다. `/uat-verify`는 등록된 slash command가 아니다.
 
    ```bash
-   cd seed && npm test && cd ..
+   (cd seed && npm test)
+   node --disable-warning=ExperimentalWarning --test docs/uat/acceptance.test.ts
    ./scripts/check-repo.sh
    ```
 
-   각 기준마다 명령, 실제 출력, 통과 또는 실패를 기록한다. 그 뒤에만 구현을 읽어 실패 원인을 좁힌다.
+   `docs/templates/uat-report.md`를 `docs/uat/report.md`로 복사해 각 기준의 명령, 실제 출력, 통과 또는 실패를 기록한다. 그 뒤에만 구현을 읽어 실패 원인을 좁힌다.
+
+   ```bash
+   cp docs/templates/uat-report.md docs/uat/report.md
+   ```
 
 4. **실패마다 `wf:verify` Issue를 발행한다.**
 
-   다음 파일에는 실패한 기준 하나만 담고, 실제 재현 명령과 기대·실제 결과를 넣는다.
+   다음 파일에는 실패한 기준 하나만 담고, 실제 재현 명령과 기대·실제 결과를 넣는다. 파일을 완성한 뒤 제목을 입력해 Issue를 생성한다.
 
    ```bash
-   cat > verification-failure.md <<'EOF'
-   ## 실패한 수락 기준
-   <decision 또는 task Issue의 기준>
-
-   ## 재현 절차
-   <복사해 실행할 수 있는 명령>
-
-   ## 기대 결과
-   <요구사항이 정한 결과>
-
-   ## 실제 결과
-   <출력 발췌>
-   EOF
-
+   ${EDITOR:-vi} verification-failure.md
+   printf 'Failed criterion title: '; read -r FAILED_CRITERION
+   test -s verification-failure.md
    gh issue create \
-     --title "검증 실패: <acceptance-criterion>" \
+     --title "검증 실패: $FAILED_CRITERION" \
      --label "wf:verify,phase:verification,harness:codex" \
      --body-file verification-failure.md
    ```
@@ -102,20 +96,14 @@
 
 5. **결과와 다음 행동을 인수인계 브리프로 게시한다.**
 
-   ```bash
-   MAP_ISSUE=<map-issue-number>
-   cat > handoff-verification.md <<'EOF'
-   ## HANDOFF
-   - from/to: Codex/<selected-model>  →  Copilot/GPT-5.6 Sol
-   - artifacts: <검증 결과가 기록된 Issue와 커밋된 경로>
-   - done: <통과한 수락 기준과 실행 근거>
-   - not done: <실패한 기준과 wf:verify Issue>
-   - decisions: <근거가 된 wf:decision Issue 링크>
-   - verify: cd seed && npm test && cd .. && ./scripts/check-repo.sh
-   - risks: <불명확한 브리프 필드 또는 미검증 경계 조건>
-   EOF
+   경로 A는 `docs/reference/handoff-contract.md`를 따라 `/tmp/handoff-verification.md`를 직접 작성한다. 경로 B는 Copilot에 “`handoff-brief` skill을 사용해 완전한 브리프를 `/tmp/handoff-verification.md`에 작성하세요”라고 요청한다. `artifacts`에는 `docs/uat/report.md`만 쓰고 Issue URL은 `decisions`, 통과·실패 판정은 `done`과 `not done`에 기록한다.
 
-   ./scripts/handoff.sh "$MAP_ISSUE" handoff-verification.md
+   ```bash
+   printf 'Map issue number: '; read -r MAP_ISSUE
+   ${EDITOR:-vi} /tmp/handoff-verification.md
+   git add docs/uat/report.md
+   git commit -m "docs: record independent UAT results"
+   ./scripts/handoff.sh "$MAP_ISSUE" /tmp/handoff-verification.md
    ```
 
    경로 B에서는 `from/to`의 출발점을 `Copilot/GPT-5.6 Terra`로 바꾼다. 실패가 있으면 새 구현 세션에서 해당 Issue를 클레임하고 수정한 뒤, 다시 새 검증 세션으로 돌아온다.

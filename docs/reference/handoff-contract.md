@@ -2,6 +2,8 @@
 
 하네스를 바꾸면 대화가 아니라 저장소가 작업의 기준점이 된다. 다음 형식을 GitHub Issue나 인계 문서에 그대로 사용한다.
 
+이 계약은 7개 필드로 구성된다. `scripts/handoff.sh`는 모든 필드의 존재와 값, 템플릿 잔존 여부, artifact가 `HEAD`에 있는 개별 파일인지와 커밋 이후 변경이 없는지를 검사한다.
+
 ```markdown
 ## HANDOFF
 - from/to: <하네스>/<모델>  →  <하네스>/<모델>
@@ -27,7 +29,7 @@
 
 | 필드 | 나쁜 예 | 좋은 예 |
 |---|---|---|
-| `artifacts` | `artifacts: 아까 만든 라우터` | `artifacts: seed/src/policy.ts, seed/tests/policy.test.ts (커밋 a1b2c3d)` |
+| `artifacts` | `artifacts: 아까 만든 라우터` | `artifacts: seed/src/policy.ts, seed/tests/policy.test.ts` |
 | `done` | `done: 거의 다 함` | `done: 정책 평가 함수와 경계값 테스트 구현` |
 | `verify` | `verify: 테스트해 보기` | `verify: npm test -- seed/tests/policy.test.ts` |
 | `risks` | `risks: 없음` | `risks: Node.js 20 미만에서는 테스트 러너가 시작되지 않음` |
@@ -36,8 +38,9 @@
 
 ## 인계 전 자체 점검
 
-`artifacts`에 적은 모든 경로는 Git이 추적하는 커밋 대상이어야 한다. 각 경로에 다음 명령을 실행하고 하나라도 실패하면 인계하지 않는다.
+`artifacts`에는 디렉터리가 아닌 개별 파일을 적는다. 각 파일이 현재 커밋에 존재하고 staged/unstaged 변경이 없는지 다음 명령으로 확인한다.
 
 ```bash
-git ls-files --error-unmatch <path>
+git ls-tree -r --name-only HEAD -- <path> | grep -Fx <path>
+git diff --quiet HEAD -- <path>
 ```

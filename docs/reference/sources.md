@@ -13,3 +13,10 @@
 | OpenSpec | https://github.com/Fission-AI/OpenSpec |
 | Agent OS | https://github.com/buildermethods/agent-os |
 | Orca IDE | https://github.com/stablyai/orca |
+| Copilot CLI 사용법과 명령 | https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli |
+| Copilot CLI 로컬 샌드박스 | https://docs.github.com/en/copilot/how-tos/cloud-and-local-sandboxes/using-local-sandboxing |
+| Copilot cloud agent CLI 사용 | https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/use-cloud-agent-from-cli |
+| Cloud/local sandbox 과금 | https://docs.github.com/billing/concepts/product-billing/cloud-and-local-sandboxes |
+| GitHub GraphQL mutation reference | https://docs.github.com/en/graphql/reference/mutations |
+| Superpowers | https://github.com/obra/superpowers |
+| BMAD-METHOD | https://github.com/bmad-code-org/BMAD-METHOD |

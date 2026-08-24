@@ -7,6 +7,14 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
+strict=0
+if [ "${1:-}" = "--strict" ]; then
+  strict=1
+elif [ $# -gt 0 ]; then
+  printf 'usage: %s [--strict]\n' "$0" >&2
+  exit 2
+fi
+
 pass=0
 warn=0
 fail=0
@@ -58,10 +66,30 @@ if command -v gh >/dev/null 2>&1; then
   else
     bad "gh 미인증" "실행: gh auth login"
   fi
-  if gh repo view --json nameWithOwner >/dev/null 2>&1; then
-    ok "GitHub 리포 컨텍스트 ($(gh repo view --json nameWithOwner --jq .nameWithOwner))"
+  if gh repo view --json nameWithOwner,viewerPermission,hasIssuesEnabled >/dev/null 2>&1; then
+    repo="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
+    ok "GitHub 리포 컨텍스트 ($repo)"
+    permission="$(gh repo view --json viewerPermission --jq .viewerPermission)"
+    issues_enabled="$(gh repo view --json hasIssuesEnabled --jq .hasIssuesEnabled)"
+    case "$permission" in
+      TRIAGE|WRITE|MAINTAIN|ADMIN) issue_role=1 ;;
+      *) issue_role=0 ;;
+    esac
+    if [ "$issues_enabled" != "true" ]; then
+      bad "GitHub Issues 비활성화" "리포 설정에서 Issues를 활성화하세요."
+    elif [ "$issue_role" -eq 1 ]; then
+      ok "GitHub Issues 관리 권한 ($permission)"
+    elif [ "$strict" -eq 1 ]; then
+      bad "GitHub Issues 관리 권한 없음 ($permission)" "관리자에게 Triage 이상의 리포 역할을 요청하세요."
+    else
+      warn_ "GitHub Issues 관리 권한 미확인 ($permission)" "strict 점검: ./scripts/preflight.sh --strict"
+    fi
   else
-    warn_ "GitHub 리포 컨텍스트 없음" "이슈 실습 전에 실행: gh repo create"
+    if [ "$strict" -eq 1 ]; then
+      bad "GitHub 리포 컨텍스트 없음" "강사가 제공한 실습 리포를 clone하거나 올바른 origin을 연결하세요."
+    else
+      warn_ "GitHub 리포 컨텍스트 없음" "이슈 실습 전에 강사가 제공한 실습 리포를 clone하세요."
+    fi
   fi
   mutations="$(gh api graphql -f query='{ __type(name:"Mutation"){ fields{ name } } }' --jq '.data.__type.fields[].name' 2>/dev/null || true)"
   if printf '%s\n' "$mutations" | grep -qx addSubIssue; then
@@ -82,15 +110,43 @@ fi
 
 # --- optional partner harness CLIs ---
 if command -v claude >/dev/null 2>&1; then
-  ok "claude CLI"
+  ok "claude CLI ($(claude --version 2>/dev/null | head -1 || printf 'version unknown'))"
 else
-  warn_ "claude CLI 없음" "VS Code 확장으로도 Lab 1~2 를 진행할 수 있습니다."
+  warn_ "claude CLI 없음" "VS Code Claude session으로 Lab 1~2를 진행할 수 있습니다."
 fi
 
 if command -v codex >/dev/null 2>&1; then
   ok "codex CLI"
 else
   warn_ "codex CLI 없음" "Lab 4 는 경로 B(Copilot + GPT-5.6 Terra + 새 세션)로 진행할 수 있습니다."
+fi
+
+if [ "$strict" -eq 1 ]; then
+  if [ "${WORKSHOP_CLAUDE_OPUS5_CONFIRMED:-0}" = "1" ]; then
+    ok "Claude Opus 5 session 접근 확인"
+  else
+    bad "Claude Opus 5 session 미확인" "VS Code에서 Claude/Claude Opus 5를 연 뒤 실행: export WORKSHOP_CLAUDE_OPUS5_CONFIRMED=1"
+  fi
+
+  case "${WORKSHOP_VERIFY_ROUTE:-}" in
+    codex)
+      if [ "${WORKSHOP_VERIFY_MODEL_CONFIRMED:-0}" = "1" ]; then
+        ok "Codex 검증 경로와 모델 접근 확인"
+      else
+        bad "Codex 모델 접근 미확인" "Codex 새 세션을 확인한 뒤 실행: export WORKSHOP_VERIFY_MODEL_CONFIRMED=1"
+      fi
+      ;;
+    copilot-terra)
+      if [ "${WORKSHOP_VERIFY_MODEL_CONFIRMED:-0}" = "1" ]; then
+        ok "Copilot / GPT-5.6 Terra 검증 경로 확인"
+      else
+        bad "GPT-5.6 Terra 접근 미확인" "Copilot에서 모델을 확인한 뒤 실행: export WORKSHOP_VERIFY_MODEL_CONFIRMED=1"
+      fi
+      ;;
+    *)
+      bad "검증 경로 미선택" "실행: export WORKSHOP_VERIFY_ROUTE=codex 또는 export WORKSHOP_VERIFY_ROUTE=copilot-terra"
+      ;;
+  esac
 fi
 
 printf '\npreflight: %d pass, %d warn, %d fail\n' "$pass" "$warn" "$fail"

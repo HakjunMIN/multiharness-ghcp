@@ -29,7 +29,7 @@ for d in docs .github scripts seed; do [ -d "$d" ] && targets+=("$d"); done
 for f in README.md AGENTS.md CLAUDE.md; do [ -f "$f" ] && targets+=("$f"); done
 
 if [ ${#targets[@]} -gt 0 ]; then
-  if hits=$(grep -rInE '\b(TBD|FIXME)\b|작성 예정' \
+  if hits=$(grep -rInE '\b(TBD|TODO|FIXME)\b|작성 예정' \
         "${targets[@]}" \
         --exclude-dir=superpowers --exclude-dir=node_modules \
         --exclude=repo-manifest.txt --exclude=check-repo.sh 2>/dev/null); then
@@ -63,6 +63,17 @@ while IFS= read -r sh; do
   head -1 "$sh" | grep -q '^#!/usr/bin/env bash$' || err "missing bash shebang: $sh"
   grep -q 'set -euo pipefail' "$sh" || err "missing 'set -euo pipefail': $sh"
 done < <(find scripts -name '*.sh' 2>/dev/null)
+
+# --- 5) zero-dependency seed contract ---
+if [ -f seed/package.json ]; then
+  if ! node -e '
+    const p = require("./seed/package.json");
+    if (p.dependencies || p.devDependencies || p.optionalDependencies || p.peerDependencies) process.exit(1);
+    if (!p.engines || p.engines.node !== ">=22.18.0") process.exit(2);
+  '; then
+    err "seed/package.json must have no dependency keys and engines.node must equal >=22.18.0"
+  fi
+fi
 
 if [ "$fail" -ne 0 ]; then
   printf 'FAIL: repo check failed\n' >&2

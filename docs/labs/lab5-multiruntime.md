@@ -32,7 +32,7 @@ Lab 4 검증 결과와 인수인계 브리프가 map Issue에 게시되어 있�
    새 세션을 sandbox mode로 시작하거나 현재 세션에서 활성화한다.
 
    ```bash
-   copilot --sandbox
+   copilot --sandbox --experimental
    ```
 
    ```text
@@ -71,27 +71,53 @@ Lab 4 검증 결과와 인수인계 브리프가 map Issue에 게시되어 있�
 
    **언제 이걸 쓰는가:** 범위가 명확한 `wf:task`를 독립 branch와 PR로 비동기 위임할 수 있고, 위임 후 요구사항이 바뀌지 않을 때 쓴다.
 
-   실험용 `wf:task` Issue를 만들고 `@copilot`에 assign하거나 Copilot session에서 위임한다.
+   실험용 `wf:task` Issue를 만들고 번호를 저장한 뒤 `@copilot`에 명시적으로 할당한다. PR이 반드시 생기도록 작은 추적 파일 하나를 추가하는 작업을 요청한다.
 
    ```bash
-   gh issue create \
+   ISSUE_URL="$(gh issue create \
      --title "runtime 실험: 리포 상태 확인" \
      --label "wf:task,phase:implementation,harness:copilot" \
-     --body "파일을 수정하지 말고 npm test 결과와 리포 상태를 PR 설명에 기록한다."
+     --body "docs/runtime-observation.md를 추가해 npm test와 check-repo.sh 실행 결과를 기록하고 PR을 만든다.")"
+   ISSUE="${ISSUE_URL##*/}"
+   gh issue edit "$ISSUE" --add-assignee "@copilot"
+   printf 'Delegated issue: %s\n' "$ISSUE_URL"
    ```
 
-   ```text
-   /delegate
-   ```
-
-   agent가 별도 branch와 PR을 만드는 것을 관찰한다. assign이 시작된 뒤 Issue에 추가 지시 코멘트를 게시한다.
+   agent session이 시작된 것을 Agents 화면에서 확인한 뒤 Issue에 추가 지시 코멘트를 게시한다.
 
    ```bash
-   ISSUE=<delegated-issue-number>
    gh issue comment "$ISSUE" --body "추가 지시: telemetry 경계 조건도 확인한다."
    ```
 
-   그 코멘트가 실행 맥락에 반영되지 않는 것을 직접 확인한다. **할당 이후의 Issue 코멘트는 설계상 읽히지 않으므로** 추가 지시는 PR에서 전달한다. cloud agent에는 session당 59분 제한과 **1 repo / 1 branch / 1 PR** 제약이 있다.
+   그 코멘트가 실행 맥락에 반영되지 않는 것을 직접 확인한다. **할당 이후의 Issue 코멘트는 설계상 읽히지 않으므로** 추가 지시는 PR에서 전달한다. cloud agent의 시간·사용량·작업 범위 제한은 preview 기간에 바뀔 수 있으므로 [참고 자료](../reference/sources.md)의 공식 cloud agent 문서를 행사 전날 확인한다.
+
+4. **실험 상태를 정리한다.**
+
+   관찰 결과를 기록한 뒤 Issue timeline에서 교차 참조된 open PR을 찾는다. 정확히 하나일 때만 상세 정보를 표시하고, 같은 번호를 직접 다시 입력해 확인한 뒤 닫는다.
+
+   ```bash
+   REPO="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
+   FILTER="[.[] | select(.event == \"cross-referenced\") |
+     .source.issue |
+     select(.repository_url == \"https://api.github.com/repos/$REPO\" and
+       .pull_request != null and .state == \"open\")] |
+     unique_by(.number)"
+   COUNT="$(gh api "repos/$REPO/issues/$ISSUE/timeline" \
+     -H "Accept: application/vnd.github+json" --jq "$FILTER | length")"
+   [ "$COUNT" -eq 1 ] || {
+     printf 'Expected exactly one linked open PR, found %s\n' "$COUNT" >&2
+     exit 1
+   }
+   PR="$(gh api "repos/$REPO/issues/$ISSUE/timeline" \
+     -H "Accept: application/vnd.github+json" --jq "$FILTER | .[0].number")"
+   gh pr view "$PR" --repo "$REPO" --json number,title,url,headRefName,state
+   PR_ID="$REPO#$PR"
+   printf 'Type %s to confirm cleanup: ' "$PR_ID"
+   read -r CONFIRM_PR
+   [ "$CONFIRM_PR" = "$PR_ID" ] || { printf 'Cleanup cancelled.\n' >&2; exit 1; }
+   gh pr close "$PR" --repo "$REPO" --delete-branch
+   gh issue close "$ISSUE" --comment "Runtime 실험 관찰과 정리를 완료했습니다."
+   ```
 
 ## 끝난 뒤 상태
 
@@ -102,4 +128,4 @@ Lab 4 검증 결과와 인수인계 브리프가 map Issue에 게시되어 있�
 - **증상:** local sandbox에서 내장 파일 도구가 파일을 썼다. → **원인:** OS sandbox가 CLI 내장 파일 도구를 가로채지 않고 best-effort 정책만 적용한다. → **조치:** sandbox를 보안 경계로 신뢰하지 말고 민감한 리포에는 별도 격리를 사용한다.
 - **증상:** cloud sandbox에서 `-p` prompt가 실행되지 않는다. → **원인:** cloud sandbox는 대화형 전용이다. → **조치:** `copilot --cloud --experimental`로 열고 대화형 prompt를 입력한다.
 - **증상:** cloud agent가 assign 이후 Issue 코멘트를 무시한다. → **원인:** 시작 시점의 Issue 내용만 실행 맥락으로 가져간다. → **조치:** 변경 지시는 생성된 PR에서 전달하거나 작업을 다시 위임한다.
-- **증상:** cloud agent가 두 번째 repo나 PR까지 다루지 못한다. → **원인:** 한 session은 1 repo, 1 branch, 1 PR로 제한된다. → **조치:** 작업을 분리해 별도 Issue와 session으로 위임한다.
+- **증상:** cloud agent가 요구한 범위를 한 작업에서 처리하지 못한다. → **원인:** 작업 범위 또는 현재 세션 제한을 넘겼다. → **조치:** 공식 제한을 확인하고 작업을 분리해 별도 Issue와 session으로 위임한다.

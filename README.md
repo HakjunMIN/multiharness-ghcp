@@ -34,6 +34,9 @@ cd seed && npm test && cd ..    # 시드 코드베이스 테스트 (의존성 �
 | `docs/` | 개념 문서, 랩 가이드, 레퍼런스, 강사 자료 |
 | `.github/agents/` | `architect` · `implementer` · `verifier` 에이전트 프로파일 |
 | `.github/skills/` | `handoff-brief` · `issue-map` · `uat-verify` 스킬 |
+| `docs/prompts/` | Claude · Codex 하네스에서 사용하는 네이티브 역할 계약 |
+| `docs/templates/` | 요구사항 · 아키텍처 · UAT · 팀 규칙 산출물 템플릿 |
+| `docs/uat/` | 구현과 독립적으로 고정된 수락 테스트 |
 
 ## 랩 목차
 
@@ -59,7 +62,7 @@ cd seed && npm test && cd ..    # 시드 코드베이스 테스트 (의존성 �
 | [프레임워크 지형도](docs/reference/framework-landscape.md) | 워크샵 이후 팀에 무엇을 도입할지 정할 때 |
 | [출처](docs/reference/sources.md) | 사실 확인이 필요할 때 |
 
-강사용 자료는 [`docs/instructor/`](docs/instructor/timebox.md)에 있습니다: 타임박스, 사전 체크리스트, 트러블슈팅, 진행 노트.
+강사용 자료는 [`docs/instructor/`](docs/instructor/timebox.md)에 있습니다: 타임박스, 사전 체크리스트, 트러블슈팅, 최소 복구 경로, 진행 노트, 평가 루브릭.
 
 ## 라이선스와 사용 조건
 

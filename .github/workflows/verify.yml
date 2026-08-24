@@ -9,14 +9,43 @@ permissions:
 
 jobs:
   verify:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        node: ['22.18.0', '24']
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: ${{ matrix.node }}
       - name: seed tests
         run: npm test
         working-directory: seed
       - name: repo asset gate
         run: ./scripts/check-repo.sh
+      - name: shell behavior tests
+        run: |
+          ./tests/scripts/test-handoff.sh
+          ./tests/scripts/test-usage.sh
+      - name: participant bundle excludes instructor solution
+        run: |
+          bundle="${RUNNER_TEMP}/workshop-participant.tar.gz"
+          ./scripts/build-participant-bundle.sh "$bundle" --confirm
+          ! tar -tzf "$bundle" | grep -q 'docs/instructor/reference-solution'
+      - name: reference checkpoint guards and acceptance
+        run: |
+          if WORKSHOP_CHECKPOINT_DIR=docs/instructor/reference-solution \
+            ./scripts/restore-lab3-checkpoint.sh; then
+            echo "restore unexpectedly succeeded without --confirm" >&2
+            exit 1
+          fi
+          touch checkpoint-dirty
+          if WORKSHOP_CHECKPOINT_DIR=docs/instructor/reference-solution \
+            ./scripts/restore-lab3-checkpoint.sh --confirm; then
+            echo "restore unexpectedly succeeded in dirty worktree" >&2
+            exit 1
+          fi
+          rm checkpoint-dirty
+          WORKSHOP_CHECKPOINT_DIR=docs/instructor/reference-solution \
+            ./scripts/restore-lab3-checkpoint.sh --confirm

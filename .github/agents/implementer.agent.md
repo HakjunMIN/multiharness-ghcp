@@ -13,19 +13,27 @@ description: 확정된 결정 이슈 하나를 테스트 주도 개발로 구현
 
 ```bash
 ./scripts/preflight.sh
-MAP=1
-./scripts/frontier.sh "$MAP"          # 착수 가능한 이슈 확인
-ISSUE=123
-gh issue edit "$ISSUE" --add-assignee @me   # 클레임 = 락
-gh issue view "$ISSUE" --comments
-cd seed && npm test && cd ..          # red: 새로 쓴 테스트가 실패하는지 먼저 확인
-cd seed && npm test && cd ..          # green: 구현 후 다시 확인
+: "${MAP_ISSUE:?MAP_ISSUE를 먼저 설정하세요}"
+: "${TASK_ISSUE:?TASK_ISSUE를 먼저 설정하세요}"
+[[ "$MAP_ISSUE" =~ ^[0-9]+$ && "$TASK_ISSUE" =~ ^[0-9]+$ ]] || {
+  echo "Issue 번호는 숫자여야 합니다" >&2
+  exit 2
+}
+gh repo view --json nameWithOwner
+./scripts/frontier.sh "$MAP_ISSUE"
+gh issue view "$TASK_ISSUE" --json number,title,state,assignees,labels
+gh issue edit "$TASK_ISSUE" --add-assignee "@me"
+gh issue view "$TASK_ISSUE" --comments
+(cd seed && npm test)                 # red: 새로 쓴 테스트가 실패하는지 먼저 확인
+(cd seed && npm test)                 # green: 구현 후 다시 확인
 ./scripts/check-repo.sh
 git status --short
 git add seed/src seed/tests
 git commit -m "Implement privacy-aware inference routing and telemetry opt-out"
-gh issue close "$ISSUE" --comment "구현과 검증을 완료했습니다. cd seed && npm test 및 ./scripts/check-repo.sh 통과."
+gh issue close "$TASK_ISSUE" --comment "구현과 검증을 완료했습니다. (cd seed && npm test) 및 ./scripts/check-repo.sh 통과."
 ```
+
+Issue 변경 전 대상 리포, 제목, 상태, assignee를 사용자에게 보여 주고 확인한다. 종료 명령은 두 검증이 통과하고 커밋이 생성된 경우에만 실행한다.
 
 ## 종료 조건
 
@@ -37,4 +45,4 @@ gh issue close "$ISSUE" --comment "구현과 검증을 완료했습니다. cd se
 - 테스트 실패를 보지 않고 구현부터 작성하지 않는다.
 - 기존 `seed/tests/` 테스트를 삭제하거나 비활성화하지 않는다.
 - 여러 이슈를 한 세션이나 한 커밋에 섞지 않는다.
-
+- Issue 번호나 리포를 추측하지 않는다.

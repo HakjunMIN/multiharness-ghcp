@@ -21,7 +21,7 @@ Lab 4의 모든 수락 기준에 판정 근거가 있고, 실패가 있었다면
 1. **map Issue에서 하루 전체를 역추적한다.**
 
    ```bash
-   MAP_ISSUE=<map-issue-number>
+   printf 'Map issue number: '; read -r MAP_ISSUE
    gh issue view "$MAP_ISSUE" --comments
    ```
 
@@ -40,7 +40,9 @@ Lab 4의 모든 수락 기준에 판정 근거가 있고, 실패가 있었다면
    채팅 기록이나 구두 설명 없이 읽는다. 최종 지역 정책, telemetry opt-out 의미, 주요 trade-off, 근거 decision Issue가 드러나지 않으면 map 본문을 갱신한다.
 
    ```bash
-   gh issue edit "$MAP_ISSUE" --body-file map-final.md
+   gh issue view "$MAP_ISSUE" --json body --jq '.body' > /tmp/map-final.md
+   ${EDITOR:-vi} /tmp/map-final.md
+   gh issue edit "$MAP_ISSUE" --body-file /tmp/map-final.md
    ```
 
 3. **팀 회고를 실행한다.**
@@ -54,19 +56,32 @@ Lab 4의 모든 수락 기준에 판정 근거가 있고, 실패가 있었다면
    결과는 map Issue 코멘트로 남긴다.
 
    ```bash
-   cat > retrospective.md <<'EOF'
+   cat > /tmp/retrospective.md <<'EOF'
    ## Retrospective
    - handoff 개선:
    - harness/model 선택 규칙:
    - 다음 분기 도입 프레임워크:
    - 다음 작업부터 할 행동:
    EOF
-   gh issue comment "$MAP_ISSUE" --body-file retrospective.md
+   gh issue comment "$MAP_ISSUE" --body-file /tmp/retrospective.md
+   ```
+
+4. **팀 도입 규칙을 커밋한다.**
+
+   ```bash
+   cp docs/templates/team-adoption.md docs/team-adoption.md
+   ```
+
+   회고의 실제 사례와 합의한 다음 행동을 반영한 뒤 커밋한다.
+
+   ```bash
+   git add docs/team-adoption.md
+   git commit -m "docs: record team multi-harness operating rules"
    ```
 
 ## 끝난 뒤 상태
 
-map Issue의 `## Decisions so far`만으로 하루의 핵심 결정을 설명할 수 있고, 발견·결정·구현·검증 산출물이 Issue로 추적되며, 팀의 다음 행동이 회고 코멘트에 기록되어 있어야 한다.
+map Issue의 `## Decisions so far`만으로 하루의 핵심 결정을 설명할 수 있고, 발견·결정·구현·검증 산출물이 Issue로 추적되며, 팀의 다음 행동이 회고 코멘트와 커밋된 `docs/team-adoption.md`에 기록되어 있어야 한다.
 
 ## 흔한 실패
 

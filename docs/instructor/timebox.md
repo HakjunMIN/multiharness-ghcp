@@ -26,3 +26,5 @@ Lab 3과 Lab 4는 절대 자르지 않는다. 둘 중 하나라도 없으면 이
 - **Lab 4, 5:45:** 새 session의 verifier가 모든 acceptance criterion을 판정하고 실패마다 `wf:verify` Issue를 만들지 못했으면 구현 파일을 닫고 decision/task Issue부터 다시 읽게 한다.
 - **Lab 5, 6:30:** 세 runtime의 관찰 결과가 정리되지 않았으면 즉시 실습을 중단하고 Lab 6으로 이동한다.
 - **Lab 6, 7:10:** map의 `## Decisions so far`와 세 회고 질문의 다음 행동이 기록되지 않았으면 발표를 줄이고 Issue 기록을 먼저 끝낸다.
+
+코어 랩의 복구 기준과 private checkpoint branch 운영은 `docs/instructor/minimum-path.md`를 따른다.

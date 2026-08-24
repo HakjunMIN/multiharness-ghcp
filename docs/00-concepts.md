@@ -23,9 +23,11 @@
 | 런타임 | 진입 방법 | 특징 |
 |---|---|---|
 | 로컬 | `copilot` | 내 머신, 내 파일, 제약 없음 |
-| 로컬 샌드박스 | `/sandbox enable` 또는 `copilot --sandbox` | 실험적. macOS=Seatbelt, Linux=bubblewrap(`bwrap`), Windows=Insiders 필요 |
+| 로컬 샌드박스 | `copilot --sandbox --experimental` | 실험적 opt-in 필요. macOS=Seatbelt, Linux=bubblewrap(`bwrap`), Windows=Insiders 필요 |
 | 클라우드 샌드박스 | `copilot --cloud --experimental` | 대화형 전용 — `-p` / `-i` 사용 불가. Azure Container Apps 기반 |
-| 클라우드 에이전트 | `/delegate` 또는 이슈에 `@copilot` 할당 | 비동기. 브랜치 + PR 생성. 세션당 최대 59분. 1 repo / 1 branch / 1 PR |
+| 클라우드 에이전트 | `/delegate` 또는 이슈에 `@copilot` 할당 | 비동기. 작업별 브랜치 + PR 생성. 현재 시간·사용량 제한은 행사 전날 공식 문서에서 확인 |
+
+CLI와 sandbox 명령의 공식 진입점은 [참고 자료](reference/sources.md)의 Copilot CLI·local sandbox·cloud agent 문서에서 확인한다. 가격은 같은 문서의 cloud/local sandbox 과금 링크를 기준으로 하며 행사 전날 다시 확인한다.
 
 ## 반드시 알아야 할 함정
 
