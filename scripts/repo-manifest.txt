@@ -27,3 +27,9 @@ seed/tests/gate.test.ts
 .github/ISSUE_TEMPLATE/decision.yml
 .github/ISSUE_TEMPLATE/task.yml
 .github/ISSUE_TEMPLATE/verify.yml
+.github/agents/architect.agent.md
+.github/agents/implementer.agent.md
+.github/agents/verifier.agent.md
+.github/skills/handoff-brief/SKILL.md
+.github/skills/issue-map/SKILL.md
+.github/skills/uat-verify/SKILL.md
