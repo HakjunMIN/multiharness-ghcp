@@ -1,0 +1,45 @@
+name: 결정 (Decision)
+description: 아직 정해지지 않아 답이 필요한 열린 질문 하나를 등록합니다.
+title: "[decision] "
+labels: ["wf:decision"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        이슈 하나에 결정 하나만 담습니다. 결정이 둘이면 이슈를 둘로 나누세요.
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: 무엇을 정해야 하는지 한 문장으로 씁니다.
+      placeholder: 지역별 규제 정책을 어디에서 판정할 것인가?
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: 고려한 대안
+      description: 대안 2~3개와 각각의 트레이드오프를 씁니다.
+    validations:
+      required: true
+  - type: textarea
+    id: follow-up
+    attributes:
+      label: 이 결정이 풀리면 생기는 작업
+      description: 결정 후 파생될 wf:task 이슈의 후보를 적습니다.
+    validations:
+      required: true
+  - type: dropdown
+    id: harness
+    attributes:
+      label: 하네스 / 모델
+      description: 이 이슈를 다룰 조합을 고릅니다.
+      options:
+        - Copilot / Claude Opus 5
+        - Copilot / GPT-5.6 Sol
+        - Copilot / GPT-5.6 Terra
+        - Claude 하네스
+        - Codex 하네스
+        - Cloud 에이전트
+    validations:
+      required: true

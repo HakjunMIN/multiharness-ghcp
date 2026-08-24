@@ -1,0 +1,44 @@
+name: 검증 (Verification)
+description: 독립 검증 또는 수락 테스트에서 발견한 결함을 보고합니다.
+title: "[verify] "
+labels: ["wf:verify"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        검증자는 구현을 직접 고치지 않습니다. 발견한 것을 여기에 남기고 구현 세션으로 돌려보냅니다.
+  - type: input
+    id: target
+    attributes:
+      label: 검증 대상 이슈
+      placeholder: "#21"
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: 재현 절차
+      description: 다른 사람이 그대로 따라 할 수 있게 명령 단위로 씁니다.
+    validations:
+      required: true
+  - type: textarea
+    id: expected-actual
+    attributes:
+      label: 기대 결과 vs 실제 결과
+      description: 명령 출력 발췌를 근거로 붙입니다.
+    validations:
+      required: true
+  - type: dropdown
+    id: harness
+    attributes:
+      label: 검증에 사용한 하네스 / 모델
+      description: 구현과 최소 한 축 이상 달라야 합니다.
+      options:
+        - Copilot / Claude Opus 5
+        - Copilot / GPT-5.6 Sol
+        - Copilot / GPT-5.6 Terra
+        - Claude 하네스
+        - Codex 하네스
+        - Cloud 에이전트
+    validations:
+      required: true

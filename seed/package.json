@@ -1,0 +1,11 @@
+{
+  "name": "feature-gate",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "On-device AI feature gating SDK (workshop seed)",
+  "engines": { "node": ">=22.18.0" },
+  "scripts": {
+    "test": "node --disable-warning=ExperimentalWarning --test"
+  }
+}
