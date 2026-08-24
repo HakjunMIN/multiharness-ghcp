@@ -39,17 +39,27 @@ cd seed && npm test && cd ..    # 시드 코드베이스 테스트 (의존성 �
 
 | 랩 | 제목 | 시간 | 하네스 / 모델 |
 | --- | --- | --- | --- |
-| Lab 0 | 프리플라이트 | 30분 | — |
-| Lab 1 | 문제 발견과 요구 정의 | 60분 | Claude / Claude Opus 5 |
-| Lab 2 | 결정과 아키텍처 | 45분 | Claude / Claude Opus 5 |
-| Lab 3 | 구현 | 90분 | Copilot / GPT-5.6 Sol |
-| Lab 4 | 검증과 수락 테스트 | 60분 | Codex 또는 Copilot / GPT-5.6 Terra |
-| Lab 5 | 멀티 런타임 (옵션) | 45분 | Copilot / 임의 |
-| Lab 6 | 통합과 회고 | 40분 | — |
+| [Lab 0](docs/labs/lab0-preflight.md) | 프리플라이트 | 30분 | — |
+| [Lab 1](docs/labs/lab1-discovery.md) | 문제 발견과 요구 정의 | 60분 | Claude / Claude Opus 5 |
+| [Lab 2](docs/labs/lab2-architecture.md) | 결정과 아키텍처 | 45분 | Claude / Claude Opus 5 |
+| [Lab 3](docs/labs/lab3-implementation.md) | 구현 | 90분 | Copilot / GPT-5.6 Sol |
+| [Lab 4](docs/labs/lab4-verification.md) | 검증과 수락 테스트 | 60분 | Codex (Codex 제공 모델) 또는 Copilot / GPT-5.6 Terra |
+| [Lab 5](docs/labs/lab5-multiruntime.md) | 멀티 런타임 (옵션) | 45분 | Copilot / 임의 |
+| [Lab 6](docs/labs/lab6-integration.md) | 통합과 회고 | 40분 | — |
 
 ## 참고 문서
 
-랩을 진행하기 전에 개념 문서와 레퍼런스를 먼저 확인하세요. 모든 사실 주장의 출처는 레퍼런스 디렉터리에 정리되어 있습니다.
+랩을 진행하기 전에 [개념 문서](docs/00-concepts.md)를 먼저 읽으세요. 하네스 · 모델 · 런타임 세 축의 구분이 하루 전체의 전제입니다.
+
+| 문서 | 언제 보는가 |
+| --- | --- |
+| [모델 · 하네스 호환성](docs/reference/model-harness-matrix.md) | 어떤 조합이 실제로 가능한지 확인할 때 |
+| [인수인계 규약](docs/reference/handoff-contract.md) | 다음 단계로 넘기기 직전 |
+| [이슈 규약](docs/reference/issue-conventions.md) | 맵 · 결정 · 작업 이슈를 만들 때 |
+| [프레임워크 지형도](docs/reference/framework-landscape.md) | 워크샵 이후 팀에 무엇을 도입할지 정할 때 |
+| [출처](docs/reference/sources.md) | 사실 확인이 필요할 때 |
+
+강사용 자료는 [`docs/instructor/`](docs/instructor/timebox.md)에 있습니다: 타임박스, 사전 체크리스트, 트러블슈팅, 진행 노트.
 
 ## 라이선스와 사용 조건
 

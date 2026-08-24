@@ -33,3 +33,16 @@ seed/tests/gate.test.ts
 .github/skills/handoff-brief/SKILL.md
 .github/skills/issue-map/SKILL.md
 .github/skills/uat-verify/SKILL.md
+docs/00-concepts.md
+docs/labs/lab0-preflight.md
+docs/labs/lab1-discovery.md
+docs/labs/lab2-architecture.md
+docs/labs/lab3-implementation.md
+docs/labs/lab4-verification.md
+docs/labs/lab5-multiruntime.md
+docs/labs/lab6-integration.md
+docs/instructor/timebox.md
+docs/instructor/pre-workshop-checklist.md
+docs/instructor/troubleshooting.md
+docs/instructor/facilitation-notes.md
+scripts/repo-manifest.txt
