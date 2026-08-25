@@ -1,9 +1,17 @@
-# Lab 0 — 아우터 하네스 조립 (45분)
+# Lab 0 — 아우터 하네스 조립 (30분)
 
-## 목표
+## 이 랩에서 배우는 것
 
-Matt Pocock 스킬을 프로젝트에 설치·갱신하고 GHCP에서 사용할 개발
-워크플로를 직접 조립합니다.
+- 개발 워크플로를 스킬 설치로 조립한다. 스크립트를 외우지 않는다.
+- 설치 결과를 lockfile로 고정해 다음 세션이 같은 하네스를 재현하게 한다.
+- 모델을 바꾸지 않고 도메인 스킬로 하네스 능력을 확장한다.
+- 세 역할에 필요한 agent runtime과 model이 실제로 열리는지 먼저 확인한다.
+
+## 시작 전 상태
+
+- GHCP CLI에 로그인되어 있고 `gh auth status`가 정상이다.
+- Node와 `uv`가 설치되어 있다.
+- 리포를 clone했고 `git status`가 깨끗하다.
 
 ## 1. 환경 기준선
 
@@ -12,6 +20,9 @@ Matt Pocock 스킬을 프로젝트에 설치·갱신하고 GHCP에서 사용할 
 ```text
 scripts/preflight.sh를 실행해 환경과 두 sample track의 기준선을 확인하세요.
 ```
+
+`FAIL`이 하나라도 있으면 다음 단계로 넘어가지 않습니다. 이 시점의 seed
+11개, agent-seed 27개 통과가 이후 모든 비교의 기준선입니다.
 
 ## 2. Matt 스킬 설치와 갱신
 
@@ -66,3 +77,16 @@ GitHub Issues, 기본 triage labels, single-context domain docs를 선택합니�
 어느 조합이든 보이지 않으면 대체하지 말고 강사에게 알립니다. 마지막으로
 `node scripts/check-matt-skills.mjs --required`와 리포 검사를 에이전트에게
 실행시킵니다.
+
+## 종료 조건
+
+- 필수 Matt 스킬이 모두 `/skills`에 보인다.
+- `node scripts/check-matt-skills.mjs --required`가 통과한다.
+- `skills-lock.json`, 설치된 스킬, `CONTEXT.md`, `docs/agents/*`가 커밋됐다.
+- 세 역할의 agent runtime과 model을 모두 직접 열어 봤다.
+
+## 막힐 때
+
+- 스킬이 안 보이면 project scope와 GitHub Copilot 대상을 확인하고 새 세션을 연다.
+- 설치가 사내 프록시에서 막히면 승인된 package feed 설정을 확인한다.
+- 모델이 없으면 다른 모델로 대체하지 말고 여기서 멈추고 강사에게 알린다.

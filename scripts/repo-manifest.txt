@@ -62,6 +62,7 @@ seed/src/types.ts
 seed/tests/gate.test.ts
 seed/tests/router.test.ts
 tests/scripts/test-lab-runtime-contract.sh
+tests/scripts/test-lab-timebox.sh
 tests/scripts/test-matt-skills.sh
 tests/scripts/test-runtime-matrix-docs.sh
 tests/scripts/test-usage.sh

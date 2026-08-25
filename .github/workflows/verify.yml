@@ -28,6 +28,7 @@ jobs:
         run: |
           ./tests/scripts/test-matt-skills.sh
           ./tests/scripts/test-lab-runtime-contract.sh
+          ./tests/scripts/test-lab-timebox.sh
           ./tests/scripts/test-runtime-matrix-docs.sh
           ./tests/scripts/test-usage.sh
       - name: participant bundle excludes instructor solution
