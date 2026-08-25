@@ -28,6 +28,7 @@ jobs:
         run: |
           ./tests/scripts/test-handoff.sh
           ./tests/scripts/test-usage.sh
+          ./tests/scripts/test-codex-cloud-docs.sh
       - name: participant bundle excludes instructor solution
         run: |
           bundle="${RUNNER_TEMP}/workshop-participant.tar.gz"

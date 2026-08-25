@@ -75,6 +75,12 @@ if [ -f seed/package.json ]; then
   fi
 fi
 
+# --- 6) optional Codex path remains cloud-only and report-only ---
+if [ -x tests/scripts/test-codex-cloud-docs.sh ]; then
+  tests/scripts/test-codex-cloud-docs.sh >/dev/null ||
+    err "Codex cloud documentation contract failed"
+fi
+
 if [ "$fail" -ne 0 ]; then
   printf 'FAIL: repo check failed\n' >&2
   exit 1

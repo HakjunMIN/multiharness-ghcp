@@ -21,7 +21,7 @@ gh issue view "$MAP_ISSUE" --comments
 ./scripts/check-repo.sh
 ```
 
-결함 Issue는 실제 실패가 기록된 `verification-failure.md`가 있을 때만 생성한다. Copilot 검증 경로에서는 `harness:copilot`, Codex 검증 경로에서는 `harness:codex`를 사용한다. 생성 전 대상 리포, 제목, 라벨을 사용자에게 보여 준다.
+이 프로파일은 경로 B(Copilot + GPT-5.6 Terra) 전용이다. 결함 Issue는 실제 실패가 기록된 `verification-failure.md`가 있을 때만 `harness:copilot`로 생성한다. 생성 전 대상 리포, 제목, 라벨을 사용자에게 보여 준다. 옵션 GHEC Codex cloud 경로는 `docs/prompts/codex-verifier.md` 계약을 사용한다.
 
 ## 종료 조건
 

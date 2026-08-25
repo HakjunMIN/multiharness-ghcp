@@ -108,17 +108,11 @@ else
   bad "copilot CLI 없음" "GitHub Copilot CLI 를 설치하세요."
 fi
 
-# --- optional partner harness CLIs ---
+# --- optional planning harness CLI ---
 if command -v claude >/dev/null 2>&1; then
   ok "claude CLI ($(claude --version 2>/dev/null | head -1 || printf 'version unknown'))"
 else
   warn_ "claude CLI 없음" "VS Code Claude session으로 Lab 1~2를 진행할 수 있습니다."
-fi
-
-if command -v codex >/dev/null 2>&1; then
-  ok "codex CLI"
-else
-  warn_ "codex CLI 없음" "Lab 4 는 경로 B(Copilot + GPT-5.6 Terra + 새 세션)로 진행할 수 있습니다."
 fi
 
 if [ "$strict" -eq 1 ]; then
@@ -129,11 +123,11 @@ if [ "$strict" -eq 1 ]; then
   fi
 
   case "${WORKSHOP_VERIFY_ROUTE:-}" in
-    codex)
+    codex-cloud)
       if [ "${WORKSHOP_VERIFY_MODEL_CONFIRMED:-0}" = "1" ]; then
-        ok "Codex 검증 경로와 모델 접근 확인"
+        ok "GHEC Codex cloud agent 정책·리포·모델·사용량 확인"
       else
-        bad "Codex 모델 접근 미확인" "Codex 새 세션을 확인한 뒤 실행: export WORKSHOP_VERIFY_MODEL_CONFIRMED=1"
+        bad "GHEC Codex cloud agent 미확인" "정책, 리포 활성화, 할당, 모델, Actions minutes, AI credits를 확인한 뒤 WORKSHOP_VERIFY_MODEL_CONFIRMED=1을 설정하세요."
       fi
       ;;
     copilot-terra)
@@ -144,7 +138,7 @@ if [ "$strict" -eq 1 ]; then
       fi
       ;;
     *)
-      bad "검증 경로 미선택" "실행: export WORKSHOP_VERIFY_ROUTE=codex 또는 export WORKSHOP_VERIFY_ROUTE=copilot-terra"
+      bad "검증 경로 미선택" "실행: export WORKSHOP_VERIFY_ROUTE=codex-cloud 또는 export WORKSHOP_VERIFY_ROUTE=copilot-terra"
       ;;
   esac
 fi

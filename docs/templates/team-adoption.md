@@ -10,7 +10,7 @@
 |---|---|---|---|
 | 발견·아키텍처 | Claude | Claude Opus 5 | 대안 탐색과 결정 |
 | 구현 | Copilot | GPT-5.6 Sol | 코드·테스트 구현 |
-| 독립 검증 | Codex 또는 Copilot | 해당 하네스 제공 모델 | 구현과 최소 한 축 분리 |
+| 독립 검증 | 기본 Copilot, 옵션 GHEC Codex cloud agent | Terra 또는 Codex 제공 모델 | 구현과 최소 한 축 분리 |
 
 ## HANDOFF 게이트
 

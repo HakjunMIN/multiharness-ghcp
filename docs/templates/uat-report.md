@@ -4,6 +4,8 @@
 
 - 하네스:
 - 모델:
+- source branch:
+- source commit:
 - 구현과 달라진 축:
 - 새 세션 확인:
 

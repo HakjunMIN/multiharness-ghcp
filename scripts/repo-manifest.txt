@@ -51,6 +51,7 @@ docs/prompts/codex-verifier.md
 docs/templates/spec.md
 docs/templates/architecture-plan.md
 docs/templates/uat-report.md
+docs/templates/codex-cloud-verification-issue.md
 docs/templates/team-adoption.md
 docs/uat/acceptance-matrix.md
 docs/uat/acceptance.test.ts
@@ -60,4 +61,5 @@ scripts/instructor-smoke-test.sh
 scripts/build-participant-bundle.sh
 tests/scripts/test-handoff.sh
 tests/scripts/test-usage.sh
+tests/scripts/test-codex-cloud-docs.sh
 scripts/restore-lab3-checkpoint.sh

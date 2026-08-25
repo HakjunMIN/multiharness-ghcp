@@ -3,13 +3,13 @@
 ## 반드시 지킬 개입 원칙
 
 - **Lab 1에서 정답을 말하지 않는다.** 부채 발견이 학습의 절반이다. 참가자가 탐색하게 두되 **30분 룰**만 지킨다. 30분이 지나도 결정 질문을 만들지 못하면 답을 주는 대신 관찰 범위를 좁혀 준다.
-- **Lab 3~4 사이에 반드시 세션을 끊게 한다.** 이 워크샵의 유일한 핵심 체험이다. 같은 세션에서 검증하면 아무것도 배우지 못한다. 터미널과 partner harness session이 실제로 종료됐는지 확인한 뒤 verifier를 시작시킨다.
+- **Lab 3~4 사이에 구현 문맥을 끊게 한다.** 경로 B는 구현 세션을 완전히 종료하고 새 Terra 세션을 연다. 옵션 경로 A는 구현 대화가 없는 전용 Issue를 GHEC Codex cloud agent에 위임한다.
 - 인수인계 브리프가 부실한 조를 일부러 통과시켜 Lab 4에서 막히게 한다. 구두로 빈칸을 메워 주지 말고, 막힌 field를 적게 한 뒤 Lab 6 회고에서 다룬다.
 - 코어 랩이 checkpoint를 넘기면 `docs/instructor/minimum-path.md`의 최소 질문·두 task·private solution branch로 복구한다.
 
 ## 도구 장애 시 fallback
 
-- partner harness가 동작하지 않으면 전원이 **경로 B**, 즉 Copilot + `GPT-5.6 Terra`의 새 session으로 전환한다.
+- GHEC Codex 정책, 리포 활성화, 모델, 사용량, draft PR 중 하나라도 준비되지 않으면 전원이 **경로 B**, 즉 Copilot + `GPT-5.6 Terra`의 새 session으로 전환한다.
 - cloud sandbox 또는 cloud agent가 동작하지 않으면 Lab 5를 생략하고 Lab 6으로 이동한다.
 - `gh`가 동작하지 않으면 Issue 대신 `docs/` 아래 파일로 인계한다. 저장 위치만 달라질 뿐 `## HANDOFF` field, decision/task/verify 구분, claim, 재현 명령 규약은 동일하게 유지한다. 이 제약 자체가 durable state와 protocol의 가치를 보여 주는 좋은 교보재다.
 

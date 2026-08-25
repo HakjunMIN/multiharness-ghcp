@@ -27,7 +27,7 @@ gh issue view "$MAP_ISSUE" --comments
 
 검증은 구현과 최소 한 축, 즉 하네스 또는 모델 이상이 다른 조합에서 수행한다. 반드시 새 세션을 시작한다.
 
-- **경로 A:** Codex 하네스 + Codex가 실제 제공하는 모델
+- **경로 A(옵션):** GHEC Codex cloud agent + Codex가 실제 제공하는 모델. `docs/uat/report.md`만 변경하는 draft PR로 수행한다.
 - **경로 B:** Copilot 하네스 + `GPT-5.6 Terra`
 
 `Codex + GPT-5.6 Terra`는 지원 조합으로 취급하지 않는다.

@@ -11,8 +11,11 @@
 | cloud agent가 추가 comment를 무시 | 할당 이후 Issue comment를 읽지 않는 설계 | 생성된 PR에서 지시하거나 새 작업으로 다시 할당한다. |
 | worktree에 파일이 없음 | 파일이 미커밋 상태이거나 gitignored | 파일을 commit하거나 필요한 pattern을 `git.worktreeIncludeFiles`에 설정한다. |
 | 검증 session이 구현 session의 맥락을 알고 있음 | session을 새로 열지 않음 | 구현 session을 종료하고 다른 harness/model 조합의 새 session을 강제한다. |
-| Lab 4에서 Codex + `GPT-5.6 Terra` 선택 불가 | partner harness의 model matrix 제약 | Copilot + `GPT-5.6 Terra`의 경로 B로 전환한다. |
-| `preflight.sh`에서 `claude` / `codex` WARN | 해당 CLI가 설치되지 않음 | VS Code의 partner agent extension으로 진행할 수 있다. 다른 preflight failure는 별도로 해결한다. |
+| Lab 4에서 Codex + `GPT-5.6 Terra` 선택 불가 | Codex cloud agent의 model matrix 제약 | Copilot + `GPT-5.6 Terra`의 경로 B로 전환한다. |
+| GHEC Issue에서 Codex를 선택할 수 없음 | enterprise/org 정책 또는 리포별 cloud agent 설정 비활성 | 관리자가 활성화하지 못하면 경로 B로 전환한다. |
+| Codex draft PR이 없거나 timeout | cloud task 실패 또는 Actions/AI credit 부족 | 위임 URL을 기록하고 경로 B로 전환한다. |
+| Codex draft PR이 `seed/`를 변경 | report-only 역할 경계를 따르지 않음 | merge하지 말고 한 번 재시도하거나 경로 B로 전환한다. |
+| `preflight.sh`에서 `claude` WARN | Claude CLI가 설치되지 않음 | VS Code Claude session으로 진행할 수 있다. |
 | local sandbox가 파일 쓰기를 막지 않음 | CLI built-in file tool은 OS sandbox 밖에서 best-effort로 강제됨 | sandbox를 security boundary로 신뢰하지 않고 별도 격리 환경을 사용한다. |
 | `frontier.sh`가 아무 Issue도 출력하지 않음 | 모든 task가 assigned 상태이거나 열린 `blockedBy`가 존재 | stale assignee를 해제하고 blocker Issue의 open/closed 상태와 dependency를 확인한다. |
 | `handoff.sh`가 brief를 거부함 | 첫 줄 또는 필수 field가 contract와 다름 | 첫 줄을 `## HANDOFF`로 두고 `from/to`, `artifacts`, `verify`를 포함한 뒤 다시 실행한다. |

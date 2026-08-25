@@ -34,7 +34,7 @@ cd seed && npm test && cd ..    # 시드 코드베이스 테스트 (의존성 �
 | `docs/` | 개념 문서, 랩 가이드, 레퍼런스, 강사 자료 |
 | `.github/agents/` | `architect` · `implementer` · `verifier` 에이전트 프로파일 |
 | `.github/skills/` | `handoff-brief` · `issue-map` · `uat-verify` 스킬 |
-| `docs/prompts/` | Claude · Codex 하네스에서 사용하는 네이티브 역할 계약 |
+| `docs/prompts/` | Claude native 역할과 GHEC Codex cloud 검증 계약 |
 | `docs/templates/` | 요구사항 · 아키텍처 · UAT · 팀 규칙 산출물 템플릿 |
 | `docs/uat/` | 구현과 독립적으로 고정된 수락 테스트 |
 
@@ -46,7 +46,7 @@ cd seed && npm test && cd ..    # 시드 코드베이스 테스트 (의존성 �
 | [Lab 1](docs/labs/lab1-discovery.md) | 문제 발견과 요구 정의 | 60분 | Claude / Claude Opus 5 |
 | [Lab 2](docs/labs/lab2-architecture.md) | 결정과 아키텍처 | 45분 | Claude / Claude Opus 5 |
 | [Lab 3](docs/labs/lab3-implementation.md) | 구현 | 90분 | Copilot / GPT-5.6 Sol |
-| [Lab 4](docs/labs/lab4-verification.md) | 검증과 수락 테스트 | 60분 | Codex (Codex 제공 모델) 또는 Copilot / GPT-5.6 Terra |
+| [Lab 4](docs/labs/lab4-verification.md) | 검증과 수락 테스트 | 60분 | 기본: Copilot / GPT-5.6 Terra · 옵션: GHEC Codex cloud agent |
 | [Lab 5](docs/labs/lab5-multiruntime.md) | 멀티 런타임 (옵션) | 45분 | Copilot / 임의 |
 | [Lab 6](docs/labs/lab6-integration.md) | 통합과 회고 | 40분 | — |
 

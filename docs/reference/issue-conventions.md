@@ -16,7 +16,7 @@ GitHub Issues는 하네스 전환을 견디는 유일한 지속 상태 저장소
 | `phase:verification` | `fbca04` | 검증 단계 |
 | `harness:claude` | `c5def5` | Claude 하네스 담당 |
 | `harness:copilot` | `c5def5` | Copilot 하네스 담당 |
-| `harness:codex` | `c5def5` | Codex 하네스 담당 |
+| `harness:codex` | `c5def5` | GHEC Codex cloud agent 담당 |
 
 ## 계층과 작업 가능 범위
 

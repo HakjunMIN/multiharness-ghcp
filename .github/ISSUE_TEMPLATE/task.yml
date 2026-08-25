@@ -41,7 +41,7 @@ body:
         - Copilot / GPT-5.6 Sol
         - Copilot / GPT-5.6 Terra
         - Claude 하네스
-        - Codex 하네스
+        - GHEC Codex cloud agent
         - Cloud 에이전트
     validations:
       required: true

@@ -19,7 +19,7 @@ labels=(
   "phase:verification|fbca04|Lab 4 검증과 수락 테스트"
   "harness:claude|c5def5|Claude 하네스에서 다룰 이슈"
   "harness:copilot|c5def5|Copilot 하네스에서 다룰 이슈"
-  "harness:codex|c5def5|Codex 하네스에서 다룰 이슈"
+  "harness:codex|c5def5|GHEC Codex cloud agent에서 다룰 이슈"
 )
 
 for entry in "${labels[@]}"; do

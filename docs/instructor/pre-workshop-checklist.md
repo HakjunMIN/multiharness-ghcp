@@ -4,13 +4,15 @@
 
 | 항목 | 담당 | 실패 시 영향 |
 |---|---|---|
-| 조직에서 서드파티(파트너) 코딩 에이전트 활성화 | 조직 관리자 | Lab 4 경로 A 불가 |
+| 옵션 경로 A 사용 시 GHEC에서 OpenAI Codex coding agent 정책 활성화 | 조직 관리자 | 경로 B로 진행 |
+| 옵션 경로 A 사용 시 실습 리포에서 Codex 활성화·할당·모델 선택 확인 | 강사 | 경로 B로 진행 |
+| 옵션 경로 A용 Actions minutes와 AI credits 확인 | 강사 / 조직 관리자 | 경로 B로 진행 |
 | 클라우드 샌드박스 접근 권한 | 조직 관리자 | Lab 5 부분 불가 |
 | 참가자별 실습 리포 생성 권한 | 조직 관리자 | Lab 0 전면 실패 |
-| VS Code 최신 안정 버전과 AI 기능 로그인 | 참가자 | Claude/Codex session 선택 불가 |
+| VS Code 최신 안정 버전과 AI 기능 로그인 | 참가자 | Claude session 선택 불가 |
 | GitHub Copilot CLI 설치와 로그인 | 참가자 | Lab 3·경로 B 불가 |
 | Claude Opus 5 모델 entitlement 확인 | 참가자 / 조직 관리자 | Lab 1~2 불가 |
-| Codex 또는 GPT-5.6 Terra 검증 경로 선택 | 강사 | Lab 4 불가 |
+| 기본 Terra 또는 옵션 GHEC Codex cloud 검증 경로 선택 | 강사 | Lab 4 불가 |
 | Node.js 22.18 이상 사전 설치 | 참가자 | Lab 0 지연 |
 | `gh auth login` 사전 완료 | 참가자 | Lab 0 지연 |
 | [참고 자료](../reference/sources.md)의 모델 매트릭스 재확인 — 모델 가용성은 자주 바뀐다 | 강사 | 랩 지시가 틀림 |
@@ -28,7 +30,7 @@ gh api user --jq '.login'
 copilot --version
 ```
 
-강사는 조직 정책 화면에서 partner coding agent와 cloud sandbox access를 확인하고, 참가자와 같은 권한의 시험 계정으로 실습 repo 생성까지 수행한다.
+강사는 옵션 경로 A를 제공할 때 참가자와 같은 권한의 시험 계정으로 폐기 가능한 GHEC 리포에서 검증 Issue를 Codex에 할당한다. `docs/uat/report.md`만 변경한 draft PR이 생성되는지 확인하고 Issue, PR, branch를 정리한다. 이 검증이 실패하면 행사 기본 경로를 Terra로 고정한다.
 
 ## 실제 쓰기 권한 smoke test
 
@@ -43,7 +45,7 @@ WORKSHOP_SMOKE_REPO=owner/disposable-workshop-smoke \
 
 ```bash
 export WORKSHOP_CLAUDE_OPUS5_CONFIRMED=1
-export WORKSHOP_VERIFY_ROUTE=copilot-terra  # 또는 codex
+export WORKSHOP_VERIFY_ROUTE=copilot-terra  # 옵션 경로는 codex-cloud
 export WORKSHOP_VERIFY_MODEL_CONFIRMED=1
 ./scripts/preflight.sh --strict
 ```
