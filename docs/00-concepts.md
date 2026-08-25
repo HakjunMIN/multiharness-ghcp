@@ -1,47 +1,10 @@
-# 핵심 개념 — 하네스 ≠ 모델 ≠ 런타임
+# 개념
 
-이 워크숍의 단 하나의 핵심 개념은 **하네스(harness) ≠ 모델(model) ≠ 런타임(runtime)** 이다. 세 축을 분리해야 실행 위치, 도구, 모델 가용성, 격리 수준을 정확히 판단할 수 있다.
+- **Host:** 대화, tools, sessions를 제공하는 GitHub Copilot CLI
+- **Agent runtime:** GHCP native 또는 GHCP 안의 third-party Claude
+- **Model:** Opus 5, GPT-5.6 Sol, Sonnet 5 같은 추론 모델
+- **Skill:** agent가 재사용하는 역할·규율·절차
+- **Durable state:** `CONTEXT.md`, ADR, Issues, commits처럼 세션 밖에 남는 상태
 
-## 세 축
-
-### 하네스(harness)
-
-하네스는 에이전트 실행을 조직하는 소프트웨어 계층이다. `Copilot`, `Claude`, `Codex`, `Cloud`처럼 도구 호출, 컨텍스트 구성, 파일 변경, 세션 수명주기를 관리한다. 참가자는 흔히 하네스 이름을 모델 이름처럼 말하지만, 같은 하네스가 여러 모델을 제공할 수 있고 원하는 모델이 모든 하네스에 존재하는 것도 아니다.
-
-### 모델(model)
-
-모델은 입력을 해석하고 다음 행동이나 코드를 생성하는 추론 엔진이다. 이 워크숍에서는 `Claude Opus 5`, `GPT-5.6 Sol`, `GPT-5.6 Terra`를 역할에 맞게 사용한다. 모델 선택을 바꾸는 것만으로 도구 권한, 실행 위치, 세션 관리 방식까지 바뀐다고 생각하면 안 된다.
-
-### 런타임(runtime)
-
-런타임은 하네스가 실제로 실행되는 장소와 격리 환경이다. 로컬 프로세스, 로컬 샌드박스, 클라우드 샌드박스, 비동기 클라우드 에이전트는 비용과 보안 특성, 작업 지속 방식이 서로 다르다. 특히 “클라우드 모델을 썼으니 코드도 클라우드 런타임에서 실행된다”는 추론은 틀릴 수 있다.
-
-모델과 하네스의 실제 호환 제약은 [모델과 하네스 호환성](reference/model-harness-matrix.md)을 확인한다. 모델 이름만 보고 조합을 가정하지 않는다.
-
-## 런타임 비교
-
-| 런타임 | 진입 방법 | 특징 |
-|---|---|---|
-| 로컬 | `copilot` | 내 머신, 내 파일, 제약 없음 |
-| 로컬 샌드박스 | `copilot --sandbox --experimental` | 실험적 opt-in 필요. macOS=Seatbelt, Linux=bubblewrap(`bwrap`), Windows=Insiders 필요 |
-| 클라우드 샌드박스 | `copilot --cloud --experimental` | 대화형 전용 — `-p` / `-i` 사용 불가. Azure Container Apps 기반 |
-| 클라우드 에이전트 | Agents 화면 또는 Issue 할당 | Copilot·Codex 등 지원 agent가 비동기로 branch + PR 생성. 현재 정책·시간·사용량 제한은 행사 전날 확인 |
-
-CLI와 sandbox 명령의 공식 진입점은 [참고 자료](reference/sources.md)의 Copilot CLI·local sandbox·cloud agent 문서에서 확인한다. 가격은 같은 문서의 cloud/local sandbox 과금 링크를 기준으로 하며 행사 전날 다시 확인한다.
-
-## 반드시 알아야 할 함정
-
-1. **로컬 샌드박스의 파일 도구는 완전한 OS 경계가 아니다.** CLI 내장 파일 도구는 OS 샌드박스가 가로채지 않으며, 하네스가 best-effort 방식으로 자체 강제한다. 따라서 로컬 샌드박스를 신뢰할 수 있는 보안 경계로 취급하지 않는다.
-2. **클라우드 에이전트는 할당 뒤의 이슈 코멘트를 읽지 않는다.** 에이전트가 보는 이슈 컨텍스트는 할당 시점에 고정된다. 추가 지시는 생성된 PR 코멘트나 해당 세션에서 전달한다.
-3. **워크트리(worktree)는 보안 샌드박스가 아니다.** 워크트리 격리는 병렬 작업의 충돌을 막기 위한 것이며 커밋된 Git 상태에서 시작하므로, 미커밋 파일과 gitignored 파일은 따라가지 않는다. 필요한 파일은 `git.worktreeIncludeFiles`를 설정해 포함한다.
-4. **클라우드 샌드박스에는 비용이 든다.** 컴퓨트는 `$0.000024/초`, 메모리는 `$0.000003/GiB·초`, 스냅샷은 `$0.005/GiB·월`로 과금된다. 실습 전에 실행 시간과 스냅샷 보존량을 함께 고려한다.
-
-## 하네스 간 세션 관리에 대한 오해
-
-VS Code는 Session Target 변경을 **handoff**로 취급해 대화 히스토리와 컨텍스트를 새 하네스로 이관하며, Copilot CLI · Claude Code · Codex가 만든 세션을 탐색한다. 따라서 “GitHub Copilot은 하네스 간 세션 관리가 안 된다”는 말은 전체로는 사실이 아니다.
-
-그러나 **Copilot CLI 자체는 범용 멀티벤더 오케스트레이터가 아니다.** `/agent`와 서브에이전트는 Copilot 커스텀 에이전트 프로파일을 선택하는 기능이지, `claude` 또는 `codex` 프로세스를 관리하는 기능이 아니다.
-
-Orca IDE가 메우는 격차의 실체는 워크트리 · 터미널 · 계정 · 사용량을 하네스별로 병렬 관리하는 것이다. 한 제품이 모든 하네스의 세션을 소유한다는 뜻이 아니다.
-
-Copilot CLI가 실제로 제공하는 세션 관련 기능은 `/resume`, `/session`, `/rename`, `/fork`, `/compact`, `/rewind`, `/remote`, `/chronicle`, `/delegate`, `--continue`이다. 근거와 최신 공식 문서는 [참고 자료](reference/sources.md)에서 확인한다.
+이 워크샵은 같은 host에서 agent runtime과 model을 역할별로 바꾸며,
+Matt Pocock skills를 공통 개발 흐름으로 사용합니다.

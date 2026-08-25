@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 
-for script in frontier.sh handoff.sh new-map.sh restore-lab3-checkpoint.sh build-participant-bundle.sh; do
+for script in restore-lab3-checkpoint.sh build-participant-bundle.sh; do
   set +e
   "$ROOT/scripts/$script" >/dev/null 2>&1
   status=$?

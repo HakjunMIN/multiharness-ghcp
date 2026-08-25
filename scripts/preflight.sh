@@ -51,6 +51,20 @@ else
   bad "seed/package.json 없음" "리포 루트에서 실행하세요."
 fi
 
+# --- agent track (optional) ---
+if [ -f agent-seed/pyproject.toml ]; then
+  if command -v uv >/dev/null 2>&1; then
+    ok "uv $(uv --version | awk '{print $2}')"
+    if (cd agent-seed && uv run --frozen pytest -q >/dev/null 2>&1); then
+      ok "에이전트 트랙 테스트 통과 (agent-seed/)"
+    else
+      bad "에이전트 트랙 테스트 실패" "먼저 의존성을 받으세요: cd agent-seed && uv sync"
+    fi
+  else
+    bad "uv 없음" "에이전트 트랙에 필요합니다. 설치: curl -LsSf https://astral.sh/uv/install.sh | sh"
+  fi
+fi
+
 # --- git ---
 if command -v git >/dev/null 2>&1; then
   ok "git $(git --version | awk '{print $3}')"
@@ -91,12 +105,6 @@ if command -v gh >/dev/null 2>&1; then
       warn_ "GitHub 리포 컨텍스트 없음" "이슈 실습 전에 강사가 제공한 실습 리포를 clone하세요."
     fi
   fi
-  mutations="$(gh api graphql -f query='{ __type(name:"Mutation"){ fields{ name } } }' --jq '.data.__type.fields[].name' 2>/dev/null || true)"
-  if printf '%s\n' "$mutations" | grep -qx addSubIssue; then
-    ok "서브이슈 GraphQL API 접근 가능"
-  else
-    warn_ "서브이슈 API 확인 실패" "토큰 스코프를 갱신하세요: gh auth refresh -s repo"
-  fi
 else
   bad "gh 없음" "https://cli.github.com 에서 GitHub CLI 를 설치하세요."
 fi
@@ -108,39 +116,31 @@ else
   bad "copilot CLI 없음" "GitHub Copilot CLI 를 설치하세요."
 fi
 
-# --- optional planning harness CLI ---
-if command -v claude >/dev/null 2>&1; then
-  ok "claude CLI ($(claude --version 2>/dev/null | head -1 || printf 'version unknown'))"
+# --- skills.sh runner ---
+if command -v npx >/dev/null 2>&1; then
+  ok "npx 사용 가능"
 else
-  warn_ "claude CLI 없음" "VS Code Claude session으로 Lab 1~2를 진행할 수 있습니다."
+  bad "npx 없음" "Matt Pocock 스킬 설치에 필요합니다. Node.js 설치를 확인하세요."
 fi
 
 if [ "$strict" -eq 1 ]; then
-  if [ "${WORKSHOP_CLAUDE_OPUS5_CONFIRMED:-0}" = "1" ]; then
-    ok "Claude Opus 5 session 접근 확인"
+  if [ "${WORKSHOP_CLAUDE_AGENT_OPUS5_CONFIRMED:-0}" = "1" ]; then
+    ok "GHCP Claude agent + Claude Opus 5 확인"
   else
-    bad "Claude Opus 5 session 미확인" "VS Code에서 Claude/Claude Opus 5를 연 뒤 실행: export WORKSHOP_CLAUDE_OPUS5_CONFIRMED=1"
+    bad "Claude agent + Claude Opus 5 미확인" "GHCP /agent에서 Claude를, /model에서 Claude Opus 5를 선택해 확인하세요."
   fi
 
-  case "${WORKSHOP_VERIFY_ROUTE:-}" in
-    codex-cloud)
-      if [ "${WORKSHOP_VERIFY_MODEL_CONFIRMED:-0}" = "1" ]; then
-        ok "GHEC Codex cloud agent 정책·리포·모델·사용량 확인"
-      else
-        bad "GHEC Codex cloud agent 미확인" "정책, 리포 활성화, 할당, 모델, Actions minutes, AI credits를 확인한 뒤 WORKSHOP_VERIFY_MODEL_CONFIRMED=1을 설정하세요."
-      fi
-      ;;
-    copilot-terra)
-      if [ "${WORKSHOP_VERIFY_MODEL_CONFIRMED:-0}" = "1" ]; then
-        ok "Copilot / GPT-5.6 Terra 검증 경로 확인"
-      else
-        bad "GPT-5.6 Terra 접근 미확인" "Copilot에서 모델을 확인한 뒤 실행: export WORKSHOP_VERIFY_MODEL_CONFIRMED=1"
-      fi
-      ;;
-    *)
-      bad "검증 경로 미선택" "실행: export WORKSHOP_VERIFY_ROUTE=codex-cloud 또는 export WORKSHOP_VERIFY_ROUTE=copilot-terra"
-      ;;
-  esac
+  if [ "${WORKSHOP_GPT56_SOL_CONFIRMED:-0}" = "1" ]; then
+    ok "GHCP native + GPT-5.6 Sol 확인"
+  else
+    bad "GHCP native + GPT-5.6 Sol 미확인" "새 native 세션에서 /model GPT-5.6 Sol을 확인하세요."
+  fi
+
+  if [ "${WORKSHOP_SONNET5_CONFIRMED:-0}" = "1" ]; then
+    ok "GHCP native + Claude Sonnet 5 확인"
+  else
+    bad "GHCP native + Claude Sonnet 5 미확인" "새 native 세션에서 /model Claude Sonnet 5를 확인하세요."
+  fi
 fi
 
 printf '\npreflight: %d pass, %d warn, %d fail\n' "$pass" "$warn" "$fail"

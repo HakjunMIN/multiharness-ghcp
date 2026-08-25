@@ -1,5 +1,6 @@
 # CLAUDE.md
 
-이 리포의 작업 규칙 정본은 `AGENTS.md`입니다. 규칙을 여기에 복제하지 않습니다 — 복제하면 두 파일이 어긋납니다.
+작업 규칙 정본은 `AGENTS.md`입니다. 작업 전에 읽고 따르세요.
 
-작업을 시작하기 전에 `AGENTS.md`를 읽고 그대로 따르세요.
+GHCP 안의 Claude agent는 Matt Pocock의 발견·아키텍처·기획 스킬을
+Claude Opus 5로 수행할 때 사용합니다.

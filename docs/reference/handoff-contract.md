@@ -2,7 +2,9 @@
 
 하네스를 바꾸면 대화가 아니라 저장소가 작업의 기준점이 된다. 다음 형식을 GitHub Issue나 인계 문서에 그대로 사용한다.
 
-이 계약은 7개 필드로 구성된다. `scripts/handoff.sh`는 모든 필드의 존재와 값, 템플릿 잔존 여부, artifact가 `HEAD`에 있는 개별 파일인지와 커밋 이후 변경이 없는지를 검사한다.
+Matt의 `/handoff`는 새 하네스, 새 디렉터리, 협업자에게 이동할 때만
+사용한다. 일반 skill 단계 전환에는 spec, tickets, `CONTEXT.md`, ADR이면
+충분하다. 인계 문서를 만들 때는 아래 7개 필드를 자체 점검한다.
 
 ```markdown
 ## HANDOFF

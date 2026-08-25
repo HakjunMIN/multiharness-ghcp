@@ -1,72 +1,68 @@
-# Lab 0 — 프리플라이트 (30분)
+# Lab 0 — 아우터 하네스 조립 (45분)
 
-## 이 랩에서 배우는 것
+## 목표
 
-실습을 시작하기 전에 로컬 도구, GitHub 인증, 저장소 컨텍스트, 파트너 에이전트 정책을 점검한다. 테스트 기준선을 확인하고 워크숍에서 사용할 11개 이슈 레이블을 준비한다.
+Matt Pocock 스킬을 프로젝트에 설치·갱신하고 GHCP에서 사용할 개발
+워크플로를 직접 조립합니다.
 
-## 하네스 / 모델
+## 1. 환경 기준선
 
-| 하네스 | 모델 |
-|---|---|
-| 해당 없음 | 해당 없음 |
+채팅에서 에이전트에게 다음을 요청합니다.
 
-## 시작 전 상태
+```text
+scripts/preflight.sh를 실행해 환경과 두 sample track의 기준선을 확인하세요.
+```
 
-워크숍 저장소를 로컬에서 열었지만 환경 점검 결과와 테스트 기준선은 아직 확인하지 않았고, 대상 GitHub 저장소의 워크숍 레이블 존재 여부도 보장되지 않는다.
+## 2. Matt 스킬 설치와 갱신
 
-## 단계
+GHCP 채팅에서 실행합니다.
 
-1. 저장소 루트에서 strict 프리플라이트를 실행한다. 워크샵 전날 확인한 모델 경로를 환경 변수로 지정한다.
+```text
+!DISABLE_TELEMETRY=1 npx skills@latest add mattpocock/skills --agent github-copilot --copy
+```
 
-   ```bash
-   cd "$(git rev-parse --show-toplevel)"
-   export WORKSHOP_CLAUDE_OPUS5_CONFIRMED=1
-   export WORKSHOP_VERIFY_ROUTE=copilot-terra  # 옵션 경로는 codex-cloud
-   export WORKSHOP_VERIFY_MODEL_CONFIRMED=1
-   ./scripts/preflight.sh --strict
-   ```
+project scope에서 `scripts/required-matt-skills.txt`의 스킬을 모두
+고릅니다. `--copy`는 설치 파일을 리포에 커밋할 수 있게 합니다. 이어서
+갱신과 노출을 확인합니다.
 
-2. 출력된 모든 `FAIL`의 안내에 따라 환경을 수정하고, `FAIL`이 0개가 될 때까지 다시 실행한다.
+```text
+!DISABLE_TELEMETRY=1 npx skills update
+/skills
+```
 
-   ```bash
-   ./scripts/preflight.sh --strict
-   ```
+업데이트 diff를 읽고 로컬 변경을 자동으로 덮어쓰지 않습니다.
 
-3. 의존성을 설치하지 말고 seed 테스트 기준선을 확인한다.
+## 3. 리포 설정
 
-   ```bash
-   cd seed && npm test && cd ..
-   ```
+```text
+/setup-matt-pocock-skills
+```
 
-4. 현재 디렉터리가 연결된 GitHub 저장소를 확인한다.
+GitHub Issues, 기본 triage labels, single-context domain docs를 선택합니다.
+`skills-lock.json`, 설치된 스킬, `CONTEXT.md`, `docs/agents/*`를 커밋합니다.
 
-   ```bash
-   gh repo view --json nameWithOwner,url
-   ```
+## 4. 도메인 스킬 확장
 
-   저장소가 아직 없다면 GitHub에서 빈 저장소를 만든 뒤 현재 저장소의 remote를 연결한다. 이미 올바른 저장소가 표시되면 새로 만들지 않는다. 참가자는 강사가 미리 만든 실습 리포를 clone하는 경로를 기본으로 사용한다.
+`/skills`와 plugin 검색을 이용해 Microsoft Agent Framework 또는 Foundry
+스킬을 설치합니다. 설치 전 manifest와 권한을 읽습니다. 이것이 모델을
+바꾸지 않고 하네스의 능력을 확장하는 두 번째 경험입니다.
 
-5. 워크숍 레이블을 생성하거나 기존 정의를 확인한다.
+## 5. 런타임 확인
 
-   ```bash
-   ./scripts/bootstrap-labels.sh
-   ```
+설계 조합:
 
-6. 레이블이 정확히 11개인지 확인한다.
+```text
+/agent Claude
+/model Claude Opus 5
+```
 
-   ```bash
-   gh label list --limit 100 --json name --jq '[.[].name | select(startswith("wf:") or startswith("phase:") or startswith("harness:"))] | length'
-   ```
+새 GHCP native 세션에서 구현·검증 모델도 확인합니다.
 
-## 끝난 뒤 상태
+```text
+/model GPT-5.6 Sol
+/model Claude Sonnet 5
+```
 
-`./scripts/preflight.sh --strict`가 `FAIL` 0개를 보고하고 seed 테스트가 통과한다. Claude Opus 5와 선택한 검증 경로가 실제 계정에서 준비되며, 현재 GitHub 저장소에는 `wf:` 4개, `phase:` 4개, `harness:` 3개로 총 11개의 워크숍 레이블이 존재한다. `codex-cloud`를 선택했다면 로컬 CLI가 아니라 GHEC 정책, 리포 활성화, 모델 선택, Actions minutes와 AI credits를 확인한다.
-
-## 흔한 실패
-
-- **증상:** 테스트가 TypeScript 구문 오류로 시작되지 않는다 → **원인:** Node.js가 22.18 미만이라 native type stripping 기준을 충족하지 않는다 → **조치:** Node.js 22.18 이상으로 전환한 뒤 `node --version`과 테스트를 다시 확인한다.
-- **증상:** `gh` 명령이 인증 오류를 낸다 → **원인:** GitHub CLI가 로그인되지 않았거나 토큰 권한이 부족하다 → **조치:** `gh auth login`을 실행하고 `gh auth status`로 확인한다.
-- **증상:** `gh repo view`가 저장소를 찾지 못한다 → **원인:** 현재 디렉터리에 GitHub remote가 없어 repo context가 없다 → **조치:** 대상 저장소를 생성하거나 올바른 `origin` remote를 연결한 뒤 다시 실행한다.
-- **증상:** GHEC에서 Codex를 Issue에 할당할 수 없다 → **원인:** 조직 정책 또는 리포별 cloud agent 설정이 비활성화되어 있다 → **조치:** 옵션 경로 A 대신 `WORKSHOP_VERIFY_ROUTE=copilot-terra`를 사용한다.
-
-환경 요구사항과 운영 근거는 [참고 자료](../reference/sources.md)에서 확인할 수 있다.
+어느 조합이든 보이지 않으면 대체하지 말고 강사에게 알립니다. 마지막으로
+`node scripts/check-matt-skills.mjs --required`와 리포 검사를 에이전트에게
+실행시킵니다.

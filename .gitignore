@@ -3,3 +3,8 @@ node_modules/
 *.log
 copilot-session-*.md
 docs/superpowers/
+.worktrees/
+
+.venv/
+__pycache__/
+.pytest_cache/

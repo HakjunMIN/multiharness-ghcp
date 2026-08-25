@@ -1,102 +1,39 @@
-# Lab 1 — 문제 발견과 요구 정의 (60분)
+# Lab 1 — 발견과 아키텍처 (75분)
 
-## 이 랩에서 배우는 것
+## Runtime card
 
-해결책을 먼저 구현하지 않고 코드에서 설계 부채와 열린 질문을 발견한다. 발견한 결정을 GitHub Issue 계층에 기록해 하네스가 바뀌어도 유지되는 작업 지도를 만든다.
+```text
+Host: GitHub Copilot CLI
+Agent runtime: Claude (/agent Claude)
+Model: Claude Opus 5 (/model Claude Opus 5)
+Context: Lab 2가 끝날 때까지 같은 대화 유지
+```
 
-## 하네스 / 모델
+`ts`는 `seed/src/`, `agent`는 `agent-seed/src/hanbit_consult/`를 탐색합니다.
 
-| 하네스 | 모델 |
-|---|---|
-| Claude | Claude Opus 5 |
+## 시작
 
-## 시작 전 상태
+```text
+/agent Claude
+/model Claude Opus 5
+/grill-with-docs
 
-Lab 0의 프리플라이트가 `FAIL` 0개이고 seed 테스트가 통과하며, 현재 GitHub 저장소에 11개 워크숍 레이블이 존재한다. 실행 과제에 대한 map issue와 decision issue는 아직 없다.
+지역별 프라이버시 규제에 따라 외부 추론 또는 웹검색 라우팅을 강제하고
+텔레메트리 옵트아웃을 지원해야 합니다. 선택한 sample track을 탐색하고,
+구현하지 말고 공유 용어와 되돌리기 어려운 설계 결정을 먼저 명확히 해
+주세요.
+```
 
-## 단계
+`grill-with-docs`가 사용하는 `domain-modeling`으로 `CONTEXT.md`를
+정교하게 만들고, 되돌리기 어려운 결정만 `docs/adr/`에 기록합니다.
 
-1. 실행 과제로 map issue를 만들고, 출력되는 이슈 번호를 현재 셸에 저장한다.
+public interface나 test seam 자체가 불명확하면 `codebase-design`을
+호출합니다. 여러 설계 세션이 필요한 거대한 작업일 때만 `wayfinder`를
+사용합니다. 이 샘플 과제는 보통 바로 Lab 2로 이어집니다.
 
-   ```bash
-   cd "$(git rev-parse --show-toplevel)"
-   export MAP_ISSUE="$(./scripts/new-map.sh "지역별 프라이버시 규제에 따른 추론 라우팅과 텔레메트리 옵트아웃")"
-   printf 'MAP_ISSUE=%s\n' "$MAP_ISSUE"
-   ```
+## 종료 조건
 
-2. VS Code에서 **New Chat → Session Type: Claude → Model: Claude Opus 5 → Permission mode: Plan**을 선택한다. 모델 표시에서 `Claude Opus 5`를 확인할 수 없으면 진행하지 말고 강사에게 알린다.
-
-   ```text
-   CLAUDE.md, AGENTS.md, docs/prompts/claude-architect.md를 읽고 Claude Architect Contract를 따르세요.
-   ```
-
-   `/agent architect`는 Copilot 전용 명령이므로 Claude 세션에서 사용하지 않는다.
-
-3. architect에게 `seed/src/`를 읽고 실행 과제를 막는 미결정 사항을 찾도록 요청한다. 해결책을 구현하거나 코드를 수정하지 말고, 각 질문이 왜 결정되어야 하는지 설명하게 한다.
-
-   ```text
-   seed/src/를 읽고 "지역별 프라이버시 규제에 따라 추론 라우팅을 강제하고, 텔레메트리 옵트아웃을 지원하라"를 막는 미결정 사항을 찾아 주세요. 코드는 수정하지 말고 결정이 필요한 질문과 근거만 제시하세요.
-   ```
-
-4. 발견한 질문마다 하나씩, 최소 3개의 `wf:decision` 이슈를 생성한다. architect에게 각 이슈를 `phase:discovery`, `harness:claude`로 표시하고 생성된 번호를 알려 달라고 요청한다.
-
-   ```text
-   발견한 질문 중 서로 독립적인 항목을 최소 3개 골라, 질문 하나당 GitHub Issue 하나를 생성하세요. 각 이슈에 wf:decision, phase:discovery, harness:claude 레이블을 붙이고 이슈 번호를 목록으로 보고하세요.
-   ```
-
-5. 각 decision issue를 map issue에 native sub-issue로 연결한다. 프롬프트가 나오면 실제 번호를 공백으로 나열한다.
-
-   ```bash
-   printf 'Decision issue numbers (space-separated): '
-   read -r DECISION_ISSUES
-   export DECISION_ISSUES
-   read -r OWNER REPO <<<"$(gh repo view --json owner,name --jq '.owner.login + " " + .name')"
-   MAP_NODE="$(gh api graphql -f query='query($o:String!,$n:String!,$num:Int!){repository(owner:$o,name:$n){issue(number:$num){id}}}' -F o="$OWNER" -F n="$REPO" -F num="$MAP_ISSUE" --jq '.data.repository.issue.id')"
-   for issue in $DECISION_ISSUES; do
-     CHILD_NODE="$(gh api graphql -f query='query($o:String!,$n:String!,$num:Int!){repository(owner:$o,name:$n){issue(number:$num){id}}}' -F o="$OWNER" -F n="$REPO" -F num="$issue" --jq '.data.repository.issue.id')"
-     gh api graphql -f query='mutation($parent:ID!,$child:ID!){addSubIssue(input:{issueId:$parent,subIssueId:$child}){issue{number}}}' -f parent="$MAP_NODE" -f child="$CHILD_NODE"
-   done
-   ```
-
-   mutation 규약은 [GitHub Issue 운영 규칙](../reference/issue-conventions.md)을 따른다.
-
-6. 발견 결과를 커밋된 요구사항 문서로 고정한다.
-
-   ```bash
-   cp docs/templates/spec.md docs/spec.md
-   ```
-
-   Claude에게 decision Issue와 합의한 지역 정책, 수락 기준을 `docs/spec.md`에 반영하게 한다. 파일의 UAT 기준은 `docs/uat/acceptance-matrix.md`와 일치해야 한다.
-
-   ```bash
-   git add docs/spec.md
-   git commit -m "docs: record feature gate requirements"
-   ```
-
-7. Claude에게 Handoff Contract 형식의 브리프를 `/tmp/handoff-lab1.md`에 작성하게 한다. Copilot repo skill을 호출하는 것이 아니라 `docs/reference/handoff-contract.md`의 공개 규약을 직접 따른다.
-
-   ```text
-   docs/reference/handoff-contract.md 형식으로 현재 discovery 결과를 다음 Claude/Claude Opus 5 아키텍처 세션에 넘기는 브리프를 /tmp/handoff-lab1.md에 작성하세요. artifacts에는 커밋된 docs/spec.md만 포함하고 verify에는 복사해 실행할 수 있는 명령만 쓰세요.
-   ```
-
-8. 브리프를 map issue에 게시하고 `## HANDOFF` 코멘트가 보이는지 확인한다.
-
-   ```bash
-   ./scripts/handoff.sh "$MAP_ISSUE" /tmp/handoff-lab1.md
-   gh issue view "$MAP_ISSUE" --comments
-   ```
-
-> 강사 유의
->
-> 설계 부채의 답을 먼저 공개하지 않는다. 30분이 지나도 진전이 없을 때만 `seed/README.md`의 `## 알려진 설계 부채` 섹션을 읽게 한다.
-
-## 끝난 뒤 상태
-
-실행 과제를 나타내는 map issue 1개 아래에 최소 3개의 열린 `wf:decision` 자식 이슈가 연결되어 있다. 요구사항과 수락 기준이 `docs/spec.md`에 커밋되어 있고, map issue 코멘트에는 다음 세션이 실행 가능한 검증 명령을 포함한 `## HANDOFF` 브리프가 1개 존재한다.
-
-## 흔한 실패
-
-- **증상:** map issue 번호 대신 설명 문장이 변수에 들어간다 → **원인:** 지정된 `./scripts/new-map.sh` 대신 다른 명령으로 이슈를 만들었다 → **조치:** 정확한 스크립트를 실행하고 숫자만 출력되는지 확인한다.
-- **증상:** decision issue는 있지만 map에서 자식으로 보이지 않는다 → **원인:** 레이블만 붙이고 `addSubIssue` mutation을 실행하지 않았다 → **조치:** 각 이슈의 node ID를 조회한 뒤 `addSubIssue`를 실행한다.
-- **증상:** Claude가 바로 코드를 수정한다 → **원인:** Plan mode 또는 Claude Architect Contract를 적용하지 않았다 → **조치:** 새 Claude 세션을 Plan mode로 열고 `docs/prompts/claude-architect.md`를 먼저 읽게 한다.
-- **증상:** `handoff.sh`가 브리프를 거부한다 → **원인:** 필수 필드가 빠졌거나 `artifacts`에 미커밋 경로가 있다 → **조치:** [하네스 간 인계 계약](../reference/handoff-contract.md)의 모든 필드를 채우고 경로의 Git 추적 상태를 확인한다.
+- 공유 용어가 `CONTEXT.md`에 있다.
+- 어려운 결정은 ADR에 있다.
+- spec 작성을 막는 질문이 없다.
+- 코드를 수정하지 않았다.

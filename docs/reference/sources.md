@@ -10,6 +10,9 @@
 | 클라우드/로컬 샌드박스 | https://docs.github.com/ko/copilot/how-tos/cloud-and-local-sandboxes |
 | 커뮤니티 정리 노트 | https://zheng-yi-yi.github.io/github-copilot-note/agents/third-party-agents.html |
 | Wayfinder 스킬 | https://github.com/mattpocock/skills |
+| Matt Pocock skills main flow | https://github.com/mattpocock/skills/blob/main/skills/engineering/ask-matt/SKILL.md |
+| skills.sh CLI | https://skills.sh/docs/cli |
+| GitHub Copilot agent skills | https://docs.github.com/en/copilot/how-tos/use-copilot-agents/copilot-coding-agent/customize-the-agent-environment/add-agent-skills |
 | GitHub Spec Kit | https://github.com/github/spec-kit |
 | OpenSpec | https://github.com/Fission-AI/OpenSpec |
 | Agent OS | https://github.com/buildermethods/agent-os |

@@ -26,9 +26,10 @@ jobs:
         run: ./scripts/check-repo.sh
       - name: shell behavior tests
         run: |
-          ./tests/scripts/test-handoff.sh
+          ./tests/scripts/test-matt-skills.sh
+          ./tests/scripts/test-lab-runtime-contract.sh
+          ./tests/scripts/test-runtime-matrix-docs.sh
           ./tests/scripts/test-usage.sh
-          ./tests/scripts/test-codex-cloud-docs.sh
       - name: participant bundle excludes instructor solution
         run: |
           bundle="${RUNNER_TEMP}/workshop-participant.tar.gz"
