@@ -4,7 +4,10 @@ node_modules/
 copilot-session-*.md
 docs/superpowers/
 .worktrees/
+.env
 
 .venv/
 __pycache__/
 .pytest_cache/
+app/web/dist/
+*.tsbuildinfo

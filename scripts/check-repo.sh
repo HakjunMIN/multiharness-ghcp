@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Repository asset integrity gate.
 #  1) every path in the manifest exists
-#  2) no forbidden strings (placeholders / customer identifiers)
+#  2) no forbidden strings, customer identifiers, or committed secrets
 #  3) relative markdown links resolve to real files
 #  4) shell scripts parse, are executable, and follow the house style
 
@@ -23,9 +23,13 @@ while IFS= read -r path || [ -n "$path" ]; do
   [ -e "$path" ] || err "manifest path missing: $path"
 done < "$MANIFEST"
 
+for legacy_path in seed agent-seed docs/instructor/reference-solution; do
+  [ ! -e "$legacy_path" ] || err "legacy workshop path must stay removed: $legacy_path"
+done
+
 # --- 2) forbidden strings ---
 targets=()
-for d in docs .github scripts seed agent-seed; do [ -d "$d" ] && targets+=("$d"); done
+for d in app docs .github scripts; do [ -d "$d" ] && targets+=("$d"); done
 for f in README.md AGENTS.md CLAUDE.md; do [ -f "$f" ] && targets+=("$f"); done
 
 if [ ${#targets[@]} -gt 0 ]; then
@@ -43,6 +47,17 @@ if [ ${#targets[@]} -gt 0 ]; then
         --exclude=check-repo.sh 2>/dev/null); then
     err "customer identifier found:"$'\n'"$hits"
   fi
+  if hits=$(grep -rInE '^[[:space:]]*APIM_KEY=.+$' \
+        . --exclude-dir=.git --exclude-dir=.worktrees --exclude-dir=node_modules \
+        --exclude-dir=.venv --exclude='.env' 2>/dev/null); then
+    err "nonempty APIM key found:"$'\n'"$hits"
+  fi
+  if hits=$(grep -rInE 'https://(pypi\.org|files\.pythonhosted\.org|api\.nuget\.org)' \
+        "${targets[@]}" \
+        --exclude-dir=superpowers --exclude-dir=node_modules \
+        --exclude-dir=.venv --exclude-dir=__pycache__ 2>/dev/null); then
+    err "public Python or NuGet package feed found:"$'\n'"$hits"
+  fi
 fi
 
 # --- 3) relative markdown links ---
@@ -58,7 +73,7 @@ while IFS= read -r md; do
   done < <(grep -oE '\]\([^)#][^)]*\)' "$md" 2>/dev/null | sed -E 's/^\]\(//; s/\)$//' || true)
 done < <(
   find . -name '*.md' \
-    -not -path './node_modules/*' \
+    -not -path '*/node_modules/*' \
     -not -path './docs/superpowers/*' \
     -not -path './.agents/skills/*' \
     -not -path './.github/skills/*' \
@@ -77,45 +92,30 @@ done < <(
   true
 )
 
-# --- 5) zero-dependency seed contract ---
-if [ -f seed/package.json ]; then
-  if ! node -e '
-    const p = require("./seed/package.json");
-    if (p.dependencies || p.devDependencies || p.optionalDependencies || p.peerDependencies) process.exit(1);
-    if (!p.engines || p.engines.node !== ">=22.18.0") process.exit(2);
-  '; then
-    err "seed/package.json must have no dependency keys and engines.node must equal >=22.18.0"
-  fi
-fi
+# --- 5) pinned greenfield runway dependencies ---
+[ -f app/api/uv.lock ] || err "app/api/uv.lock is required"
+[ -f app/web/package-lock.json ] || err "app/web/package-lock.json is required"
 
-# --- 6) pinned agent track dependencies ---
-if [ -f agent-seed/pyproject.toml ]; then
-  # git 체크아웃이 아닌 배포본(tarball)에서도 돌아야 하므로 존재 여부를 먼저 본다.
-  if [ ! -f agent-seed/uv.lock ]; then
-    err "agent-seed/uv.lock must be committed so the workshop resolves offline"
-  elif git rev-parse --is-inside-work-tree >/dev/null 2>&1 &&
-    ! git ls-files --error-unmatch agent-seed/uv.lock >/dev/null 2>&1; then
-    err "agent-seed/uv.lock must be committed so the workshop resolves offline"
-  fi
-  # 모든 agent-framework* 의존성은 == 로 정확히 고정되어야 한다.
-  # 워크샵 도중 상위 버전이 나와 API 가 흔들리면 실습이 멈춘다.
-  python3 - <<'PIN' || err "agent-seed dependencies must be pinned with == so the API cannot shift mid-workshop"
+python3 - <<'PIN' || err "app/api direct dependencies must use exact == pins"
 import re
 import sys
 
-text = open("agent-seed/pyproject.toml", encoding="utf-8").read()
-specs = re.findall(r'"(agent-framework[^"]*)"', text)
-if not specs:
-    sys.exit(1)
-sys.exit(0 if all(re.fullmatch(r"[A-Za-z0-9._-]+==[A-Za-z0-9._-]+", s) for s in specs) else 1)
+text = open("app/api/pyproject.toml", encoding="utf-8").read()
+blocks = re.findall(r"(?ms)^(?:dependencies|dev) = \[(.*?)^\]", text)
+specs = [spec for block in blocks for spec in re.findall(r'"([^"]+)"', block)]
+sys.exit(0 if specs and all(
+    re.fullmatch(r"[A-Za-z0-9._-]+==[A-Za-z0-9._-]+", spec) for spec in specs
+) else 1)
 PIN
-  # 테스트는 네트워크를 쓰지 않는다. 실제 엔드포인트를 부르는 코드가 들어오면 막는다.
-  # BSD grep 에는 -P 가 없으므로 두 단계로 거른다.
-  if hits=$(grep -rInE 'https?://[A-Za-z0-9]' agent-seed/src agent-seed/tests 2>/dev/null |
-              grep -vE 'https?://example\.invalid'); then
-    err "agent-seed must not reference live endpoints:"$'\n'"$hits"
-  fi
-fi
+
+node - <<'PIN' || err "app/web dependencies must use exact versions"
+const project = require('./app/web/package.json');
+for (const group of [project.dependencies, project.devDependencies]) {
+  for (const version of Object.values(group || {})) {
+    if (!/^\d+\.\d+\.\d+$/.test(version)) process.exit(1);
+  }
+}
+PIN
 
 # --- 7) optional Matt skill installation contract ---
 if [ -f scripts/check-matt-skills.mjs ]; then

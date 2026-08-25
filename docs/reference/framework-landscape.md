@@ -1,4 +1,4 @@
-# 프레임워크 지형과 Wayfinder-lite
+# 프레임워크 지형
 
 이 문서는 “이 워크숍의 Wayfinder-lite는 어디에서 왔고, 우리 팀은 다음에 무엇을 도입해야 하는가?”에 답한다.
 
@@ -33,16 +33,17 @@ npx skills@latest add mattpocock/skills
 
 원본과 설치 정보는 [참고 자료](sources.md)의 Wayfinder 항목에서 확인한다.
 
-## 이 워크숍의 Wayfinder-lite
+## 이 워크숍의 선택
 
-워크숍은 Wayfinder에서 다음 요소를 채택했다.
+2일 workshop은 Matt main flow에서 다음 요소를 채택했다.
 
 - 맵 이슈(map issue)
 - 결정 이슈(decision issue)
 - 프런티어(frontier)
 - 담당자 지정에 의한 선점(claim-by-assignee)
 
-반면 세밀한 결정 유형 레이블(`research|prototype|grilling`)과 장기 다중 세션 운영은 제외했다. 하루짜리 워크숍에는 운영 비용이 학습 효과보다 커 과도하기 때문이다.
+세밀한 결정 유형 레이블과 장기 map 운영은 제외한다. 대신 Day 1 `HANDOFF`와
+Day 2 cold-start로 durable state의 충분성을 직접 검증한다.
 
 ## 다음 도입의 구체적 출발점
 

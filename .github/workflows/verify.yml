@@ -19,36 +19,27 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-      - name: seed tests
-        run: npm test
-        working-directory: seed
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: astral-sh/setup-uv@v6
+      - name: API dependencies
+        run: uv sync --frozen
+        working-directory: app/api
+        env:
+          UV_DEFAULT_INDEX: https://packagefeedproxy.microsoft.io/pypi/simple
+      - name: API tests
+        run: uv run --frozen pytest -q
+        working-directory: app/api
+      - name: Web tests and build
+        run: npm ci && npm test && npm run build
+        working-directory: app/web
       - name: repo asset gate
         run: ./scripts/check-repo.sh
       - name: shell behavior tests
-        run: |
-          ./tests/scripts/test-matt-skills.sh
-          ./tests/scripts/test-lab-runtime-contract.sh
-          ./tests/scripts/test-lab-timebox.sh
-          ./tests/scripts/test-runtime-matrix-docs.sh
-          ./tests/scripts/test-usage.sh
-      - name: participant bundle excludes instructor solution
+        run: for test in tests/scripts/test-*.sh; do "$test"; done
+      - name: participant bundle boundary
         run: |
           bundle="${RUNNER_TEMP}/workshop-participant.tar.gz"
           ./scripts/build-participant-bundle.sh "$bundle" --confirm
-          ! tar -tzf "$bundle" | grep -q 'docs/instructor/reference-solution'
-      - name: reference checkpoint guards and acceptance
-        run: |
-          if WORKSHOP_CHECKPOINT_DIR=docs/instructor/reference-solution \
-            ./scripts/restore-lab3-checkpoint.sh; then
-            echo "restore unexpectedly succeeded without --confirm" >&2
-            exit 1
-          fi
-          touch checkpoint-dirty
-          if WORKSHOP_CHECKPOINT_DIR=docs/instructor/reference-solution \
-            ./scripts/restore-lab3-checkpoint.sh --confirm; then
-            echo "restore unexpectedly succeeded in dirty worktree" >&2
-            exit 1
-          fi
-          rm checkpoint-dirty
-          WORKSHOP_CHECKPOINT_DIR=docs/instructor/reference-solution \
-            ./scripts/restore-lab3-checkpoint.sh --confirm
+          ! tar -tzf "$bundle" | grep -Eq 'docs/instructor/checkpoint|(^|/)\.env$'

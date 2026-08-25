@@ -4,21 +4,33 @@
 
 ## 과제
 
-`seed/`와 `agent-seed/` 중 한 트랙에서 지역별 프라이버시 규제에 따라
-외부 추론 또는 웹검색을 제한하고 텔레메트리 옵트아웃을 지원합니다.
+제품 상담 에이전트를 그린필드로 만들고, 공개 웹 근거와 구조화된 출처로 답하며, 지역별 신뢰 도메인과 텔레메트리 옵트아웃을 강제합니다.
+
+## 고정 HTTP 경계
+
+```text
+POST /api/consult
+request: {"question":"...", ...}
+response: {"answer":"...", ...}
+```
+
+참가자는 이 경계를 확장할 수 있지만 시작 필드와 응답 필드를 바꾸지 않습니다. runway는 health와 개발 plumbing만 제공하며 상담 동작은 ticket에서 구현합니다.
+
+## 범위
+
+- `core`: Python, FastAPI, Microsoft Agent Framework, Foundry IQ retrieval, citations, region/telemetry policy
+- `full`: core 전체와 React 질문/응답/citation/오류 UI. full은 core의 strict superset입니다.
 
 ## 절대 규칙
 
-1. `seed/package.json`에 의존성을 추가하지 않습니다.
-2. 기존 테스트를 삭제하지 않습니다. `known gap` 테스트는 동작을 고칠 때
-   기대값을 뒤집고 이유를 커밋 메시지에 기록합니다.
-3. 결정은 GitHub Issue, `CONTEXT.md`, ADR에 남깁니다. 채팅만 믿지 않습니다.
-4. 검증자는 구현 코드를 고치지 않고 결함 Issue를 만듭니다.
-5. 고객사를 식별할 수 있는 이름과 `git push --force`를 금지합니다.
+1. 고객사를 식별할 수 있는 이름, origin credential, APIM key를 commit, Issue, 채팅, 로그에 남기지 않습니다.
+2. 실제 runtime 값은 gitignored `.env`에만 둡니다. 커밋 기본 브랜드는 `한빛전자`, 기본 도메인은 `example.invalid`입니다.
+3. 기본 unit/contract test는 네트워크를 사용하지 않습니다. live APIM test는 `live` marker로 분리합니다.
+4. 결정은 GitHub Issue, `CONTEXT.md`, ADR에 남깁니다. 채팅만 믿지 않습니다.
+5. 검증자는 production implementation을 고치지 않고 재현 근거와 defect Issue를 만듭니다.
+6. `git push --force`를 금지합니다.
 
 ## Main development flow
-
-Matt Pocock 스킬이 개발 워크플로입니다.
 
 1. `/grill-with-docs`
 2. `/to-spec`
@@ -30,33 +42,23 @@ Matt Pocock 스킬이 개발 워크플로입니다.
 
 | 역할 | Agent runtime | Model | 스킬 |
 | --- | --- | --- | --- |
-| 발견·아키텍처·기획 | GHCP 안의 Claude agent | Claude Opus 5 | `grill-with-docs`, `domain-modeling`, `codebase-design`, `to-spec`, `to-tickets` |
+| 발견, 아키텍처, 기획 | GHCP 안의 Claude agent | Claude Opus 5 | `grill-with-docs`, `domain-modeling`, `codebase-design`, `to-spec`, `to-tickets` |
 | 구현 | GHCP native | GPT-5.6 Sol | `implement`, `tdd` |
 | 독립 검증 | GHCP native 새 세션 | Claude Sonnet 5 | `code-review` + UAT |
 
-호스트, agent runtime, model은 서로 다른 축입니다.
+Host, agent runtime, model, skill, durable state는 서로 다른 축입니다.
 
-## Durable state
+## Durable state와 세션 경계
 
-- `CONTEXT.md`: 공유 용어
-- `docs/adr/`: 되돌리기 어려운 결정
-- `docs/agents/`: tracker와 domain 설정
-- GitHub Issues: spec, tracer-bullet ticket, blocking edge, 결함
-- Git commit: 구현 산출물
+`grill-with-docs`부터 `to-tickets`까지 한 설계 세션을 유지합니다. 구현은 ticket마다 새 세션, 검증은 구현 문맥이 없는 새 세션에서 시작합니다. Day 1 종료에는 `CONTEXT.md`, ADR, Issues, commits와 `HANDOFF`를 남기고 Day 2는 이것만으로 cold-start합니다.
 
 ## Verification commands
 
 ```bash
-(cd seed && npm test)
-(cd agent-seed && uv run --frozen pytest -q)
+(cd app/api && uv run --frozen pytest -q)
+(cd app/web && npm test && npm run build)
+for test in tests/scripts/test-*.sh; do "$test"; done
 ./scripts/check-repo.sh
 ```
 
-## Session boundaries
-
-`grill-with-docs`부터 `to-tickets`까지는 한 설계 세션을 유지합니다. 구현은
-티켓 하나마다 새 세션에서 하고, 검증은 구현 문맥을 상속하지 않는 새
-세션에서 시작합니다.
-
-`seed/src/router.ts`와 `agent-seed/`의 알려진 설계 부채는 참가자의
-교보재이므로 워크샵 전에 고치지 않습니다.
+Live smoke는 강사가 지정한 gate에서만 `(cd app/api && uv run --frozen pytest -m live -q)`로 실행합니다.

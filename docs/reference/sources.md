@@ -24,3 +24,7 @@
 | GitHub GraphQL mutation reference | https://docs.github.com/en/graphql/reference/mutations |
 | Superpowers | https://github.com/obra/superpowers |
 | BMAD-METHOD | https://github.com/bmad-code-org/BMAD-METHOD |
+| Azure AI Search agentic retrieval | https://learn.microsoft.com/azure/search/search-agentic-retrieval-concept |
+| Web Knowledge Source | https://learn.microsoft.com/azure/search/agentic-knowledge-source-how-to-web |
+| Knowledge base retrieve API | https://learn.microsoft.com/rest/api/searchservice/knowledge-bases/retrieve |
+| APIM AI gateway | https://learn.microsoft.com/azure/api-management/genai-gateway-capabilities |

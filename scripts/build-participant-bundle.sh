@@ -22,13 +22,14 @@ fi
 (
   cd "$ROOT"
   git archive --format=tar HEAD -- . \
-    ':(exclude)docs/instructor/reference-solution'
+    ':(exclude)docs/instructor/checkpoint' \
+    ':(exclude).env'
 ) | gzip > "$OUTPUT"
 
-if tar -tzf "$OUTPUT" | grep -q 'docs/instructor/reference-solution'; then
-  printf 'FAIL: participant bundle contains the instructor solution\n' >&2
+if tar -tzf "$OUTPUT" | grep -Eq 'docs/instructor/checkpoint|(^|/)\.env$'; then
+  printf 'FAIL: participant bundle contains instructor checkpoint or local secrets\n' >&2
   rm -f "$OUTPUT"
   exit 1
 fi
 
-printf 'OK: participant bundle created without instructor solution: %s\n' "$OUTPUT"
+printf 'OK: participant bundle created without instructor checkpoint or local secrets: %s\n' "$OUTPUT"

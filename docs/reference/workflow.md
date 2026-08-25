@@ -20,11 +20,15 @@ public test seam이 불명확하면 `codebase-design`, 여러 세션 규모의 �
 `/model Claude Sonnet 5`를 선택합니다. spec과 acceptance matrix를 먼저
 읽고 `/code-review main`을 수행한 뒤 독립 UAT를 실행합니다.
 
-## Phase boundaries
+## Session boundaries
 
 설계 중에는 문맥을 유지하고, `to-tickets` 뒤에는 티켓이 다음 세션의
-입력이 됩니다. 다른 하네스·디렉터리·협업자로 이동할 때만 `handoff`를
-사용합니다. 일반 단계 전환에 별도 인계 문서를 강제하지 않습니다.
+입력이 됩니다. Day 1 종료에는 `HANDOFF`에 첫 verify 명령을 남기고, Day 2는
+이전 채팅 없이 commit된 durable state로 시작합니다. 구현은 ticket마다 새
+세션, 검증은 구현 문맥과 분리된 새 세션을 사용합니다.
+
+core는 Python API vertical slice이고 full은 core에 React UI를 더한 strict
+superset입니다. 둘 다 같은 `POST /api/consult` contract를 사용합니다.
 
 ## 설치와 업데이트
 

@@ -1,20 +1,28 @@
 # 최소 경로와 복구 checkpoint
 
-시간이 밀릴 때 반드시 남겨야 하는 산출물입니다.
+## Day 1
 
-- Lab 0: required skills, `skills-lock.json`, `docs/agents/*`
-- Lab 1: `CONTEXT.md`와 필요한 ADR
-- Lab 2: spec Issue와 시작 가능한 `ready-for-agent` ticket
-- Lab 3: 한 ticket의 red-green, review, commit
-- Lab 4: Sonnet review와 선택 트랙 UAT report
-- Lab 6: spec·tickets·report가 연결된 PR
+- runway health, API test, web test/build
+- `CONTEXT.md`와 필요한 ADR
+- spec Issue와 ready tracer-bullet ticket
+- API -> Foundry IQ -> structured citations commit
+- 다음 세션의 첫 verify를 포함한 `HANDOFF`
 
-## 복구 방법
+## Day 2
 
-- 설계 세션을 일찍 지웠다면 committed domain docs와 Issues에서 새
-  Claude/Opus 세션을 시작합니다.
-- 구현이 밀리면 ticket 수를 줄이고 한 ticket만 끝까지 완결합니다.
-- 검증이 밀리면 결함을 고치지 말고 재현 가능한 Issue 기록까지만 합니다.
+- inherited chat 없이 cold restore
+- region, telemetry, no-evidence 중 policy improvement 하나
+- 독립 review, UAT report, 필요한 defect Issue/test
+- spec, tickets, ADR, commits, UAT를 연결한 PR
 
-어떤 모델도 대체하지 않습니다. 필수 조합이 열리지 않으면 Lab 0에서
-멈추고 entitlement 문제로 처리합니다.
+## 복구
+
+설계 대화를 잃으면 commit된 domain docs와 Issues에서 Claude/Opus 세션을 시작합니다. Day 2 cold-start가 20분 안에 안 되면 checkpoint를 사용하고 어떤 durable artifact가 부족했는지 기록합니다. 검증이 밀리면 결함을 고치지 말고 재현 가능한 Issue까지 완료합니다.
+
+checkpoint는 participant bundle에 넣지 않습니다. 강사는 필요할 때만 별도 recovery archive를 만듭니다.
+
+```bash
+tar -C docs/instructor/checkpoint -czf workshop-checkpoint.tar.gz app
+```
+
+archive는 workshop의 보안 전달 채널로 해당 참가자에게만 제공합니다. 참가자는 workspace 밖에 풀고 [Lab 4](../labs/lab4-cold-start.md)의 `WORKSHOP_CHECKPOINT_DIR`로 그 경로를 지정합니다.

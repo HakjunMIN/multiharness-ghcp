@@ -31,10 +31,10 @@ Matt의 `/handoff`는 새 하네스, 새 디렉터리, 협업자에게 이동할
 
 | 필드 | 나쁜 예 | 좋은 예 |
 |---|---|---|
-| `artifacts` | `artifacts: 아까 만든 라우터` | `artifacts: seed/src/policy.ts, seed/tests/policy.test.ts` |
+| `artifacts` | `artifacts: 아까 만든 API` | `artifacts: app/api/src/consult/main.py, app/api/tests/test_consult.py` |
 | `done` | `done: 거의 다 함` | `done: 정책 평가 함수와 경계값 테스트 구현` |
-| `verify` | `verify: 테스트해 보기` | `verify: npm test -- seed/tests/policy.test.ts` |
-| `risks` | `risks: 없음` | `risks: Node.js 20 미만에서는 테스트 러너가 시작되지 않음` |
+| `verify` | `verify: 테스트해 보기` | `verify: cd app/api && uv run --frozen pytest -q` |
+| `risks` | `risks: 없음` | `risks: live smoke는 개인 APIM key가 있어야 실행 가능` |
 
 나쁜 예는 채팅 문맥과 기억에 의존한다. 좋은 예는 새 세션의 수신자가 파일, 커밋, 명령만으로 상태를 재구성할 수 있다.
 

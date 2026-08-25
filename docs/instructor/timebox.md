@@ -1,35 +1,37 @@
 # 진행 시간표
 
-총 5시간 30분(점심 60분 포함)입니다. 스킬이 절차를 대신하므로 참가자가
-직접 실행하는 셸 명령은 최소로 유지합니다.
+각 날짜는 점심 60분을 포함해 정확히 330분입니다.
 
-| 모듈 | 시간 | 누적 | 잘라낼 수 있는가 |
-| --- | ---: | ---: | --- |
-| Lab 0 harness bootstrap | 30분 | 0:30 | 아니오 |
-| Lab 1 discovery/architecture | 45분 | 1:15 | 아니오 |
-| Lab 2 spec/tickets | 30분 | 1:45 | 20분으로 축소 가능 |
-| 점심 | 60분 | 2:45 | — |
-| Lab 3 implementation | 75분 | 4:00 | 아니오 |
-| Lab 4 independent verification | 50분 | 4:50 | 아니오 |
-| Lab 5 runtime comparison | 15분 | 5:05 | 예 — 첫 번째 절삭 대상 |
-| Lab 6 integration/retrospective | 25분 | 5:30 | 15분으로 축소 가능 |
+| 일차 | 모듈 | 시간 | 누적 |
+| --- | --- | ---: | ---: |
+| 1 | Lab 0 runway preflight | 30분 | 0:30 |
+| 1 | Lab 1 discovery | 60분 | 1:30 |
+| 1 | Lab 2 spec/tickets | 45분 | 2:15 |
+| 1 | 점심 | 60분 | 3:15 |
+| 1 | Lab 3 tracer bullet | 90분 | 4:45 |
+| 1 | HANDOFF 작성 | 15분 | 5:00 |
+| 1 | 여유 | 30분 | 5:30 |
+| 1일차 합계 | 330분 |
+| 2 | Lab 4 cold-start | 30분 | 0:30 |
+| 2 | Lab 5 improvement | 75분 | 1:45 |
+| 2 | 점심 | 60분 | 2:45 |
+| 2 | Lab 6 independent verification | 60분 | 3:45 |
+| 2 | Lab 7 runtime comparison | 30분 | 4:15 |
+| 2 | Lab 8 integration | 45분 | 5:00 |
+| 2 | 여유 | 30분 | 5:30 |
+| 2일차 합계 | 330분 |
 
 ## 절삭 우선순위
 
-**Lab 5 → Lab 6 축소 → Lab 2 축소.**
+**Lab 7 생략 -> Lab 8 발표/회고 축소 -> Lab 5의 full UI 확장 축소.**
 
-Lab 3과 Lab 4는 자르지 않습니다. 시간이 부족하면 ticket 수를 줄이되
-구현 세션과 검증 세션의 새 세션 경계는 반드시 보존합니다.
+Lab 3 vertical slice, Lab 4 cold-start, Lab 6 independent verification은 자르지 않습니다. ticket 수를 줄여도 세 세션 경계와 evidence는 보존합니다.
 
-## 시각별 개입 checkpoint
+## 개입 checkpoint
 
-- **0:30** 필수 Matt 스킬이 `/skills`에 없거나 checker가 실패하면 설치 scope와
-  entitlement를 강사가 직접 분리해 개입합니다.
-- **1:15** `CONTEXT.md`와 ADR이 없으면 질문 범위를 Lab 1의 네 질문으로 줄입니다.
-- **1:45** 시작 가능한 `ready-for-agent` ticket이 없으면 blocking edge를 정리하고
-  ticket을 사용자 관점 동작으로 다시 자릅니다.
-- **4:00** 닫힌 ticket이 하나도 없으면 범위를 한 ticket으로 고정합니다.
-- **4:50** UAT 판정이 끝나지 않았으면 결함 수정을 멈추고 Issue 기록만 마칩니다.
-- **5:30** PR과 팀 채택 규칙이 없으면 발표를 줄이고 기록을 먼저 끝냅니다.
-
-코어 랩의 복구 기준은 `docs/instructor/minimum-path.md`를 따릅니다.
+- Day 1 0:30: health/test/build 또는 필수 runtime이 없으면 진행하지 않는다.
+- Day 1 1:30: `CONTEXT.md`와 ADR이 없으면 질문을 HTTP/policy/test 경계로 줄인다.
+- Day 1 2:15: ready tracer ticket이 없으면 horizontal decomposition을 되돌린다.
+- Day 1 4:45: vertical commit이 없으면 범위를 질문 하나로 고정한다.
+- Day 2 0:20: durable state로 복구하지 못하면 checkpoint를 사용하고 누락 artifact를 기록한다.
+- Day 2 3:45: UAT가 끝나지 않으면 수정 대신 defect Issue까지 완료한다.

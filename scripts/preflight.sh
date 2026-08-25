@@ -40,29 +40,31 @@ else
   bad "Node.js 없음" "https://nodejs.org 에서 22.18 이상을 설치하세요."
 fi
 
-# --- seed tests ---
-if [ -f seed/package.json ]; then
-  if (cd seed && npm test >/dev/null 2>&1); then
-    ok "시드 테스트 통과 (seed/)"
+# --- web runway ---
+if [ -f app/web/package.json ]; then
+  if (cd app/web && npm test >/dev/null 2>&1 && npm run build >/dev/null 2>&1); then
+    ok "web test/build 통과"
   else
-    bad "시드 테스트 실패" "실행해서 원인을 확인하세요: cd seed && npm test"
+    bad "web test/build 실패" "실행해서 원인을 확인하세요: cd app/web && npm test && npm run build"
   fi
 else
-  bad "seed/package.json 없음" "리포 루트에서 실행하세요."
+  bad "app/web/package.json 없음" "리포 루트에서 실행하세요."
 fi
 
-# --- agent track (optional) ---
-if [ -f agent-seed/pyproject.toml ]; then
+# --- API runway ---
+if [ -f app/api/pyproject.toml ]; then
   if command -v uv >/dev/null 2>&1; then
     ok "uv $(uv --version | awk '{print $2}')"
-    if (cd agent-seed && uv run --frozen pytest -q >/dev/null 2>&1); then
-      ok "에이전트 트랙 테스트 통과 (agent-seed/)"
+    if (cd app/api && uv run --frozen pytest -q >/dev/null 2>&1); then
+      ok "API 기본 테스트 통과"
     else
-      bad "에이전트 트랙 테스트 실패" "먼저 의존성을 받으세요: cd agent-seed && uv sync"
+      bad "API 기본 테스트 실패" "먼저 의존성을 받으세요: cd app/api && uv sync --frozen"
     fi
   else
-    bad "uv 없음" "에이전트 트랙에 필요합니다. 설치: curl -LsSf https://astral.sh/uv/install.sh | sh"
+    bad "uv 없음" "API runway에 필요합니다. 설치: https://docs.astral.sh/uv/"
   fi
+else
+  bad "app/api/pyproject.toml 없음" "리포 루트에서 실행하세요."
 fi
 
 # --- git ---
