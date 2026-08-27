@@ -66,3 +66,13 @@ LIVE_SMOKE_QUESTION="허용 도메인에서 답할 수 있는 질문"
 ## 종료와 폐기
 
 워크숍 종료 후 participant subscriptions를 revoke하고 key를 rotate한다. 임시 APIM policy, Search knowledge base, model deployment의 보존 여부를 기록한 뒤 불필요한 리소스를 삭제한다.
+
+key가 노출되면 즉시 회전한다. 회전은 해당 참가자에게만 영향을 준다.
+
+```bash
+APIM=".../providers/Microsoft.ApiManagement/service/<apim-name>"
+az rest --method post --url "$APIM/subscriptions/<participant-id>/regeneratePrimaryKey?api-version=2022-08-01"
+az rest --method post --url "$APIM/subscriptions/<participant-id>/listSecrets?api-version=2022-08-01" --query primaryKey -o tsv
+```
+
+APIM에 logger나 diagnostic setting을 붙이면 요청 header가 기록될 수 있다. key를 로그에 남기지 않으려면 워크숍 기간에는 진단을 끄거나, 켤 경우 `Ocp-Apim-Subscription-Key`를 header masking 대상으로 지정한다.
