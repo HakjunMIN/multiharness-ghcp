@@ -3,16 +3,17 @@
 세 축은 독립적입니다.
 
 - **Host:** 대화와 도구를 제공하는 VS Code (Chat view 또는 Agents 창)
-- **Agent runtime(harness):** Session Target 컨트롤에서 고르는 Copilot(native) 또는 third-party Claude
+- **Agent runtime(harness):** Session Target 컨트롤에서 고르는 Copilot, Claude, Codex
 - **Model:** 해당 세션이 사용하는 추론 모델
 - **Skill:** 선택한 runtime이 수행할 절차와 quality gate
-- **Durable state:** 세션 밖의 docs, Issues, commits, tests
+- **Durable state:** 세션 밖의 local work items, docs, commits, tests
 
 | 역할 | Host | Agent runtime | Model | Matt skill |
 | --- | --- | --- | --- | --- |
-| 발견·아키텍처·기획 | VS Code | Claude harness | Claude Opus 5 | `grill-with-docs`, `to-spec`, `to-tickets` |
-| 구현 | VS Code | Copilot(native) harness | GPT-5.6 Sol | `implement`, `tdd` |
-| 독립 검증 | VS Code | Copilot(native) harness, fresh session | Claude Sonnet 5 | `code-review` |
+| 발견 | VS Code | Copilot harness | GPT-5.6 Sol | `grill-with-docs`, `grilling`, `domain-modeling`, `research` |
+| 아키텍처·기획 | VS Code | Claude harness (handoff) | Claude Opus 4.8 | `codebase-design`, `to-spec`, `to-tickets` |
+| 구현 | VS Code | Copilot harness, fresh session | GPT-5.6 Sol | `implement`, `tdd` |
+| 독립 검증 | VS Code | Codex harness, fresh session | GPT-5.6 Terra | `code-review` |
 
 ## 세션에서 harness와 model을 고르는 방법
 
@@ -23,11 +24,13 @@ VS Code Chat view 또는 Agents 창에서 **New Chat**으로 새 세션을 열�
 chat 입력창의 **language model picker**(드롭다운)에서 고릅니다. 이름이
 비슷해도 harness와 model은 같은 개념이 아니라 서로 다른 컨트롤입니다.
 
-기존 세션에서 harness를 바꾸면 VS Code는 이를 **handoff**로 취급해 대화
-history와 context를 새 harness로 그대로 옮깁니다. 자세한 개념은
+기존 세션에서 harness를 바꾸면 VS Code는 이를 **handoff**로 취급해 full
+conversation history와 누적 context를 새 harness로 옮깁니다. 독립 검증은
+이 문맥을 받지 않도록 New Chat에서 시작합니다. 자세한 개념은
 [Sessions and handoff](https://code.visualstudio.com/docs/agents/concepts/sessions)
 문서를 참고합니다.
 
-필수 조합이 Session Target/model picker에 없으면 다른 모델로 대체하지
-않고 강사에게 알립니다. Day 2 cold-start는 model memory가 아니라 durable
-state의 품질을 평가합니다.
+필수 조합이 Session Target/model picker에 없으면 다른 모델로 대체하지 않고
+강사에게 알립니다. Codex + GPT-5.6 Terra는 Cloud가 아니라 local Codex의
+Copilot-backed provider를 사용합니다. Day 2 cold-start는 model memory가
+아니라 durable state의 품질을 평가합니다.

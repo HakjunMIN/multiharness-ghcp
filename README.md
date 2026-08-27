@@ -11,10 +11,12 @@ full은 별도 출발점이 아니라 core의 strict superset입니다.
 
 ## 시작
 
-강사 리포를 자신의 GitHub 계정으로 fork한 뒤 fork를 clone한다(참가자는 강사 리포에 write 권한이 없고, `to-tickets`/검증 단계가 실제 Issue와 PR을 발행하기 때문).
+강사가 제공한 리포를 clone합니다. 최종 PR이 필요한 과정에서는 자신의 fork를
+사용하지만 spec, ticket, defect는 모두 저장소의 local work item으로 관리하므로
+remote tracker 권한과 연결은 요구하지 않습니다.
 
 ```bash
-gh repo fork <instructor-org>/<repo> --clone --remote
+git clone <instructor-repo-url>
 cd <repo>
 ./scripts/preflight.sh
 cp .env.example .env
@@ -26,16 +28,53 @@ cp .env.example .env
 ## Main flow
 
 ```text
-/grill-with-docs -> /to-spec -> /to-tickets -> /implement -> /code-review main
+Copilot /grill-with-docs
+  -- handoff --> Claude /to-spec -> /to-tickets
+  -- fresh --> Copilot /implement <local-ticket-path>
+  -- fresh --> Codex /code-review main
 ```
 
 | 역할 | Agent runtime | Model |
 | --- | --- | --- |
-| 발견, 아키텍처, 기획 | GHCP Claude agent | Claude Opus 5 |
-| 구현 | GHCP native | GPT-5.6 Sol |
-| 독립 검증 | GHCP native 새 세션 | Claude Sonnet 5 |
+| 발견 | Copilot | GPT-5.6 Sol |
+| 아키텍처, 기획 | Claude | Claude Opus 4.8 |
+| 구현 | Copilot fresh session | GPT-5.6 Sol |
+| 독립 검증 | Codex fresh session | GPT-5.6 Terra |
 
 자세한 흐름은 [개발 워크플로](docs/reference/workflow.md), 조합의 의미는 [모델 하네스 매트릭스](docs/reference/model-harness-matrix.md)를 봅니다.
+
+## VS Code와 harness 사전 설정
+
+VS Code **1.128.0 이상**의 trusted workspace를 사용합니다. Chat view 또는
+Agents 창에서 **Session Target**으로 harness를 고르고, 입력창의 **language
+model picker**에서 model을 별도로 고릅니다. 공식 절차는
+[Agent harnesses](https://code.visualstudio.com/docs/agents/run/agent-harnesses)를
+따릅니다.
+
+- Claude는 기본 활성화되며 `github.copilot.chat.claudeAgent.enabled`로
+  제어합니다. GitHub Copilot provider 또는 Anthropic 인증 경로를 수업 전에
+  설정하고 billing provider를 확인합니다.
+- Codex는 OpenAI Codex extension을 설치하거나
+  `chat.agentHost.codexAgent.enabled`를 활성화합니다. GPT-5.6 Terra는 local
+  Codex의 Copilot-backed provider에서 확인하며 GitHub 로그인과
+  **Copilot Pro+**가 필요합니다.
+- **Cloud Codex**는 이 검증 경로가 아닙니다. Session Target과 provider 아래에
+  exact model이 없으면 Auto나 다른 모델로 대체하지 말고 사전 점검을 중단합니다.
+
+Matt Pocock 스킬은 이 리포의 `.agents/skills/`에 미리 설치되어 있습니다.
+설치 계약은 `./scripts/check-repo.sh`로 확인합니다. 복원이 필요할 때만 잠금
+파일에서 `npx skills experimental_install`을 실행하고, 선택 설치를 다시
+만들어야 하면 다음 10개만 지정합니다.
+
+```bash
+DISABLE_TELEMETRY=1 npx skills@latest add mattpocock/skills \
+  --agent github-copilot --copy -y \
+  --skill grill-with-docs grilling domain-modeling research codebase-design \
+  to-spec to-tickets implement tdd code-review
+```
+
+spec, ticket, defect 규약은 [local work item tracker](docs/agents/issue-tracker.md)를
+따릅니다.
 
 ## Labs
 

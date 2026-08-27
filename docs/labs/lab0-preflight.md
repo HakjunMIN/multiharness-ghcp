@@ -8,19 +8,23 @@
 
 ## 시작 전 상태
 
-Node 22.18 이상, Python 3.11 이상, `uv`, GitHub CLI가 설치되어 있고 worktree가 깨끗해야 한다.
+VS Code 1.128.0 이상, Node 22.18 이상, Python 3.11 이상, `uv`, GitHub
+CLI가 설치되어 있고 trusted workspace의 worktree가 깨끗해야 합니다.
 
 ## 저장소 준비
 
-이 랩은 `to-tickets`에서 실제 GitHub Issue를, 검증 단계에서 실제 PR을 발행한다. 강사 리포를 직접 clone하면 push 권한이 없거나, 참가자 전원이 같은 Issue/브랜치 번호를 공유하게 된다. **강사 리포를 자신의 GitHub 계정으로 fork한 뒤 fork를 clone한다.**
+강사가 제공한 리포를 clone합니다. spec, ticket, defect는 저장소 문서이므로
+별도 tracker 권한이 필요하지 않습니다. 최종 PR이 필요한 과정에서만 자신의
+fork를 origin으로 사용합니다.
 
 ```bash
-gh repo fork <instructor-org>/<repo> --clone --remote
+git clone <instructor-repo-url>
 cd <repo>
-git remote -v   # origin=내 fork, upstream=강사 리포 확인
+git remote -v
 ```
 
-이후 모든 `gh issue create`, `git push`, PR은 자신의 fork(origin) 기준으로 수행한다. 강사 리포 변경 사항을 받아야 하면 `git fetch upstream && git merge upstream/main`을 쓴다.
+최종 PR을 만들 참가자는 자신의 fork를 origin으로 설정합니다. 강사 리포 변경
+사항을 받아야 하면 upstream을 추가하고 merge합니다.
 
 ## 실행
 
@@ -40,21 +44,40 @@ curl http://127.0.0.1:8000/healthz
 git check-ignore .env
 ```
 
-Matt 스킬을 project scope에 설치하고 `/skills`로 노출을 확인한다.
+합의된 Matt 스킬 10개는 project scope의 `.agents/skills/`에 미리 설치되어
+있습니다. 잠금 파일과 설치 상태를 확인합니다.
 
 ```text
-!DISABLE_TELEMETRY=1 npx skills@latest add mattpocock/skills --agent github-copilot --copy
-!DISABLE_TELEMETRY=1 npx skills update
+./scripts/check-repo.sh
 /skills
-/setup-matt-pocock-skills
 ```
 
-VS Code Chat view(또는 Agents 창)에서 새 세션을 하나씩 열어 다음 세 조합이 Session Target/model picker에 있는지 확인한다: Claude harness + Claude Opus 5, Copilot(native) harness + GPT-5.6 Sol, Copilot(native) harness + Claude Sonnet 5. `/agent`, `/model`처럼 harness나 model을 지정하는 슬래시 명령은 없다 — [harness와 model 선택 방법](../reference/model-harness-matrix.md)을 참고한다.
+Claude는 `github.copilot.chat.claudeAgent.enabled`가 활성화됐는지 확인하고
+Copilot 또는 Anthropic 인증 경로를 설정합니다. Codex는 OpenAI Codex
+extension을 설치하거나 `chat.agentHost.codexAgent.enabled`를 활성화합니다.
+Terra 검증에는 GitHub 로그인과 Copilot Pro+가 필요합니다.
+
+VS Code Chat view(또는 Agents 창)에서 다음 네 조합을 확인합니다.
+
+- Copilot + GPT-5.6 Sol: 발견
+- Claude + Claude Opus 4.8: 아키텍처·기획
+- Copilot + GPT-5.6 Sol: 구현
+- local Codex의 Copilot-backed provider + GPT-5.6 Terra: 독립 검증
+
+Cloud Codex, Auto, 다른 model로 대체하지 않습니다. strict preflight를 실행할
+때는 확인 결과를 다음처럼 전달합니다.
+
+```bash
+WORKSHOP_GPT56_SOL_CONFIRMED=1 \
+WORKSHOP_CLAUDE_OPUS48_CONFIRMED=1 \
+WORKSHOP_CODEX_TERRA_CONFIRMED=1 \
+  ./scripts/preflight.sh --strict
+```
 
 ## 종료 조건
 
-- 자신의 fork를 clone했고 `origin`이 자신의 fork를 가리킨다.
-- 필수 스킬과 세 모델을 열 수 있다.
+- 리포를 clone했고 최종 PR이 필요하면 자신의 fork를 origin으로 설정했다.
+- 필수 스킬과 네 역할의 exact harness/model 조합을 열 수 있다.
 - 두 서버가 시작되고 health가 설정된 브랜드를 반환한다.
 - API 기본 테스트와 web test/build가 통과한다.
 - `.env`가 무시되며 APIM key가 채팅이나 commit에 없다.
@@ -64,4 +87,4 @@ VS Code Chat view(또는 Agents 창)에서 새 세션을 하나씩 열어 다음
 - 모델이나 skill이 없으면 임의 대체하지 말고 강사에게 알린다.
 - health만 실패하면 APIM보다 먼저 8000 포트와 Python 환경을 확인한다.
 - `.env`가 추적되면 값을 지우고 강사에게 key rotation을 요청한다.
-- `git remote -v`에 `origin`이 강사 리포를 가리키면 fork를 잊은 것이다. 강사 리포는 참가자에게 write 권한이 없으므로 이후 Issue/PR 발행이 막힌다.
+- 최종 PR 단계에서 push 권한이 없으면 자신의 fork를 origin으로 설정한다.

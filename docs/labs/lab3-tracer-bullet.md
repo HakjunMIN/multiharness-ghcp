@@ -10,20 +10,25 @@
 
 ```text
 Host: VS Code
-Agent runtime: Copilot(native) harness (New Chat → Session Target: Copilot)
+Agent runtime: Copilot harness (New Chat → Session Target: Copilot)
 Model: GPT-5.6 Sol (chat 입력창의 language model picker)
 Context: ticket마다 fresh session
 ```
 
 ## 구현
 
-New Chat으로 세션을 열고 Session Target을 Copilot(native)으로, model picker에서 GPT-5.6 Sol을 선택한 뒤 채팅에 다음을 입력한다.
+New Chat으로 fresh session을 열고 Session Target을 Copilot로, model picker에서
+GPT-5.6 Sol을 선택한 뒤 채팅에 다음을 입력합니다.
 
 ```text
-/implement #42
+/implement docs/work/<feature>/tickets/01-<ticket>.md
 ```
 
-`#42`를 실제 tracer-bullet ticket 번호로 바꾼다. 첫 failing test는 recorded Foundry IQ response를 사용해 `POST /api/consult`의 answer와 structured citations를 검증해야 한다. production code는 APIM adapter 경계를 통해 모델과 `knowledgebases/{name}/retrieve`를 호출한다. key를 log, exception, fixture에 남기지 않는다.
+경로를 frontier의 실제 local ticket으로 바꿉니다. 첫 failing test는 recorded
+Foundry IQ response를 사용해 `POST /api/consult`의 answer와 structured
+citations를 검증해야 합니다. production code는 APIM adapter 경계를 통해
+모델과 `knowledgebases/{name}/retrieve`를 호출합니다. key를 log, exception,
+fixture에 남기지 않습니다.
 
 core 범위는 backend vertical slice까지다. full도 먼저 같은 core slice를 끝내며 이 lab에서 React를 요구하지 않는다.
 

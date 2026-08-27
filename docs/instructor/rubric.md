@@ -8,5 +8,5 @@
 | red-green 구현 | focused RED/GREEN, 전체 suite, commit |
 | 실제 APIM smoke | 개인 key로 실행한 redacted live evidence |
 | durable cold-start | `HANDOFF` verify와 새 세션 복구 기록 |
-| 독립 검증 | Sonnet 5 review, UAT report, defect evidence |
+| 독립 검증 | Codex + GPT-5.6 Terra review, UAT report, local defect evidence |
 | runtime 이해 | host, agent runtime, model, skill, durable state 구분 |

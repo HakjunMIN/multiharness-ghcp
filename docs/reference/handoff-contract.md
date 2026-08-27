@@ -1,10 +1,14 @@
 # 하네스 간 인계 계약
 
-하네스를 바꾸면 대화가 아니라 저장소가 작업의 기준점이 된다. 다음 형식을 GitHub Issue나 인계 문서에 그대로 사용한다.
+VS Code에서 Session Target을 바꾸는 handoff는 **full conversation history**와
+누적 context를 새 harness로 전달합니다. 저장소의 durable artifact는 handoff가
+아닌 fresh session과 cold-start의 기준점입니다. 다음 형식을 인계 문서에
+사용합니다.
 
-Matt의 `/handoff`는 새 하네스, 새 디렉터리, 협업자에게 이동할 때만
-사용한다. 일반 skill 단계 전환에는 spec, tickets, `CONTEXT.md`, ADR이면
-충분하다. 인계 문서를 만들 때는 아래 7개 필드를 자체 점검한다.
+발견에서 아키텍처·기획으로 갈 때는 VS Code handoff를 사용합니다. 구현은
+ticket마다 fresh Copilot 세션, 독립 검증은 **fresh Codex** 세션을 사용합니다.
+일반 단계 전환에는 spec, tickets, `CONTEXT.md`, ADR이면 충분합니다. 인계
+문서를 만들 때는 아래 7개 필드를 자체 점검합니다.
 
 ```markdown
 ## HANDOFF
@@ -12,7 +16,7 @@ Matt의 `/handoff`는 새 하네스, 새 디렉터리, 협업자에게 이동할
 - artifacts: <커밋된 레포 경로 목록. 채팅 인용 금지>
 - done: <완료된 것>
 - not done: <남은 것>
-- decisions: <결정 이슈 링크>
+- decisions: <local spec/ADR 경로>
 - verify: <복붙 실행 가능한 명령>
 - risks: <다음 사람이 밟을 지뢰>
 ```
@@ -20,10 +24,10 @@ Matt의 `/handoff`는 새 하네스, 새 디렉터리, 협업자에게 이동할
 ## 필드가 존재하는 이유
 
 - `from/to`: 송신자와 수신자의 하네스·모델 축이 실제로 달라졌는지 확인한다.
-- `artifacts`: 하네스가 바뀐 뒤에는 채팅 기록을 신뢰할 수 없으며, 세션을 넘어 전달되는 것은 커밋된 파일뿐이다.
+- `artifacts`: fresh session과 cold-start가 채팅 없이 상태를 재구성하는 입력이다.
 - `done`: 수신자가 이미 끝난 작업을 반복하지 않게 한다.
 - `not done`: 남은 범위를 명시해 “거의 완료” 같은 모호한 상태를 없앤다.
-- `decisions`: 구현의 근거와 열린 질문을 추적 가능한 Issue에 연결한다.
+- `decisions`: 구현의 근거와 열린 질문을 추적 가능한 local work item에 연결한다.
 - `verify`: 수신자가 첫 5분 안에 현재 상태가 정상인지 확인할 수 있게 한다.
 - `risks`: 무엇이 이미 실패했는지는 송신자만 알고 있으므로, 같은 실패를 반복하지 않게 한다.
 

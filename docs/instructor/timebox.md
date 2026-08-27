@@ -34,4 +34,4 @@ Lab 3 vertical slice, Lab 4 cold-start, Lab 6 independent verification은 자르
 - Day 1 2:15: ready tracer ticket이 없으면 horizontal decomposition을 되돌린다.
 - Day 1 4:45: vertical commit이 없으면 범위를 질문 하나로 고정한다.
 - Day 2 0:20: durable state로 복구하지 못하면 checkpoint를 사용하고 누락 artifact를 기록한다.
-- Day 2 3:45: UAT가 끝나지 않으면 수정 대신 defect Issue까지 완료한다.
+- Day 2 3:45: UAT가 끝나지 않으면 수정 대신 local defect 문서까지 완료한다.

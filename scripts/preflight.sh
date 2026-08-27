@@ -82,29 +82,14 @@ if command -v gh >/dev/null 2>&1; then
   else
     bad "gh 미인증" "실행: gh auth login"
   fi
-  if gh repo view --json nameWithOwner,viewerPermission,hasIssuesEnabled >/dev/null 2>&1; then
+  if gh repo view --json nameWithOwner >/dev/null 2>&1; then
     repo="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
     ok "GitHub 리포 컨텍스트 ($repo)"
-    permission="$(gh repo view --json viewerPermission --jq .viewerPermission)"
-    issues_enabled="$(gh repo view --json hasIssuesEnabled --jq .hasIssuesEnabled)"
-    case "$permission" in
-      TRIAGE|WRITE|MAINTAIN|ADMIN) issue_role=1 ;;
-      *) issue_role=0 ;;
-    esac
-    if [ "$issues_enabled" != "true" ]; then
-      bad "GitHub Issues 비활성화" "리포 설정에서 Issues를 활성화하세요."
-    elif [ "$issue_role" -eq 1 ]; then
-      ok "GitHub Issues 관리 권한 ($permission)"
-    elif [ "$strict" -eq 1 ]; then
-      bad "GitHub Issues 관리 권한 없음 ($permission)" "관리자에게 Triage 이상의 리포 역할을 요청하세요."
-    else
-      warn_ "GitHub Issues 관리 권한 미확인 ($permission)" "strict 점검: ./scripts/preflight.sh --strict"
-    fi
   else
     if [ "$strict" -eq 1 ]; then
       bad "GitHub 리포 컨텍스트 없음" "강사가 제공한 실습 리포를 clone하거나 올바른 origin을 연결하세요."
     else
-      warn_ "GitHub 리포 컨텍스트 없음" "이슈 실습 전에 강사가 제공한 실습 리포를 clone하세요."
+      warn_ "GitHub 리포 컨텍스트 없음" "강사가 제공한 실습 리포를 clone하세요."
     fi
   fi
 else
@@ -126,22 +111,22 @@ else
 fi
 
 if [ "$strict" -eq 1 ]; then
-  if [ "${WORKSHOP_CLAUDE_AGENT_OPUS5_CONFIRMED:-0}" = "1" ]; then
-    ok "GHCP Claude agent + Claude Opus 5 확인"
+  if [ "${WORKSHOP_CLAUDE_OPUS48_CONFIRMED:-0}" = "1" ]; then
+    ok "Claude harness + Claude Opus 4.8 확인"
   else
-    bad "Claude agent + Claude Opus 5 미확인" "VS Code New Chat의 Session Target에서 Claude를, model picker에서 Claude Opus 5를 선택해 확인하세요."
+    bad "Claude harness + Claude Opus 4.8 미확인" "발견 세션을 Claude로 handoff하고 model picker에서 Claude Opus 4.8을 확인하세요."
   fi
 
   if [ "${WORKSHOP_GPT56_SOL_CONFIRMED:-0}" = "1" ]; then
-    ok "GHCP native + GPT-5.6 Sol 확인"
+    ok "Copilot harness + GPT-5.6 Sol 확인"
   else
-    bad "GHCP native + GPT-5.6 Sol 미확인" "새 세션의 Session Target을 Copilot(native)으로 두고 model picker에서 GPT-5.6 Sol을 확인하세요."
+    bad "Copilot harness + GPT-5.6 Sol 미확인" "Session Target을 Copilot로 두고 model picker에서 GPT-5.6 Sol을 확인하세요."
   fi
 
-  if [ "${WORKSHOP_SONNET5_CONFIRMED:-0}" = "1" ]; then
-    ok "GHCP native + Claude Sonnet 5 확인"
+  if [ "${WORKSHOP_CODEX_TERRA_CONFIRMED:-0}" = "1" ]; then
+    ok "local Codex + Copilot-backed GPT-5.6 Terra 확인"
   else
-    bad "GHCP native + Claude Sonnet 5 미확인" "새 세션의 Session Target을 Copilot(native)으로 두고 model picker에서 Claude Sonnet 5를 확인하세요."
+    bad "local Codex + GPT-5.6 Terra 미확인" "Codex extension 또는 Agent Host를 설정하고 Copilot-backed provider에서 GPT-5.6 Terra를 확인하세요."
   fi
 fi
 

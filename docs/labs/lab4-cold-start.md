@@ -8,7 +8,9 @@
 
 ## 시작
 
-이전 대화를 상속하지 않는 `/new` 세션을 연다. 읽을 수 있는 것은 commit된 `CONTEXT.md`, ADR, GitHub Issues, commit history, `HANDOFF`뿐이다. 이전 채팅 요약을 붙이지 않는다.
+New Chat으로 이전 대화를 상속하지 않는 fresh session을 엽니다. 읽을 수 있는
+것은 commit된 `CONTEXT.md`, ADR, local work items, commit history,
+`HANDOFF`뿐입니다. 이전 채팅 요약을 붙이지 않습니다.
 
 `HANDOFF`의 `verify` 명령을 가장 먼저 실행한다. 현재 ticket, 완료 commit, 남은 위험을 실제 repo와 대조하고 20분 안에 다음 작업을 설명한다.
 
@@ -24,7 +26,7 @@ WORKSHOP_CHECKPOINT_DIR="$HOME/.workshop-checkpoint" \
 
 checkpoint archive는 participant bundle에 포함되지 않습니다. 20분 recovery gate를 넘긴 경우 강사가 별도 보안 채널로 전달한 archive만 사용합니다.
 
-어떤 durable artifact가 부족했는지 Issue 또는 UAT note에 기록한다.
+어떤 durable artifact가 부족했는지 local defect 또는 UAT note에 기록합니다.
 
 ## 종료 조건
 
@@ -34,5 +36,5 @@ checkpoint archive는 participant bundle에 포함되지 않습니다. 20분 rec
 
 ## 막힐 때
 
-- 구현 파일부터 추측해 읽지 말고 `HANDOFF`, Issue, ADR 순서를 지킨다.
+- 구현 파일부터 추측해 읽지 말고 `HANDOFF`, local ticket, ADR 순서를 지킨다.
 - 20분이 지나면 checkpoint를 사용하고 누락된 artifact를 기록한다.

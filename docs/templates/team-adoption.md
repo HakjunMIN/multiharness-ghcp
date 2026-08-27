@@ -2,9 +2,10 @@
 
 - 설치할 Matt skills:
 - skill update 주기와 reviewer:
-- 설계 runtime: Claude agent + Claude Opus 5
-- 구현 runtime: GHCP native + GPT-5.6 Sol
-- 검증 runtime: GHCP native + Claude Sonnet 5
+- 발견 runtime: Copilot + GPT-5.6 Sol
+- 설계 runtime: Claude + Claude Opus 4.8
+- 구현 runtime: Copilot + GPT-5.6 Sol
+- 검증 runtime: local Codex + Copilot-backed GPT-5.6 Terra
 - durable state 위치:
 - core/full 완료 기준:
 - live APIM 실행/비밀 관리 owner:

@@ -1,10 +1,10 @@
 # Independent UAT Report
 
-- Host: GitHub Copilot
-- Agent runtime: native coding agent
-- Model: Claude Sonnet 5
+- Host: VS Code
+- Agent runtime: local Codex harness
+- Model: GPT-5.6 Terra (Copilot-backed)
 - Review fixed point: `main`
-- Spec Issue:
+- Local spec:
 - Tested commit:
 
 ## Standards findings
@@ -22,4 +22,4 @@
 | UAT-05 | no evidence does not hallucinate | controlled query | pass/fail |
 | UAT-06 | 429 is actionable and secret-safe | APIM response/UI | pass/fail |
 
-## Defect Issues
+## Local defects

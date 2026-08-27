@@ -4,6 +4,9 @@
 
 | 주제 | URL |
 |---|---|
+| VS Code agent harness 실행과 설정 | https://code.visualstudio.com/docs/agents/run/agent-harnesses |
+| VS Code sessions와 handoff | https://code.visualstudio.com/docs/agents/concepts/sessions |
+| VS Code agent harness 개념 | https://code.visualstudio.com/docs/agents/concepts/agent-harnesses |
 | VS Code 서드파티 에이전트 | https://code.visualstudio.com/learn/agents/4-using-third-party-agents-in-vs-code |
 | 서드파티 코딩 에이전트 개념 + 모델 매트릭스 | https://docs.github.com/en/copilot/concepts/agents/about-third-party-coding-agents#ai-models-for-third-party-agents |
 | GitHub.com Claude/Codex 모델 선택 | https://github.blog/changelog/2026-04-14-model-selection-for-claude-and-codex-agents-on-github-com/ |

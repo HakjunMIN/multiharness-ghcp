@@ -26,17 +26,17 @@ response: {"answer":"...", ...}
 1. 고객사를 식별할 수 있는 이름, origin credential, APIM key를 commit, Issue, 채팅, 로그에 남기지 않습니다.
 2. 실제 runtime 값은 gitignored `.env`에만 둡니다. 커밋 기본 브랜드는 `한빛전자`, 기본 도메인은 `example.invalid`입니다.
 3. 기본 unit/contract test는 네트워크를 사용하지 않습니다. live APIM test는 `live` marker로 분리합니다.
-4. 결정은 GitHub Issue, `CONTEXT.md`, ADR에 남깁니다. 채팅만 믿지 않습니다.
-5. 검증자는 production implementation을 고치지 않고 재현 근거와 defect Issue를 만듭니다.
+4. 결정은 local work item, `CONTEXT.md`, ADR에 남깁니다. 채팅만 믿지 않습니다.
+5. 검증자는 production implementation을 고치지 않고 재현 근거와 local defect 문서를 만듭니다.
 6. `git push --force`를 금지합니다.
 
 ## Main development flow
 
-1. `/grill-with-docs`
-2. `/to-spec`
-3. `/to-tickets`
-4. 티켓별 새 세션에서 `/implement`
-5. 독립 세션에서 `/code-review main`과 UAT
+1. Copilot 세션에서 `/grill-with-docs`
+2. 같은 세션을 Claude로 handoff하고 `/to-spec`
+3. Claude 세션에서 `/to-tickets`
+4. local ticket별 fresh Copilot 세션에서 `/implement`
+5. fresh Codex 세션에서 `/code-review main`과 UAT
 
 ## Runtime selection
 
@@ -44,15 +44,21 @@ VS Code Chat view(또는 Agents 창)의 **Session Target** 컨트롤에서 harne
 
 | 역할 | Agent runtime (harness) | Model | 스킬 |
 | --- | --- | --- | --- |
-| 발견, 아키텍처, 기획 | Claude harness | Claude Opus 5 | `grill-with-docs`, `domain-modeling`, `codebase-design`, `to-spec`, `to-tickets` |
-| 구현 | Copilot(native) harness | GPT-5.6 Sol | `implement`, `tdd` |
-| 독립 검증 | Copilot(native) harness, 새 세션 | Claude Sonnet 5 | `code-review` + UAT |
+| 발견 | Copilot harness | GPT-5.6 Sol | `grill-with-docs`, `grilling`, `domain-modeling`, `research` |
+| 아키텍처, 기획 | Claude harness | Claude Opus 4.8 | `codebase-design`, `to-spec`, `to-tickets` |
+| 구현 | Copilot harness, fresh session | GPT-5.6 Sol | `implement`, `tdd` |
+| 독립 검증 | Codex harness, fresh session | GPT-5.6 Terra | `code-review` + UAT |
 
-Host, agent runtime(harness), model, skill, durable state는 서로 다른 축입니다. harness를 바꾸면 VS Code는 이를 handoff로 취급해 대화 history를 그대로 옮깁니다.
+Host, harness, model, skill, durable state는 서로 다른 축입니다. Session Target을
+바꾸면 VS Code는 handoff로 취급해 full conversation history와 누적 context를
+새 harness로 옮깁니다. 독립 검증에는 handoff를 사용하지 않습니다.
 
 ## Durable state와 세션 경계
 
-`grill-with-docs`부터 `to-tickets`까지 한 설계 세션을 유지합니다. 구현은 ticket마다 새 세션, 검증은 구현 문맥이 없는 새 세션에서 시작합니다. Day 1 종료에는 `CONTEXT.md`, ADR, Issues, commits와 `HANDOFF`를 남기고 Day 2는 이것만으로 cold-start합니다.
+발견 세션은 Claude로 handoff해 `to-tickets`까지 유지합니다. 구현은 local
+ticket마다 fresh session, 검증은 구현 문맥이 없는 fresh session에서 시작합니다.
+Day 1 종료에는 `CONTEXT.md`, ADR, local work items, commits와 `HANDOFF`를
+남기고 Day 2는 이것만으로 cold-start합니다.
 
 ## Verification commands
 
