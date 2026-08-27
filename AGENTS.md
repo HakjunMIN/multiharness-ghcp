@@ -40,13 +40,15 @@ response: {"answer":"...", ...}
 
 ## Runtime selection
 
-| 역할 | Agent runtime | Model | 스킬 |
-| --- | --- | --- | --- |
-| 발견, 아키텍처, 기획 | GHCP 안의 Claude agent | Claude Opus 5 | `grill-with-docs`, `domain-modeling`, `codebase-design`, `to-spec`, `to-tickets` |
-| 구현 | GHCP native | GPT-5.6 Sol | `implement`, `tdd` |
-| 독립 검증 | GHCP native 새 세션 | Claude Sonnet 5 | `code-review` + UAT |
+VS Code Chat view(또는 Agents 창)의 **Session Target** 컨트롤에서 harness를, 채팅 입력창의 **language model picker**에서 model을 고릅니다. `/agent`, `/model` 같은 슬래시 명령은 없습니다.
 
-Host, agent runtime, model, skill, durable state는 서로 다른 축입니다.
+| 역할 | Agent runtime (harness) | Model | 스킬 |
+| --- | --- | --- | --- |
+| 발견, 아키텍처, 기획 | Claude harness | Claude Opus 5 | `grill-with-docs`, `domain-modeling`, `codebase-design`, `to-spec`, `to-tickets` |
+| 구현 | Copilot(native) harness | GPT-5.6 Sol | `implement`, `tdd` |
+| 독립 검증 | Copilot(native) harness, 새 세션 | Claude Sonnet 5 | `code-review` + UAT |
+
+Host, agent runtime(harness), model, skill, durable state는 서로 다른 축입니다. harness를 바꾸면 VS Code는 이를 handoff로 취급해 대화 history를 그대로 옮깁니다.
 
 ## Durable state와 세션 경계
 

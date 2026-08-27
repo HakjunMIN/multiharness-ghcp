@@ -9,17 +9,17 @@
 ## Runtime card
 
 ```text
-Host: GitHub Copilot
-Agent runtime: Claude (/agent Claude)
-Model: Claude Opus 5 (/model Claude Opus 5)
+Host: VS Code
+Agent runtime: Claude harness (New Chat → Session Target: Claude)
+Model: Claude Opus 5 (chat 입력창의 language model picker)
 Context: Lab 2 종료까지 같은 설계 대화
 ```
 
 ## 시작
 
+VS Code Chat view(또는 Agents 창)에서 New Chat으로 세션을 열고 Session Target을 Claude로, model picker에서 Claude Opus 5를 선택한다. 이후 채팅에 다음을 붙여넣는다.
+
 ```text
-/agent Claude
-/model Claude Opus 5
 /grill-with-docs
 
 Microsoft Agent Framework Python backend와 React frontend로 제품 상담 agent를

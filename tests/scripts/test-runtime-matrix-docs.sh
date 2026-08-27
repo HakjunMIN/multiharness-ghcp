@@ -7,7 +7,7 @@ for file in AGENTS.md README.md docs/reference/workflow.md docs/reference/model-
   grep -Fq 'Claude Sonnet 5' "$file"
 done
 
-grep -Fq 'Claude agent' docs/reference/model-harness-matrix.md
+grep -Fq 'Claude harness' docs/reference/model-harness-matrix.md
 grep -Fq 'Claude Opus 5' docs/reference/model-harness-matrix.md
 
 if grep -rInE '\./wf|wf:decision|wf:task|phase:|harness:' \

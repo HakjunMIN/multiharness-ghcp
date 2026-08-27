@@ -9,15 +9,15 @@
 ## Runtime card
 
 ```text
-Host: GitHub Copilot
-Agent runtime: native coding agent
-Model: Claude Sonnet 5 (/model Claude Sonnet 5)
+Host: VS Code
+Agent runtime: Copilot(native) harness (New Chat → Session Target: Copilot)
+Model: Claude Sonnet 5 (chat 입력창의 language model picker)
 Context: 구현 세션과 분리된 새 세션
 ```
 
+New Chat으로 세션을 열고 Session Target을 Copilot(native)으로, model picker에서 Claude Sonnet 5를 선택한 뒤 채팅에 다음을 입력한다.
+
 ```text
-/new
-/model Claude Sonnet 5
 /code-review main
 ```
 

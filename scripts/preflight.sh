@@ -129,19 +129,19 @@ if [ "$strict" -eq 1 ]; then
   if [ "${WORKSHOP_CLAUDE_AGENT_OPUS5_CONFIRMED:-0}" = "1" ]; then
     ok "GHCP Claude agent + Claude Opus 5 확인"
   else
-    bad "Claude agent + Claude Opus 5 미확인" "GHCP /agent에서 Claude를, /model에서 Claude Opus 5를 선택해 확인하세요."
+    bad "Claude agent + Claude Opus 5 미확인" "VS Code New Chat의 Session Target에서 Claude를, model picker에서 Claude Opus 5를 선택해 확인하세요."
   fi
 
   if [ "${WORKSHOP_GPT56_SOL_CONFIRMED:-0}" = "1" ]; then
     ok "GHCP native + GPT-5.6 Sol 확인"
   else
-    bad "GHCP native + GPT-5.6 Sol 미확인" "새 native 세션에서 /model GPT-5.6 Sol을 확인하세요."
+    bad "GHCP native + GPT-5.6 Sol 미확인" "새 세션의 Session Target을 Copilot(native)으로 두고 model picker에서 GPT-5.6 Sol을 확인하세요."
   fi
 
   if [ "${WORKSHOP_SONNET5_CONFIRMED:-0}" = "1" ]; then
     ok "GHCP native + Claude Sonnet 5 확인"
   else
-    bad "GHCP native + Claude Sonnet 5 미확인" "새 native 세션에서 /model Claude Sonnet 5를 확인하세요."
+    bad "GHCP native + Claude Sonnet 5 미확인" "새 세션의 Session Target을 Copilot(native)으로 두고 model picker에서 Claude Sonnet 5를 확인하세요."
   fi
 fi
 

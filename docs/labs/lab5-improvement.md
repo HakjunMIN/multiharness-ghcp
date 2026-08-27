@@ -9,16 +9,17 @@
 ## Runtime card
 
 ```text
-Agent runtime: native coding agent
-Model: GPT-5.6 Sol (/model GPT-5.6 Sol)
+Host: VS Code
+Agent runtime: Copilot(native) harness (New Chat → Session Target: Copilot)
+Model: GPT-5.6 Sol (chat 입력창의 language model picker)
 Context: ticket 하나의 fresh session
 ```
 
 core는 regional trusted domains, telemetry opt-out, no-evidence behavior 중 하나를 vertical ticket으로 끝낸다. full은 core policy 하나를 먼저 끝낸 뒤 React chat, loading/error/429 상태, structured citation rendering을 추가한다.
 
+New Chat으로 세션을 열고 Session Target을 Copilot(native)으로, model picker에서 GPT-5.6 Sol을 선택한 뒤 채팅에 다음을 입력한다.
+
 ```text
-/new
-/model GPT-5.6 Sol
 /implement #43
 ```
 

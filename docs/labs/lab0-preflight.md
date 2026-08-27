@@ -49,7 +49,7 @@ Matt 스킬을 project scope에 설치하고 `/skills`로 노출을 확인한다
 /setup-matt-pocock-skills
 ```
 
-`/agent Claude`, `/model Claude Opus 5`, `/model GPT-5.6 Sol`, `/model Claude Sonnet 5`를 각각 열어 entitlement를 확인한다.
+VS Code Chat view(또는 Agents 창)에서 새 세션을 하나씩 열어 다음 세 조합이 Session Target/model picker에 있는지 확인한다: Claude harness + Claude Opus 5, Copilot(native) harness + GPT-5.6 Sol, Copilot(native) harness + Claude Sonnet 5. `/agent`, `/model`처럼 harness나 model을 지정하는 슬래시 명령은 없다 — [harness와 model 선택 방법](../reference/model-harness-matrix.md)을 참고한다.
 
 ## 종료 조건
 

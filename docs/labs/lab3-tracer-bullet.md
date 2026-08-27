@@ -9,17 +9,17 @@
 ## Runtime card
 
 ```text
-Host: GitHub Copilot
-Agent runtime: native coding agent
-Model: GPT-5.6 Sol (/model GPT-5.6 Sol)
+Host: VS Code
+Agent runtime: Copilot(native) harness (New Chat → Session Target: Copilot)
+Model: GPT-5.6 Sol (chat 입력창의 language model picker)
 Context: ticket마다 fresh session
 ```
 
 ## 구현
 
+New Chat으로 세션을 열고 Session Target을 Copilot(native)으로, model picker에서 GPT-5.6 Sol을 선택한 뒤 채팅에 다음을 입력한다.
+
 ```text
-/new
-/model GPT-5.6 Sol
 /implement #42
 ```
 

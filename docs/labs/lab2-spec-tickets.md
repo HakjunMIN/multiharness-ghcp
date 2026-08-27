@@ -9,9 +9,9 @@
 ## Runtime card
 
 ```text
-Host: GitHub Copilot
-Agent runtime: Claude (/agent Claude)
-Model: Claude Opus 5 (/model Claude Opus 5)
+Host: VS Code
+Agent runtime: Claude harness (New Chat → Session Target: Claude)
+Model: Claude Opus 5 (chat 입력창의 language model picker)
 Context: Lab 1 대화를 그대로 사용
 ```
 
