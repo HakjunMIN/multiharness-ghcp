@@ -1,6 +1,6 @@
 ---
 name: to-spec
-description: "Turn the current conversation into a spec and publish it to the project issue tracker: no interview, just synthesis of what you've already discussed."
+description: "Turn the current conversation into a committed local spec: no interview, just synthesis of what you've already discussed."
 disable-model-invocation: true
 ---
 
@@ -17,7 +17,8 @@ vocabulary. Publish the spec at the configured committed local path.
 
 Check with the user that these seams match their expectations.
 
-3. Write the spec using the template below, then publish it to the project issue tracker. Apply the `ready-for-agent` triage label - no need for additional triage.
+3. Write the spec using the template below, then publish it as the committed
+   local spec configured in `docs/agents/issue-tracker.md`.
 
 <spec-template>
 

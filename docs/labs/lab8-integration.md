@@ -11,8 +11,8 @@ local defect를 연결합니다. CI-equivalent 검증을 실행하고 실제 결
 
 팀 채택 문서에는 다음을 한 문단씩 구분한다.
 
-- Host: 작업을 실행하는 GitHub Copilot 환경
-- Agent runtime: Claude 또는 native coding agent
+- Host: VS Code (작업 실행 환경)
+- Agent runtime(harness): Session Target에서 선택하는 Copilot, Claude, Codex
 - Model: 해당 runtime에서 선택한 모델
 - Skill: 작업 절차를 강제하는 workflow
 - Durable state: local work items, repo docs, commits, tests

@@ -72,6 +72,14 @@ grep -Fq 'full conversation history' docs/reference/handoff-contract.md
 grep -Fq 'fresh Codex' docs/reference/handoff-contract.md
 grep -Fq 'local ticket' docs/labs/lab3-tracer-bullet.md
 grep -Fq 'local defect' docs/labs/lab6-verification.md
+grep -Fq 'Host: VS Code' docs/labs/lab8-integration.md
+grep -Fq 'Copilot, Claude, Codex' docs/labs/lab8-integration.md
+
+if grep -InE 'project issue tracker|Apply the `ready-for-agent` triage label' \
+  .agents/skills/to-spec/SKILL.md 2>/dev/null; then
+  printf 'FAIL: to-spec still instructs a remote tracker operation\n' >&2
+  exit 1
+fi
 
 if grep -InE \
   'Claude Opus 5|Claude Sonnet 5|/implement #[0-9]+|gh issue|GitHub Issue|spec Issue|defect Issue' \
