@@ -64,7 +64,7 @@ class ApimRetriever:
             "?api-version=2026-04-01"
         )
         headers = {"Ocp-Apim-Subscription-Key": self._settings.apim_key or ""}
-        body = {"messages": [{"role": "user", "content": question}]}
+        body = {"intents": [{"type": "semantic", "search": question}]}
         async with httpx.AsyncClient(timeout=30) as client:
             response = await client.post(url, headers=headers, json=body)
             response.raise_for_status()

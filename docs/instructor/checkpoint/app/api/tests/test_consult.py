@@ -30,10 +30,10 @@ def test_consult_returns_answer_and_structured_citations():
         "answer": "공개 웹 근거를 찾았습니다.",
         "citations": [
             {
-                "title": "제품 정보",
-                "url": "https://example.invalid/products",
+                "title": "제품 개요",
+                "url": "https://example.invalid/products/overview",
             }
         ],
     }
     assert synthesizer.questions == ["제품 정보를 알려 주세요."]
-    assert synthesizer.evidence == ["공개 웹 근거를 찾았습니다."]
+    assert "https://example.invalid/products/overview" in synthesizer.evidence[0]
