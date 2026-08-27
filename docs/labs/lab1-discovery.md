@@ -54,3 +54,4 @@ contract/live APIM test seams.
 - 질문이 퍼지면 HTTP envelope, region, evidence, telemetry, test seam 다섯 경계로 돌아온다.
 - 구현 세부 논쟁은 ADR의 대안과 결과로 기록하고 코딩으로 결정하지 않는다.
 - 세션이 끊기면 commit된 `CONTEXT.md`와 ADR을 읽고 같은 runtime card로 재개한다.
+- 미해결 결정이 한 세션 대화에 안 담길 만큼 갈라지면(예: 여러 정책 조합을 동시에 열어둬야 할 때) `wayfinder`로 결정 지도를 만들고 자식 이슈 단위로 나눈다. 이 랩의 기본 흐름에는 포함되지 않는다.

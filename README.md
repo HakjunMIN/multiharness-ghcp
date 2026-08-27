@@ -11,7 +11,11 @@ full은 별도 출발점이 아니라 core의 strict superset입니다.
 
 ## 시작
 
+강사 리포를 자신의 GitHub 계정으로 fork한 뒤 fork를 clone한다(참가자는 강사 리포에 write 권한이 없고, `to-tickets`/검증 단계가 실제 Issue와 PR을 발행하기 때문).
+
 ```bash
+gh repo fork <instructor-org>/<repo> --clone --remote
+cd <repo>
 ./scripts/preflight.sh
 cp .env.example .env
 ./scripts/dev.sh
