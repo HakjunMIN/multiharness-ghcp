@@ -74,33 +74,22 @@ else
   bad "git 없음" "git 을 설치하세요."
 fi
 
-# --- gh ---
+# --- gh (only required for the optional final-PR fork step) ---
 if command -v gh >/dev/null 2>&1; then
   ok "gh $(gh --version | head -1 | awk '{print $3}')"
   if gh auth status >/dev/null 2>&1; then
     ok "gh 인증됨"
   else
-    bad "gh 미인증" "실행: gh auth login"
+    warn_ "gh 미인증" "최종 PR을 만들 때만 필요합니다: gh auth login"
   fi
   if gh repo view --json nameWithOwner >/dev/null 2>&1; then
     repo="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
     ok "GitHub 리포 컨텍스트 ($repo)"
   else
-    if [ "$strict" -eq 1 ]; then
-      bad "GitHub 리포 컨텍스트 없음" "강사가 제공한 실습 리포를 clone하거나 올바른 origin을 연결하세요."
-    else
-      warn_ "GitHub 리포 컨텍스트 없음" "강사가 제공한 실습 리포를 clone하세요."
-    fi
+    warn_ "GitHub 리포 컨텍스트 없음" "최종 PR을 만들 참가자만 fork를 origin으로 설정하세요."
   fi
 else
-  bad "gh 없음" "https://cli.github.com 에서 GitHub CLI 를 설치하세요."
-fi
-
-# --- copilot ---
-if command -v copilot >/dev/null 2>&1; then
-  ok "copilot CLI $(copilot --version 2>/dev/null | head -1)"
-else
-  bad "copilot CLI 없음" "GitHub Copilot CLI 를 설치하세요."
+  warn_ "gh 없음" "VS Code 하네스 워크플로우 자체에는 필요하지 않습니다. 최종 PR을 만들 때만 https://cli.github.com 에서 설치하세요."
 fi
 
 # --- skills.sh runner ---

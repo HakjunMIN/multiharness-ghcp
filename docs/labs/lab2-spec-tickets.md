@@ -10,7 +10,7 @@
 
 ```text
 Host: VS Code
-Agent runtime: Claude harness (New Chat → Session Target: Claude)
+Agent runtime: Claude harness (기존 Lab 1 세션 → Session Target: Claude로 handoff)
 Model: Claude Opus 4.8 (chat 입력창의 language model picker)
 Context: Lab 1 세션을 Claude로 handoff
 ```

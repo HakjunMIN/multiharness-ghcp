@@ -78,12 +78,9 @@ docs/labs/lab5-improvement.md
 docs/labs/lab6-verification.md
 docs/labs/lab7-runtime-comparison.md
 docs/labs/lab8-integration.md
-docs/reference/framework-landscape.md
 docs/reference/handoff-contract.md
-docs/reference/issue-conventions.md
 docs/reference/model-harness-matrix.md
 docs/reference/sources.md
-docs/reference/vscode-multi-agent-harness-migration.md
 docs/reference/workflow.md
 docs/templates/architecture-plan.md
 docs/templates/spec.md

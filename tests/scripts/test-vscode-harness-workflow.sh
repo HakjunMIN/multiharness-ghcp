@@ -85,7 +85,7 @@ if grep -InE \
   'Claude Opus 5|Claude Sonnet 5|/implement #[0-9]+|gh issue|GitHub Issue|spec Issue|defect Issue' \
   AGENTS.md README.md docs/labs/*.md docs/instructor/*.md \
   docs/reference/workflow.md docs/reference/model-harness-matrix.md \
-  docs/reference/handoff-contract.md docs/reference/issue-conventions.md 2>/dev/null; then
+  docs/reference/handoff-contract.md 2>/dev/null; then
   printf 'FAIL: legacy role matrix or GitHub Issue workflow remains\n' >&2
   exit 1
 fi

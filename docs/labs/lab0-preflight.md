@@ -8,8 +8,9 @@
 
 ## 시작 전 상태
 
-VS Code 1.128.0 이상, Node 22.18 이상, Python 3.11 이상, `uv`, GitHub
-CLI가 설치되어 있고 trusted workspace의 worktree가 깨끗해야 합니다.
+VS Code 1.128.0 이상, Node 22.18 이상, Python 3.11 이상, `uv`가 설치되어
+있고 trusted workspace의 worktree가 깨끗해야 합니다. GitHub CLI(`gh`)는
+최종 PR을 위해 자신의 fork를 origin으로 설정하는 참가자만 필요합니다.
 
 ## 저장소 준비
 

@@ -58,7 +58,7 @@ Iterate until the user approves the breakdown.
 
 ### 5. Publish the tickets to the configured tracker
 
-Publish the approved tickets. **How** depends on the tracker `/setup-matt-pocock-skills` configured; the tickets are the same either way, only the shape of the blocking edges changes:
+Publish the approved tickets. **How** depends on the tracker configured in `docs/agents/issue-tracker.md`; the tickets are the same either way, only the shape of the blocking edges changes:
 
 - **Local files** → use the committed feature path configured by
   `docs/agents/issue-tracker.md`, numbered from `01` in dependency order
