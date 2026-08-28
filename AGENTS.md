@@ -29,6 +29,7 @@ response: {"answer":"...", ...}
 4. 결정은 local work item, `CONTEXT.md`, ADR에 남깁니다. 채팅만 믿지 않습니다.
 5. 검증자는 production implementation을 고치지 않고 재현 근거와 local defect 문서를 만듭니다.
 6. `git push --force`를 금지합니다.
+7. 전역(global) 스킬은 사용하지 않습니다. 스킬은 이 저장소의 `.agents/skills/`에 있는 project scope 스킬만 탐색하고 실행합니다.
 
 ## Main development flow
 
