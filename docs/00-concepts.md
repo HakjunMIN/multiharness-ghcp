@@ -10,6 +10,7 @@
 - **Foundry IQ:** trusted web domains에서 cited evidence를 가져오는 retrieval 경계
 - **APIM:** 참가자 key를 origin credential과 분리하고 quota를 적용하는 gateway
 
-이 워크샵은 같은 host에서 harness와 model을 역할별로 바꾸며,
-Matt Pocock skills를 공통 개발 흐름으로 사용합니다. 기본 test는 deterministic하며
-실제 APIM smoke는 `live` marker로 분리합니다.
+이 워크샵은 같은 host에서 harness와 model을 역할별로 바꾸는 에이전틱 개발
+워크플로를 사용합니다. `mattpocock/skills`는 이 흐름을 위한 샘플 구현체이며,
+Superpowers나 Ouroboros를 포함한 다른 스킬 세트도 활용할 수 있습니다. 기본 test는
+deterministic하며 실제 APIM smoke는 `live` marker로 분리합니다.

@@ -1,7 +1,9 @@
-# Matt Pocock 스킬 기반 개발 워크플로
+# 에이전틱 개발 워크플로
 
-이 워크샵은 `mattpocock/skills`의 main flow를 local work item에 맞게
-사용합니다.
+이 워크샵은 역할별 harness, model, skill, durable state를 조합하는 에이전틱
+개발 워크플로를 local work item에 맞게 사용합니다. 이 저장소에 설치된
+`mattpocock/skills`는 이 워크플로를 구현하는 샘플 스킬 세트이며,
+Superpowers나 Ouroboros 등 다른 스킬 세트로 대체하거나 함께 활용할 수 있습니다.
 
 ```text
 Copilot grill-with-docs → Claude handoff → to-spec → to-tickets
@@ -38,7 +40,7 @@ harness(Session Target)와 model(picker)은 서로 다른 컨트롤입니다. �
 core는 Python API vertical slice이고 full은 core에 React UI를 더한 strict
 superset입니다. 둘 다 같은 `POST /api/consult` contract를 사용합니다.
 
-## 설치와 업데이트
+## 샘플 스킬 설치와 업데이트
 
 ```text
 DISABLE_TELEMETRY=1 npx skills experimental_install
@@ -46,5 +48,6 @@ DISABLE_TELEMETRY=1 npx skills update code-review codebase-design \
   domain-modeling grill-with-docs grilling implement research tdd to-spec to-tickets
 ```
 
-스킬은 `.agents/skills/`에 미리 설치되어 있습니다. `skills-lock.json`과 설치
-파일을 함께 커밋하며 업데이트 diff를 검토합니다.
+샘플 스킬은 `.agents/skills/`에 미리 설치되어 있습니다.
+`skills-lock.json`과 설치 파일을 함께 커밋하며 업데이트 diff를 검토합니다.
+Matt Pocock skills는 이 워크플로의 참고 구현체일 뿐 필수 전제는 아닙니다.
