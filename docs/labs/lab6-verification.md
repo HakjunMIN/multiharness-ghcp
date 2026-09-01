@@ -23,7 +23,9 @@ Target을 local Codex로, provider를 Copilot-backed로, model을 GPT-5.6 Terra�
 /code-review main
 ```
 
-[UAT matrix](../uat/acceptance-matrix.md)를 사용해 API envelope, structured citations, region domain rule, telemetry opt-out, no-evidence behavior, 429를 검증한다. full 결과가 있을 때만 React 상담과 citation rendering을 추가한다.
+[UAT matrix](../uat/acceptance-matrix.md)를 사용해 API envelope, structured
+citations, no-evidence behavior, 429를 검증한다. full 결과가 있을 때만 React
+상담과 citation rendering을 추가한다.
 
 verifier는 구현 코드를 수정하지 않습니다. 결함이면 가장 작은 failing
 reproduction test를 추가할 수 있고, evidence와 severity를 담은 local defect

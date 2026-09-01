@@ -26,7 +26,6 @@ async def test_agent_framework_synthesizer_uses_the_apim_model_route(monkeypatch
     monkeypatch.setattr("consult.agent.Agent", FakeAgent)
     settings = Settings(
         brand_name="한빛전자",
-        brand_domains=("example.invalid",),
         apim_base_url="https://workshop.example.invalid",
         apim_key="participant-key",
         knowledge_base_name="products",

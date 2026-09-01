@@ -4,14 +4,12 @@ from consult.main import app
 from consult.settings import Settings
 
 
-def test_settings_use_safe_brand_defaults(monkeypatch):
-    for name in ("BRAND_NAME", "BRAND_DOMAINS"):
-        monkeypatch.delenv(name, raising=False)
+def test_settings_use_safe_brand_default(monkeypatch):
+    monkeypatch.delenv("BRAND_NAME", raising=False)
 
     settings = Settings.from_env(require_apim=False)
 
     assert settings.brand_name == "한빛전자"
-    assert settings.brand_domains == ("example.invalid",)
 
 
 def test_healthz_exposes_no_secret(monkeypatch):

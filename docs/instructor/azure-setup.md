@@ -6,7 +6,7 @@
 
 1. Agentic retrieval을 지원하는 public Azure 지역에 Azure AI Search를 만든다. Web Knowledge Source는 private cloud와 sovereign cloud에서 지원되지 않으므로 해당 환경에서는 이 실습을 진행하지 않는다.
 2. 웹 요약에 사용할 모델 deployment를 만들고 용량을 확인한다. knowledge base가 참조할 수 있는 모델은 `gpt-5.4` 계열까지이므로 그보다 새 모델만 있는 프로젝트라면 `gpt-5.4-mini` 같은 지원 모델을 따로 배포한다. 참가자 채팅용 모델은 이 제약과 무관하다.
-3. 강사가 정한 `BRAND_DOMAINS`로 Web Knowledge Source를 만든다. 공개 웹 전체가 아니라 교육용 신뢰 도메인만 허용한다.
+3. 공개 제품 근거를 검색하도록 Web Knowledge Source를 만든다.
 4. 이 source와 모델을 참조하는 knowledge base를 만들고 retrieve API를 `2026-04-01`로 고정한다.
 5. OpenAI-compatible 모델 base route를 `${APIM_BASE_URL}/model/v1`에 두고 `workshop-model` alias를 실제 deployment로 rewrite한다. Agent Framework는 `/chat/completions`가 아니라 **`/responses`** 를 호출하므로 두 operation을 모두 노출한다. Search의 `knowledgebases/{name}/retrieve` route도 같은 APIM base 뒤에 둔다.
 6. backend로 전달하기 전에 참가자의 `Authorization`과 `Ocp-Apim-Subscription-Key` header를 제거한다. APIM managed identity 또는 Key Vault-backed named value로 origin 인증을 policy 안에서 주입한다.
@@ -37,11 +37,11 @@ APIM_BASE_URL=https://workshop-apim.example.invalid
 APIM_KEY=
 KNOWLEDGE_BASE_NAME=workshop-products
 BRAND_NAME=한빛전자
-BRAND_DOMAINS=example.invalid
-LIVE_SMOKE_QUESTION="허용 도메인에서 답할 수 있는 질문"
+LIVE_SMOKE_QUESTION="공개 제품 정보와 출처를 요청하는 질문"
 ```
 
-`LIVE_SMOKE_QUESTION`은 `BRAND_DOMAINS`로 좁힌 웹 근거에서 실제로 답이 나오는 질문이어야 한다. 허용 도메인과 무관한 질문을 쓰면 답변은 오지만 citation이 비어 live gate가 실패한다. 값에 공백이 있으면 따옴표로 감싼다.
+`LIVE_SMOKE_QUESTION`은 Web Knowledge Source에서 실제로 답과 citation을
+반환할 수 있는 공개 제품 질문이어야 한다. 값에 공백이 있으면 따옴표로 감싼다.
 
 참가자는 값을 gitignored `.env`에만 넣는다. 채팅, Issue, commit, UAT 캡처에는 key를 남기지 않는다. Lab gate에서 다음 live smoke를 한 번 실행한다.
 
@@ -59,7 +59,7 @@ LIVE_SMOKE_QUESTION="허용 도메인에서 답할 수 있는 질문"
 | 404 | APIM route와 `KNOWLEDGE_BASE_NAME`이 일치하는지 확인한다 |
 | 429 | 해당 key의 quota와 reset 시각을 확인한다. 다른 참가자의 key를 빌려주지 않는다 |
 | 5xx | APIM backend health, 모델 deployment, Search resource health를 확인한다 |
-| citation 없음 | `BRAND_DOMAINS`와 Web Knowledge Source 접근 가능성, 그리고 질문이 허용 도메인에서 답할 수 있는지 확인한다 |
+| citation 없음 | Web Knowledge Source 접근 가능성과 질문이 공개 웹 근거로 답할 수 있는지 확인한다 |
 | 모델 route만 404 | APIM에 `/responses` operation이 있는지 확인한다. Agent Framework는 Responses API를 호출한다 |
 | retrieve 400 | 요청 payload가 `intents`인지 확인한다. `messages`는 preview 전용이다 |
 

@@ -11,7 +11,7 @@
 ## Day 2
 
 - inherited chat 없이 cold restore
-- region, telemetry, no-evidence 중 policy improvement 하나
+- no-evidence behavior improvement
 - 독립 review, UAT report, 필요한 local defect/test
 - spec, tickets, ADR, commits, UAT를 연결한 PR
 

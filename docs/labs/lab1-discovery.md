@@ -2,7 +2,7 @@
 
 ## 이 랩에서 배우는 것
 
-- 구현 전에 제품 상담 경계와 정책 질문을 해소한다.
+- 구현 전에 제품 상담 경계와 동작 질문을 해소한다.
 - 공유 용어는 `CONTEXT.md`, 되돌리기 어려운 결정은 ADR에 남긴다.
 - unit, recorded contract, live test의 책임을 분리한다.
 
@@ -26,23 +26,22 @@ Target을 Copilot로, model picker에서 GPT-5.6 Sol을 선택합니다. 이후 
 
 Microsoft Agent Framework Python backend와 React frontend로 제품 상담 agent를
 만듭니다. 구현하지 말고 다음 결정을 문서로 확정하세요: POST /api/consult의
-request/response fields, region source와 default, 지역별 trusted-domain policy,
-근거 없음/상충 시 행동, telemetry opt-out boundary, deterministic unit/recorded
-contract/live APIM test seams.
+request/response fields, 공개 웹 근거 전달 경계, 근거 없음/상충 시 행동,
+deterministic unit/recorded contract/live APIM test seams.
 ```
 
 반드시 결정할 항목:
 
-- `POST /api/consult`가 받는 question, region, telemetry 선택값과 answer/citations envelope
-- region이 없거나 알 수 없을 때의 기본 동작
-- 지역별 `BRAND_DOMAINS` 제한과 외부 검색 금지 시 fallback
+- `POST /api/consult`가 받는 question과 반환하는 answer/citations envelope
+- Foundry IQ의 공개 웹 근거가 답변 합성에 전달되는 경계
 - 근거가 없거나 상충하면 답을 꾸며내지 않는 규칙
-- opt-out이 적용되는 telemetry sink 경계
 - live APIM 없이 red-green이 가능한 adapter seam
 
 ## 산출물
 
-공유 언어와 정책 용어를 `CONTEXT.md`에 기록한다. APIM trust boundary, domain policy, telemetry boundary처럼 되돌리기 어려운 결정만 `docs/adr/`에 남긴다. 아직 구현 코드는 수정하지 않는다.
+공유 언어와 동작 용어를 `CONTEXT.md`에 기록한다. APIM credential boundary나
+no-evidence behavior처럼 되돌리기 어려운 결정만 `docs/adr/`에 남긴다. 아직
+구현 코드는 수정하지 않는다.
 
 ## 종료 조건
 
@@ -53,7 +52,7 @@ contract/live APIM test seams.
 
 ## 막힐 때
 
-- 질문이 퍼지면 HTTP envelope, region, evidence, telemetry, test seam 다섯 경계로 돌아온다.
+- 질문이 퍼지면 HTTP envelope, evidence, test seam 세 경계로 돌아온다.
 - 구현 세부 논쟁은 ADR의 대안과 결과로 기록하고 코딩으로 결정하지 않는다.
 - 세션이 끊기면 commit된 `CONTEXT.md`와 ADR을 읽고 같은 runtime card로 재개한다.
 - 미해결 결정이 한 세션 대화에 안 담길 만큼 갈라지면 local ticket으로 나누되

@@ -18,4 +18,4 @@
 | local work item | GitHub Issue 대신 저장소에서 관리하는 spec, ticket 또는 defect 문서. |
 | frontier | blocking ticket이 모두 완료되어 지금 시작할 수 있는 ticket 집합. |
 | independent verification | 구현 대화 history를 상속하지 않는 fresh Codex 세션에서 수행하는 review와 UAT. |
-
+| consultation core | answer, structured citations, no-evidence behavior까지의 backend 범위. |

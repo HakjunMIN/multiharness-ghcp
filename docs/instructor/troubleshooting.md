@@ -12,4 +12,4 @@
 | APIM 404 | route와 knowledge base 이름을 확인한다 |
 | APIM 429 | 해당 key의 reset을 기다리거나 강사가 quota를 조정한다. 다른 key를 공유하지 않는다 |
 | APIM 5xx | 강사가 backend와 Azure AI Search resource health를 확인한다 |
-| 응답에 citation이 없다 | `BRAND_DOMAINS`와 Web Knowledge Source 접근을 확인한다 |
+| 응답에 citation이 없다 | Web Knowledge Source 접근과 smoke question을 확인한다 |

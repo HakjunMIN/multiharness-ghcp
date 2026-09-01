@@ -7,7 +7,7 @@
 - **Durable state:** `CONTEXT.md`, ADR, local work items, commits처럼 세션 밖에 남는 상태
 - **Runway:** health, 설정, test/build만 제공하고 domain behavior는 비워 둔 시작점
 - **Core / full:** backend vertical slice와 이를 포함하는 React 확장 범위
-- **Foundry IQ:** trusted web domains에서 cited evidence를 가져오는 retrieval 경계
+- **Foundry IQ:** 공개 웹에서 cited evidence를 가져오는 retrieval 경계
 - **APIM:** 참가자 key를 origin credential과 분리하고 quota를 적용하는 gateway
 
 이 워크샵은 같은 host에서 harness와 model을 역할별로 바꾸는 에이전틱 개발

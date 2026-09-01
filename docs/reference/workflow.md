@@ -43,8 +43,8 @@ superset입니다. 둘 다 같은 `POST /api/consult` contract를 사용합니�
 ## 샘플 스킬 설치와 업데이트
 
 ```text
-DISABLE_TELEMETRY=1 npx skills experimental_install
-DISABLE_TELEMETRY=1 npx skills update code-review codebase-design \
+npx skills experimental_install
+npx skills update code-review codebase-design \
   domain-modeling grill-with-docs grilling implement research tdd to-spec to-tickets
 ```
 

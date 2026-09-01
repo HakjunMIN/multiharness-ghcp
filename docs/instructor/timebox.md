@@ -30,7 +30,7 @@ Lab 3 vertical slice, Lab 4 cold-start, Lab 6 independent verification은 자르
 ## 개입 checkpoint
 
 - Day 1 0:30: health/test/build 또는 필수 runtime이 없으면 진행하지 않는다.
-- Day 1 1:30: `CONTEXT.md`와 ADR이 없으면 질문을 HTTP/policy/test 경계로 줄인다.
+- Day 1 1:30: `CONTEXT.md`와 ADR이 없으면 질문을 HTTP/evidence/test 경계로 줄인다.
 - Day 1 2:15: ready tracer ticket이 없으면 horizontal decomposition을 되돌린다.
 - Day 1 4:45: vertical commit이 없으면 범위를 질문 하나로 고정한다.
 - Day 2 0:20: durable state로 복구하지 못하면 checkpoint를 사용하고 누락 artifact를 기록한다.

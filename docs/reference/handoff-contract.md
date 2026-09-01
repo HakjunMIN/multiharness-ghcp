@@ -36,7 +36,7 @@ ticket마다 fresh Copilot 세션, 독립 검증은 **fresh Codex** 세션을 �
 | 필드 | 나쁜 예 | 좋은 예 |
 |---|---|---|
 | `artifacts` | `artifacts: 아까 만든 API` | `artifacts: app/api/src/consult/main.py, app/api/tests/test_consult.py` |
-| `done` | `done: 거의 다 함` | `done: 정책 평가 함수와 경계값 테스트 구현` |
+| `done` | `done: 거의 다 함` | `done: 근거 없음 처리와 경계값 테스트 구현` |
 | `verify` | `verify: 테스트해 보기` | `verify: cd app/api && uv run --frozen pytest -q` |
 | `risks` | `risks: 없음` | `risks: live smoke는 개인 APIM key가 있어야 실행 가능` |
 

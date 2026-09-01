@@ -23,7 +23,7 @@ Context: Lab 1 세션을 Claude로 handoff
 
 Lab 1 세션의 Session Target을 Claude로 바꿔 handoff하고 model picker에서
 Claude Opus 4.8을 선택합니다. Problem, solution, user stories, HTTP contract,
-policy decisions, testing decisions, out of scope를 검토한 뒤
+behavior decisions, testing decisions, out of scope를 검토한 뒤
 `docs/work/<feature>/spec.md`에 발행합니다.
 
 ## Tickets
@@ -32,7 +32,10 @@ policy decisions, testing decisions, out of scope를 검토한 뒤
 /to-tickets
 ```
 
-첫 ticket은 질문 하나가 `POST /api/consult`에서 시작해 Foundry IQ retrieve를 거쳐 answer와 구조화된 citations로 돌아오는 tracer bullet이어야 한다. model layer, search layer 같은 horizontal ticket은 거부한다. region policy, telemetry opt-out, no-evidence behavior, React UI는 후속 ticket으로 둔다.
+첫 ticket은 질문 하나가 `POST /api/consult`에서 시작해 Foundry IQ retrieve를
+거쳐 answer와 구조화된 citations로 돌아오는 tracer bullet이어야 한다. model
+layer, search layer 같은 horizontal ticket은 거부한다. no-evidence behavior,
+429 handling, React UI는 후속 ticket으로 둔다.
 
 각 ticket을 `docs/work/<feature>/tickets/` 아래의 개별 문서로 만들고 observable
 acceptance criteria, focused test, 전체 검증 명령, `ready-for-agent`, 실제

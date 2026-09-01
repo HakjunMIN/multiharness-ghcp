@@ -53,6 +53,7 @@ app/web/tsconfig.json
 app/web/vite.config.ts
 docs/00-concepts.md
 docs/adr/0001-vscode-harness-session-flow.md
+docs/adr/0002-focus-consultation-core.md
 docs/agents/issue-tracker.md
 docs/instructor/azure-setup.md
 docs/instructor/checkpoint/app/api/src/consult/agent.py
@@ -87,6 +88,8 @@ docs/templates/spec.md
 docs/templates/team-adoption.md
 docs/templates/uat-report.md
 docs/uat/acceptance-matrix.md
+docs/work/consultation-core/spec.md
+docs/work/consultation-core/tickets/01-focus-core-scope.md
 docs/work/vscode-multi-agent-harness/spec.md
 docs/work/vscode-multi-agent-harness/tickets/01-preflight-exact-harness-models.md
 docs/work/vscode-multi-agent-harness/tickets/02-local-planning-handoff.md

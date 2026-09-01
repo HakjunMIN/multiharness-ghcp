@@ -54,5 +54,5 @@ core 범위는 backend vertical slice까지다. full도 먼저 같은 core slice
 ## 막힐 때
 
 - live 응답이 흔들리면 recorded contract test를 먼저 green으로 만들고 401/404/429를 강사에게 분류해 전달한다.
-- ticket 밖 policy나 UI가 필요해 보이면 후속 ticket으로 남긴다.
+- ticket 밖 behavior나 UI가 필요해 보이면 후속 ticket으로 남긴다.
 - APIM key가 출력되면 작업을 멈추고 강사에게 rotation을 요청한다.

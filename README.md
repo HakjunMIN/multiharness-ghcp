@@ -4,7 +4,7 @@ Microsoft Agent Framework Python backend와 React frontend로 공개 웹 근거 
 
 ## 범위
 
-- `core`: API에서 질문을 받아 answer와 structured citations를 반환하고 region domain policy와 telemetry opt-out을 적용
+- `core`: API에서 질문을 받아 answer와 structured citations를 반환하고 근거가 없을 때 답을 꾸며내지 않도록 처리
 - `full`: core 전체에 React 상담 UI와 citation/error states 추가
 
 full은 별도 출발점이 아니라 core의 strict superset입니다.
@@ -69,7 +69,7 @@ Ouroboros 등 다른 스킬 세트와 대체하거나 함께 활용할 수 있�
 하면 다음 10개만 지정합니다.
 
 ```bash
-DISABLE_TELEMETRY=1 npx skills@latest add mattpocock/skills \
+npx skills@latest add mattpocock/skills \
   --agent github-copilot --copy -y \
   --skill grill-with-docs grilling domain-modeling research codebase-design \
   to-spec to-tickets implement tdd code-review
@@ -85,7 +85,7 @@ spec, ticket, defect 규약은 [local work item tracker](docs/agents/issue-track
 3. [Spec and tickets](docs/labs/lab2-spec-tickets.md)
 4. [Tracer bullet](docs/labs/lab3-tracer-bullet.md)
 5. [Cold-start recovery](docs/labs/lab4-cold-start.md)
-6. [Policy and full improvement](docs/labs/lab5-improvement.md)
+6. [Behavior and full improvement](docs/labs/lab5-improvement.md)
 7. [Independent verification](docs/labs/lab6-verification.md)
 8. [Runtime comparison](docs/labs/lab7-runtime-comparison.md)
 9. [Integration](docs/labs/lab8-integration.md)

@@ -5,21 +5,14 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class Settings:
     brand_name: str
-    brand_domains: tuple[str, ...]
     apim_base_url: str | None
     apim_key: str | None
     knowledge_base_name: str | None
 
     @classmethod
     def from_env(cls, *, require_apim: bool = True) -> "Settings":
-        domains = tuple(
-            domain.strip()
-            for domain in os.getenv("BRAND_DOMAINS", "example.invalid").split(",")
-            if domain.strip()
-        )
         settings = cls(
             brand_name=os.getenv("BRAND_NAME", "한빛전자"),
-            brand_domains=domains,
             apim_base_url=os.getenv("APIM_BASE_URL"),
             apim_key=os.getenv("APIM_KEY"),
             knowledge_base_name=os.getenv("KNOWLEDGE_BASE_NAME"),
