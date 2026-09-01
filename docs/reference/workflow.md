@@ -59,8 +59,9 @@ Code는 이를 handoff로 취급해 full conversation history를 새 harness로 
 세션을 닫기 전에 [`HANDOFF`](handoff-contract.md)에 첫 verify 명령을 남기고,
 다음 세션은 이전 채팅 없이 commit된 durable state로 시작합니다.
 
-core는 Python API vertical slice이고 full은 core에 React UI를 더한 strict
-superset입니다. 둘 다 같은 `POST /api/consult` contract를 사용합니다.
+첫 vertical slice는 React 질문 입력부터 Python API, Foundry IQ retrieval,
+answer와 citations 렌더링까지 앱 전체를 관통합니다. 이후 ticket은 같은
+`POST /api/consult` contract 위에서 no-evidence와 오류 UI를 개선합니다.
 
 ## 샘플 스킬 설치와 업데이트
 

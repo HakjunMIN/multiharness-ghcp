@@ -24,8 +24,8 @@ Target을 local Codex로, provider를 Copilot-backed로, model을 GPT-5.6 Terra�
 ```
 
 [UAT matrix](../uat/acceptance-matrix.md)를 사용해 API envelope, structured
-citations, no-evidence behavior, 429를 검증한다. full 결과가 있을 때만 React
-상담과 citation rendering을 추가한다.
+citations, no-evidence behavior, 429와 React 질문/loading/answer/citation/error
+상태를 모두 검증한다.
 
 verifier는 구현 코드를 수정하지 않습니다. 결함이면 가장 작은 failing
 reproduction test를 추가할 수 있고, evidence와 severity를 담은 local defect
@@ -34,7 +34,7 @@ reproduction test를 추가할 수 있고, evidence와 severity를 담은 local 
 
 ## 종료 조건
 
-- standards/spec findings와 UAT verdict가 분리된 report가 있다.
+- API와 React UI를 포함한 standards/spec findings와 UAT verdict가 분리된 report가 있다.
 - 발견한 결함마다 재현 근거와 local defect 문서가 있다.
 - verifier가 production implementation을 수정하지 않았다.
 

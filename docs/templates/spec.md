@@ -15,12 +15,13 @@
 ## Implementation Decisions
 
 `POST /api/consult` envelope, Microsoft Agent Framework 경계, APIM/Foundry IQ
-adapter, citation contract, no-evidence behavior 결정을 기록합니다.
+adapter, citation contract, no-evidence behavior와 React UI states 결정을
+기록합니다.
 
 ## Testing Decisions
 
-network-free unit/contract tests, recorded response, `live` APIM smoke와
-관찰할 외부 동작을 기록합니다.
+network-free unit/contract tests, React component tests, recorded response,
+`live` APIM smoke와 관찰할 end-to-end 동작을 기록합니다.
 
 ## Out of Scope
 

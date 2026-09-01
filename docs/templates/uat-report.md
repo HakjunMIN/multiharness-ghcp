@@ -15,9 +15,10 @@
 
 | ID | Behavior | Evidence | Verdict |
 | --- | --- | --- | --- |
-| UAT-01 | `/api/consult` returns answer envelope | request/response capture | pass/fail |
-| UAT-02 | response contains structured citations | response JSON | pass/fail |
-| UAT-03 | no evidence does not hallucinate | controlled query | pass/fail |
-| UAT-04 | 429 is actionable and secret-safe | APIM response/UI | pass/fail |
+| UAT-01 | React submits a question and renders an answer after loading | UI interaction + response | pass/fail |
+| UAT-02 | UI renders structured citations with the answer | UI + response JSON | pass/fail |
+| UAT-03 | no evidence does not hallucinate and is visible in UI | controlled query + UI | pass/fail |
+| UAT-04 | 429 is actionable and secret-safe in UI | APIM response + UI | pass/fail |
+| UAT-05 | `/api/consult` returns answer and citations envelope | request/response capture | pass/fail |
 
 ## Local defects

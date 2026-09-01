@@ -6,12 +6,16 @@
 - 모델 인상 대신 결과 evidence로 비교한다.
 - host, agent runtime, model, skill을 분리해 기록한다.
 
-이미 끝난 작은 ticket 또는 review prompt 하나를 별도 branch/worktree에서 다시 실행한다. correctness, test quality, durable artifacts, 사람 개입 횟수를 비교한다. 대체 구현은 기본적으로 merge하지 않는다.
+이미 끝난 작은 ticket 또는 review prompt 하나를 별도 branch/worktree에서 다시
+실행한다. 구현 ticket을 비교한다면 React 동작과 API contract를 같은 acceptance
+criteria로 사용한다. correctness, test quality, durable artifacts, 사람 개입
+횟수를 비교한다. 대체 구현은 기본적으로 merge하지 않는다.
 
 | 항목 | 원래 조합 | 비교 조합 |
 | --- | --- | --- |
 | Host / runtime / model / skill | 기록 | 기록 |
 | acceptance 통과 | 기록 | 기록 |
+| React UI 동작 | 기록 | 기록 |
 | test quality | 기록 | 기록 |
 | durable artifacts | 기록 | 기록 |
 | intervention count | 기록 | 기록 |

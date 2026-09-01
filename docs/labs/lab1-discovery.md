@@ -28,7 +28,8 @@ Target을 Copilot로, model picker에서 GPT-5.6 Sol을 선택합니다. 이후 
 Microsoft Agent Framework Python backend와 React frontend로 제품 상담 agent를
 만듭니다. 구현하지 말고 다음 결정을 문서로 확정하세요: POST /api/consult의
 request/response fields, 공개 웹 근거 전달 경계, 근거 없음/상충 시 행동,
-deterministic unit/recorded contract/live APIM test seams.
+React 질문/응답/citation/loading/error 상태, deterministic unit/recorded
+contract/live APIM test seams.
 ```
 
 반드시 결정할 항목:
@@ -36,6 +37,7 @@ deterministic unit/recorded contract/live APIM test seams.
 - `POST /api/consult`가 받는 question과 반환하는 answer/citations envelope
 - Foundry IQ의 공개 웹 근거가 답변 합성에 전달되는 경계
 - 근거가 없거나 상충하면 답을 꾸며내지 않는 규칙
+- React가 질문, loading, answer, citations, 오류를 표시하는 규칙
 - live APIM 없이 red-green이 가능한 adapter seam
 
 ## 산출물
@@ -60,7 +62,7 @@ Lab 2의 Claude 세션은 이 대화를 물려받지 않습니다. 세 가지를
 
 ## 막힐 때
 
-- 질문이 퍼지면 HTTP envelope, evidence, test seam 세 경계로 돌아온다.
+- 질문이 퍼지면 HTTP envelope, evidence, UI states, test seam 네 경계로 돌아온다.
 - 구현 세부 논쟁은 ADR의 대안과 결과로 기록하고 코딩으로 결정하지 않는다.
 - 결론이 채팅에만 있으면 아직 산출물이 아니다. discovery 문서에 먼저 적는다.
 - 세션이 끊기면 commit된 discovery 문서, `CONTEXT.md`, ADR을 읽고 같은 runtime

@@ -7,4 +7,5 @@ if WORKSHOP_CHECKPOINT_DIR=docs/setup/checkpoint ./scripts/restore-checkpoint.sh
 fi
 grep -Fq 'worktree가 깨끗하지 않습니다' scripts/restore-checkpoint.sh
 grep -Fq 'app/api' scripts/restore-checkpoint.sh
+grep -Fq 'app/web' scripts/restore-checkpoint.sh
 printf 'OK: checkpoint guards passed\n'

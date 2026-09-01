@@ -24,7 +24,9 @@ WORKSHOP_CHECKPOINT_DIR="$HOME/.workshop-checkpoint" \
 	./scripts/restore-checkpoint.sh --confirm
 ```
 
-checkpoint archive는 participant bundle에 포함되지 않습니다. 20분 recovery gate를 넘긴 경우 운영자가 별도 보안 채널로 전달한 archive만 사용합니다.
+checkpoint archive는 participant bundle에 포함되지 않습니다. API와 React 상담
+slice를 모두 포함한 운영자 checkpoint만 사용합니다. 20분 recovery gate를 넘긴
+경우 운영자가 별도 보안 채널로 전달한 archive를 복원합니다.
 
 어떤 durable artifact가 부족했는지 local defect 또는 UAT note에 기록합니다.
 

@@ -78,6 +78,28 @@ grep -Fq 'local defect' docs/labs/lab6-verification.md
 grep -Fq 'Host: VS Code' docs/labs/lab8-integration.md
 grep -Fq 'Copilot, Claude, Codex' docs/labs/lab8-integration.md
 
+# React UI는 선택형 full 범위가 아니라 첫 tracer부터 UAT까지 필수다.
+for file in README.md AGENTS.md docs/labs/lab1-discovery.md \
+  docs/labs/lab2-spec-tickets.md docs/labs/lab3-tracer-bullet.md \
+  docs/labs/lab5-improvement.md docs/labs/lab6-verification.md \
+  docs/uat/acceptance-matrix.md; do
+  grep -Fq 'React' "$file" || {
+    printf 'FAIL: %s does not include the required React UI scope\n' "$file" >&2
+    exit 1
+  }
+done
+
+grep -Fq '첫 vertical slice는 React 질문 입력' docs/labs/lab3-tracer-bullet.md
+grep -Fq 'React와 API는 모두 필수 UAT 범위' docs/uat/acceptance-matrix.md
+
+if grep -InE \
+  'full 범위|full 선택|구현된 경우에만 React|React UI는 후속|React를 요구하지|UI가 지연되면' \
+  README.md AGENTS.md CONTEXT.md docs/labs/*.md docs/reference/*.md \
+  docs/uat/*.md docs/templates/*.md 2>/dev/null; then
+  printf 'FAIL: optional or deferred React UI scope remains\n' >&2
+  exit 1
+fi
+
 # 발견 -> 기획 경계는 handoff가 아니라 커밋된 discovery 문서다.
 for file in README.md docs/reference/workflow.md docs/labs/lab1-discovery.md \
   docs/labs/lab2-spec-tickets.md; do

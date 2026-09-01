@@ -68,6 +68,11 @@ docs/setup/checkpoint/app/api/tests/fixtures/foundry_iq_retrieve.json
 docs/setup/checkpoint/app/api/tests/test_agent.py
 docs/setup/checkpoint/app/api/tests/test_consult.py
 docs/setup/checkpoint/app/api/tests/test_live_consult.py
+docs/setup/checkpoint/app/web/src/App.test.tsx
+docs/setup/checkpoint/app/web/src/App.tsx
+docs/setup/checkpoint/app/web/src/api.test.ts
+docs/setup/checkpoint/app/web/src/api.ts
+docs/setup/checkpoint/app/web/src/styles.css
 docs/setup/troubleshooting.md
 docs/labs/lab0-preflight.md
 docs/labs/lab1-discovery.md

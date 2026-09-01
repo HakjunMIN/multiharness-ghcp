@@ -18,8 +18,11 @@ response: {"answer":"...", ...}
 
 ## 범위
 
-- `core`: Python, FastAPI, Microsoft Agent Framework, Foundry IQ retrieval, citations, no-evidence behavior
-- `full`: core 전체와 React 질문/응답/citation/오류 UI. full은 core의 strict superset입니다.
+모든 참가자는 다음을 포함한 제품 상담 앱 전체를 구현합니다.
+
+- Python, FastAPI, Microsoft Agent Framework, Foundry IQ retrieval
+- answer, structured citations, no-evidence behavior
+- React 질문 입력, loading/error 상태, answer와 citation UI
 
 ## 절대 규칙
 

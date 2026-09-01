@@ -18,8 +18,7 @@ harness, model, Session Target, fresh session)는 도메인 용어가 아니므�
 | 제품 상담 | 사용자의 제품 질문에 공개 웹 근거를 찾아 답하는 이 애플리케이션의 과제. |
 | consult endpoint | `POST /api/consult`. 시작 request 필드는 `question`, 응답 필드는 `answer`. |
 | citation | 답변이 근거로 삼은 출처. 응답에 구조화된 형태로 함께 반환한다. |
-| core | 질문에서 answer와 citations까지의 backend 범위. |
-| full | core를 그대로 포함하고 React UI를 더한 strict superset. |
+| 상담 흐름 | React 질문 입력에서 `POST /api/consult`, answer와 citations 렌더링까지 이어지는 end-to-end 동작. |
 | runway | health와 개발 plumbing만 있고 상담 동작은 비어 있는 시작점. |
 
 ## 도메인 용어

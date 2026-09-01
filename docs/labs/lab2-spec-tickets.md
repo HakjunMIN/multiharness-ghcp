@@ -38,10 +38,10 @@ discovery 문서에 없는 결정이 필요하면 추측하지 말고 Lab 1의 �
 /to-tickets
 ```
 
-첫 ticket은 질문 하나가 `POST /api/consult`에서 시작해 Foundry IQ retrieve를
-거쳐 answer와 구조화된 citations로 돌아오는 tracer bullet이어야 한다. model
-layer, search layer 같은 horizontal ticket은 거부한다. no-evidence behavior,
-429 handling, React UI는 후속 ticket으로 둔다.
+첫 ticket은 React에서 질문 하나를 입력해 `POST /api/consult`, Foundry IQ
+retrieve를 거쳐 answer와 구조화된 citations가 화면에 표시되는 tracer
+bullet이어야 한다. model layer, search layer, frontend layer 같은 horizontal
+ticket은 거부한다. no-evidence behavior와 429 UI는 후속 ticket으로 둔다.
 
 각 ticket을 `docs/work/<feature>/tickets/` 아래의 개별 문서로 만들고 observable
 acceptance criteria, focused test, 전체 검증 명령, `ready-for-agent`, 실제
@@ -51,7 +51,7 @@ blocking edge를 기록합니다.
 
 - 승인된 local spec 문서가 있다.
 - 실행 가능한 tracer-bullet ticket이 `ready-for-agent` 상태다.
-- acceptance criteria가 `POST /api/consult`로 관찰 가능하다.
+- acceptance criteria가 React UI와 `POST /api/consult`에서 관찰 가능하다.
 - 설계 대화를 닫아도 필요한 상태가 local work item과 repo에 남는다.
 
 ## 막힐 때

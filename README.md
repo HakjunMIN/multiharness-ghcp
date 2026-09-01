@@ -2,12 +2,15 @@
 
 Microsoft Agent Framework Python backend와 React frontend로 공개 웹 근거 기반 제품 상담 app을 만드는 hands-on 과정입니다. Foundry IQ retrieval과 model endpoint는 운영자가 관리하는 APIM 뒤에 있으며, 참가자는 origin credentials를 받지 않습니다.
 
-## 범위
+## 완성할 앱
 
-- `core`: API에서 질문을 받아 answer와 structured citations를 반환하고 근거가 없을 때 답을 꾸며내지 않도록 처리
-- `full`: core 전체에 React 상담 UI와 citation/error states 추가
+모든 참가자는 다음을 포함한 제품 상담 앱 전체를 구현합니다.
 
-full은 별도 출발점이 아니라 core의 strict superset입니다.
+- React 질문 입력과 loading/error 상태
+- `POST /api/consult`를 통한 제품 상담
+- 공개 웹 근거를 사용한 answer와 structured citations
+- 답변과 출처를 함께 보여 주는 UI
+- 근거가 없을 때 답을 꾸며내지 않는 동작
 
 ## 시작
 
@@ -92,7 +95,7 @@ spec, ticket, defect 규약은 [local work item tracker](docs/agents/issue-track
 3. [Spec and tickets](docs/labs/lab2-spec-tickets.md)
 4. [Tracer bullet](docs/labs/lab3-tracer-bullet.md)
 5. [Cold-start recovery](docs/labs/lab4-cold-start.md)
-6. [Behavior and full improvement](docs/labs/lab5-improvement.md)
+6. [Consultation UX improvement](docs/labs/lab5-improvement.md)
 7. [Independent verification](docs/labs/lab6-verification.md)
 8. [Combination comparison](docs/labs/lab7-runtime-comparison.md)
 9. [Integration](docs/labs/lab8-integration.md)
