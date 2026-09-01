@@ -3,7 +3,7 @@
 ## Day 1
 
 - runway health, API test, web test/build
-- `CONTEXT.md`와 필요한 ADR
+- `docs/work/<feature>/discovery.md`, `CONTEXT.md`와 필요한 ADR
 - local spec과 ready tracer-bullet ticket
 - API -> Foundry IQ -> structured citations commit
 - 다음 세션의 첫 verify를 포함한 `HANDOFF`
@@ -18,9 +18,11 @@
 ## 복구
 
 설계 대화를 잃으면 commit된 domain docs와 local work items에서 Claude/Opus
-세션을 시작합니다. Day 2 cold-start가 20분 안에 안 되면 checkpoint를 사용하고
-어떤 durable artifact가 부족했는지 기록합니다. 검증이 밀리면 결함을 고치지
-말고 재현 가능한 local defect까지 완료합니다.
+세션을 시작합니다. 설계 대화는 원래 다음 세션으로 이어지지 않으므로,
+복구 가능성은 discovery 문서와 spec의 품질로 결정됩니다. Day 2 cold-start가
+20분 안에 안 되면 checkpoint를 사용하고 어떤 durable artifact가 부족했는지
+기록합니다. 검증이 밀리면 결함을 고치지 말고 재현 가능한 local defect까지
+완료합니다.
 
 checkpoint는 participant bundle에 넣지 않습니다. 강사는 필요할 때만 별도 recovery archive를 만듭니다.
 

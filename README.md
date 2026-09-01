@@ -28,18 +28,21 @@ cp .env.example .env
 ## Main flow
 
 ```text
-Copilot /grill-with-docs
-  -- handoff --> Claude /to-spec -> /to-tickets
+Copilot /grill-with-docs -> docs/work/<feature>/discovery.md
+  -- fresh --> Claude /to-spec -> /to-tickets
   -- fresh --> Copilot /implement <local-ticket-path>
   -- fresh --> Codex /code-review main
 ```
 
-| 역할 | Agent runtime | Model |
-| --- | --- | --- |
-| 발견 | Copilot | GPT-5.6 Sol |
-| 아키텍처, 기획 | Claude | Claude Opus 4.8 |
-| 구현 | Copilot fresh session | GPT-5.6 Sol |
-| 독립 검증 | Codex fresh session | GPT-5.6 Terra |
+역할이 바뀌면 새 세션을 엽니다. 세션 사이의 문맥은 채팅 history가 아니라
+커밋된 durable artifact로 전달합니다.
+
+| 역할 | Agent runtime | Model | 다음 역할에 남기는 것 |
+| --- | --- | --- | --- |
+| 발견 | Copilot fresh session | GPT-5.6 Sol | `discovery.md`, `CONTEXT.md`, ADR |
+| 아키텍처, 기획 | Claude fresh session | Claude Opus 4.8 | `spec.md`, `tickets/` |
+| 구현 | Copilot fresh session | GPT-5.6 Sol | 구현 commit, `HANDOFF` |
+| 독립 검증 | Codex fresh session | GPT-5.6 Terra | UAT report, `defects/` |
 
 자세한 흐름은 [에이전틱 개발 워크플로](docs/reference/workflow.md), 조합의 의미는 [모델 하네스 매트릭스](docs/reference/model-harness-matrix.md)를 봅니다.
 
@@ -65,7 +68,8 @@ model picker**에서 model을 별도로 고릅니다. 공식 절차는
 Matt Pocock 스킬과 Anthropic의 `frontend-design`은 `.agents/skills/`에 포함된
 project-scope 샘플 구현체입니다. 설치 계약은 `./scripts/check-repo.sh`로
 확인합니다. 복원이 필요할 때만 잠금 파일에서 `npx skills experimental_install`을
-실행하고, 선택 설치를 다시 만들어야 하면 다음 12개를 지정합니다.
+실행하고, 선택 설치를 다시 만들어야 하면 Matt Pocock 스킬 11개와
+`frontend-design`을 함께 지정합니다.
 
 ```bash
 npx skills@latest add mattpocock/skills \
@@ -77,7 +81,9 @@ npx skills@latest add anthropics/skills@frontend-design \
 ```
 
 spec, ticket, defect 규약은 [local work item tracker](docs/agents/issue-tracker.md)를
-따릅니다.
+따릅니다. `CONTEXT.md`, [`docs/adr/`](docs/adr/README.md),
+[`docs/work/`](docs/work/README.md)는 비어 있는 상태로 시작하며 참가자가 랩을
+진행하면서 직접 채웁니다.
 
 ## Labs
 

@@ -10,8 +10,8 @@
 
 | 역할 | Host | Agent runtime | Model | Matt skill |
 | --- | --- | --- | --- | --- |
-| 발견 | VS Code | Copilot harness | GPT-5.6 Sol | `grill-with-docs`, `grilling`, `domain-modeling`, `research` |
-| 아키텍처·기획 | VS Code | Claude harness (handoff) | Claude Opus 4.8 | `codebase-design`, `to-spec`, `to-tickets` |
+| 발견 | VS Code | Copilot harness, fresh session | GPT-5.6 Sol | `grill-with-docs`, `grilling`, `domain-modeling`, `research` |
+| 아키텍처·기획 | VS Code | Claude harness, fresh session | Claude Opus 4.8 | `codebase-design`, `to-spec`, `to-tickets` |
 | 구현 | VS Code | Copilot harness, fresh session | GPT-5.6 Sol | `implement`, `tdd` |
 | 독립 검증 | VS Code | Codex harness, fresh session | GPT-5.6 Terra | `code-review` |
 
@@ -25,8 +25,10 @@ chat 입력창의 **language model picker**(드롭다운)에서 고릅니다. �
 비슷해도 harness와 model은 같은 개념이 아니라 서로 다른 컨트롤입니다.
 
 기존 세션에서 harness를 바꾸면 VS Code는 이를 **handoff**로 취급해 full
-conversation history와 누적 context를 새 harness로 옮깁니다. 독립 검증은
-이 문맥을 받지 않도록 New Chat에서 시작합니다. 자세한 개념은
+conversation history와 누적 context를 새 harness로 옮깁니다. 이 워크숍은 네
+역할을 모두 New Chat의 fresh session으로 분리하므로 handoff를 사용하지
+않습니다. 역할 사이의 문맥은 커밋된 durable artifact로만 전달합니다. 자세한
+개념은
 [Sessions and handoff](https://code.visualstudio.com/docs/agents/concepts/sessions)
 문서를 참고합니다.
 

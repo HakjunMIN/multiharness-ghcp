@@ -1,14 +1,17 @@
-# 하네스 간 인계 계약
+# 세션 간 인계 계약
 
-VS Code에서 Session Target을 바꾸는 handoff는 **full conversation history**와
-누적 context를 새 harness로 전달합니다. 저장소의 durable artifact는 handoff가
-아닌 fresh session과 cold-start의 기준점입니다. 다음 형식을 인계 문서에
-사용합니다.
+이 워크숍의 네 역할은 모두 fresh session입니다. VS Code에서 Session Target을
+바꾸는 handoff는 **full conversation history**와 누적 context를 새 harness로
+전달하므로 사용하지 않습니다. 세션 사이의 문맥은 커밋된 durable artifact로만
+전달하며, 그 artifact가 fresh session과 cold-start의 기준점입니다.
 
-발견에서 아키텍처·기획으로 갈 때는 VS Code handoff를 사용합니다. 구현은
-ticket마다 fresh Copilot 세션, 독립 검증은 **fresh Codex** 세션을 사용합니다.
-일반 단계 전환에는 spec, tickets, `CONTEXT.md`, ADR이면 충분합니다. 인계
-문서를 만들 때는 아래 7개 필드를 자체 점검합니다.
+발견은 discovery 문서를, 아키텍처·기획은 spec과 tickets를 남깁니다. 이 단계
+전환에는 discovery 문서, spec, tickets, `CONTEXT.md`, ADR이면 충분합니다.
+
+구현 세션은 여기에 더해 저장소 루트의 `HANDOFF`를 남깁니다. 구현 상태는
+문서에 흩어져 있어 다음 세션이 어디서부터 검증해야 하는지 알 수 없기
+때문입니다. 독립 검증은 **fresh Codex** 세션에서 시작하며 구현 세션의 대화를
+전달받지 않습니다. `HANDOFF`를 만들 때는 아래 7개 필드를 자체 점검합니다.
 
 ```markdown
 ## HANDOFF

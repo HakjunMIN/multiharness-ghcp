@@ -45,8 +45,8 @@ curl http://127.0.0.1:8000/healthz
 git check-ignore .env
 ```
 
-합의된 Matt 스킬 10개는 project scope의 `.agents/skills/`에 미리 설치되어
-있습니다. 잠금 파일과 설치 상태를 확인합니다.
+합의된 project-scope 스킬 12개(Matt Pocock 11개와 Anthropic `frontend-design`)는
+`.agents/skills/`에 미리 설치되어 있습니다. 잠금 파일과 설치 상태를 확인합니다.
 
 ```text
 ./scripts/check-repo.sh

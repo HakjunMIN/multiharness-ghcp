@@ -70,12 +70,40 @@ grep -Fq 'WORKSHOP_CLAUDE_OPUS48_CONFIRMED' scripts/preflight.sh
 grep -Fq 'WORKSHOP_CODEX_TERRA_CONFIRMED' scripts/preflight.sh
 
 grep -Fq 'docs/work/<feature>/' docs/agents/issue-tracker.md
+grep -Fq 'discovery.md' docs/agents/issue-tracker.md
 grep -Fq 'full conversation history' docs/reference/handoff-contract.md
 grep -Fq 'fresh Codex' docs/reference/handoff-contract.md
 grep -Fq 'local ticket' docs/labs/lab3-tracer-bullet.md
 grep -Fq 'local defect' docs/labs/lab6-verification.md
 grep -Fq 'Host: VS Code' docs/labs/lab8-integration.md
 grep -Fq 'Copilot, Claude, Codex' docs/labs/lab8-integration.md
+
+# 발견 -> 기획 경계는 handoff가 아니라 커밋된 discovery 문서다.
+for file in README.md docs/reference/workflow.md docs/labs/lab1-discovery.md \
+  docs/labs/lab2-spec-tickets.md; do
+  grep -Fq 'discovery.md' "$file" || {
+    printf 'FAIL: %s does not name the discovery durable artifact\n' "$file" >&2
+    exit 1
+  }
+done
+
+for file in docs/labs/lab2-spec-tickets.md docs/reference/model-harness-matrix.md \
+  docs/instructor/facilitation-notes.md; do
+  if grep -InE 'Claude(로| harness).*handoff|handoff.*Claude' "$file" 2>/dev/null; then
+    printf 'FAIL: %s still routes discovery into planning by handoff\n' "$file" >&2
+    exit 1
+  fi
+done
+
+# ADR과 CONTEXT.md는 참가자 산출물이므로 정답이 미리 커밋되어 있으면 안 된다.
+# 참가자는 실습 중 여기에 자신의 문서를 추가하므로 존재 여부가 아니라
+# seed CONTEXT.md가 채울 자리를 유지하는지를 검사한다.
+for section in '## 도메인 용어' '## 동작 규칙' '## 테스트 경계'; do
+  grep -Fq "$section" CONTEXT.md || {
+    printf 'FAIL: CONTEXT.md is missing the participant section %s\n' "$section" >&2
+    exit 1
+  }
+done
 
 if grep -InE 'project issue tracker|Apply the `ready-for-agent` triage label' \
   .agents/skills/to-spec/SKILL.md 2>/dev/null; then

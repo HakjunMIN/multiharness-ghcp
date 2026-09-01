@@ -4,6 +4,7 @@
 
 - 구현 전에 제품 상담 경계와 동작 질문을 해소한다.
 - 공유 용어는 `CONTEXT.md`, 되돌리기 어려운 결정은 ADR에 남긴다.
+- 승인된 발견 결과를 다음 세션이 읽을 discovery 문서로 발행한다.
 - unit, recorded contract, live test의 책임을 분리한다.
 
 ## Runtime card
@@ -12,7 +13,7 @@
 Host: VS Code
 Agent runtime: Copilot harness (New Chat → Session Target: Copilot)
 Model: GPT-5.6 Sol (chat 입력창의 language model picker)
-Context: Lab 2에서 Claude로 handoff할 발견 대화
+Context: fresh session. 결과는 채팅이 아니라 커밋된 문서로 남긴다.
 ```
 
 ## 시작
@@ -39,14 +40,21 @@ deterministic unit/recorded contract/live APIM test seams.
 
 ## 산출물
 
-공유 언어와 동작 용어를 `CONTEXT.md`에 기록한다. APIM credential boundary나
-no-evidence behavior처럼 되돌리기 어려운 결정만 `docs/adr/`에 남긴다. 아직
-구현 코드는 수정하지 않는다.
+Lab 2의 Claude 세션은 이 대화를 물려받지 않습니다. 세 가지를 커밋합니다.
+
+- `docs/work/<feature>/discovery.md`: 승인된 결정, 확인한 사실과 출처, 제약,
+  의존성, 열린 질문, 관련 `CONTEXT.md`와 ADR 링크
+- `CONTEXT.md`: 제품 상담의 공유 언어와 동작 용어. 비어 있는 섹션을 채운다.
+- `docs/adr/`: APIM credential boundary나 no-evidence behavior처럼 되돌리기
+  어려운 결정만
+
+아직 구현 코드는 수정하지 않는다.
 
 ## 종료 조건
 
-- `CONTEXT.md`와 필요한 ADR이 commit되어 있다.
+- `docs/work/<feature>/discovery.md`, `CONTEXT.md`, 필요한 ADR이 commit되어 있다.
 - HTTP envelope와 테스트 경계가 관찰 가능한 형태로 결정됐다.
+- discovery 문서만 읽고도 다음 세션이 spec을 쓸 수 있다.
 - spec을 막는 미해결 질문이 없다.
 - 구현 코드는 변경되지 않았다.
 
@@ -54,6 +62,8 @@ no-evidence behavior처럼 되돌리기 어려운 결정만 `docs/adr/`에 남�
 
 - 질문이 퍼지면 HTTP envelope, evidence, test seam 세 경계로 돌아온다.
 - 구현 세부 논쟁은 ADR의 대안과 결과로 기록하고 코딩으로 결정하지 않는다.
-- 세션이 끊기면 commit된 `CONTEXT.md`와 ADR을 읽고 같은 runtime card로 재개한다.
+- 결론이 채팅에만 있으면 아직 산출물이 아니다. discovery 문서에 먼저 적는다.
+- 세션이 끊기면 commit된 discovery 문서, `CONTEXT.md`, ADR을 읽고 같은 runtime
+  card로 재개한다.
 - 미해결 결정이 한 세션 대화에 안 담길 만큼 갈라지면 local ticket으로 나누되
   첫 frontier가 비지 않게 blocking edge를 점검한다.

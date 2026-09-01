@@ -103,7 +103,7 @@ if [ "$strict" -eq 1 ]; then
   if [ "${WORKSHOP_CLAUDE_OPUS48_CONFIRMED:-0}" = "1" ]; then
     ok "Claude harness + Claude Opus 4.8 확인"
   else
-    bad "Claude harness + Claude Opus 4.8 미확인" "발견 세션을 Claude로 handoff하고 model picker에서 Claude Opus 4.8을 확인하세요."
+    bad "Claude harness + Claude Opus 4.8 미확인" "New Chat에서 Session Target을 Claude로 두고 model picker에서 Claude Opus 4.8을 확인하세요."
   fi
 
   if [ "${WORKSHOP_GPT56_SOL_CONFIRMED:-0}" = "1" ]; then

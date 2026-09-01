@@ -102,7 +102,7 @@ VS Code Chat view(또는 Agents 창)의 **Session Target** 컨트롤에서 harne
 
 | 역할 | Agent runtime (harness) | Model | 스킬 |
 | --- | --- | --- | --- |
-| 발견 | Copilot harness | GPT-5.6 Sol | `grill-with-docs`, `grilling`, `domain-modeling`, `research` |
+| 발견 | Copilot harness, fresh session | GPT-5.6 Sol | `grill-with-docs`, `grilling`, `domain-modeling`, `research` |
 | 아키텍처, 기획 | Claude harness, fresh session | Claude Opus 4.8 | `codebase-design`, `to-spec`, `to-tickets` |
 | 구현 | Copilot harness, fresh session | GPT-5.6 Sol | `implement`, `tdd` |
 | 독립 검증 | Codex harness, fresh session | GPT-5.6 Terra | `code-review` + UAT |
