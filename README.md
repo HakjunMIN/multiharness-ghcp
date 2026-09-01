@@ -62,17 +62,18 @@ model picker**에서 model을 별도로 고릅니다. 공식 절차는
   exact model이 없으면 Auto나 다른 모델로 대체하지 말고 사전 점검을 중단합니다.
 
 이 워크샵의 에이전틱 개발 워크플로는 특정 스킬 세트에 종속되지 않습니다.
-Matt Pocock 스킬은 `.agents/skills/`에 포함된 샘플 구현체이며, Superpowers나
-Ouroboros 등 다른 스킬 세트와 대체하거나 함께 활용할 수 있습니다. Matt Pocock
-샘플의 설치 계약은 `./scripts/check-repo.sh`로 확인합니다. 복원이 필요할 때만 잠금
-파일에서 `npx skills experimental_install`을 실행하고, 선택 설치를 다시 만들어야
-하면 다음 10개만 지정합니다.
+Matt Pocock 스킬과 Anthropic의 `frontend-design`은 `.agents/skills/`에 포함된
+project-scope 샘플 구현체입니다. 설치 계약은 `./scripts/check-repo.sh`로
+확인합니다. 복원이 필요할 때만 잠금 파일에서 `npx skills experimental_install`을
+실행하고, 선택 설치를 다시 만들어야 하면 다음 12개를 지정합니다.
 
 ```bash
 npx skills@latest add mattpocock/skills \
   --agent github-copilot --copy -y \
   --skill grill-with-docs grilling domain-modeling research codebase-design \
-  to-spec to-tickets implement tdd code-review
+  to-spec to-tickets implement tdd code-review diagnosing-bugs
+npx skills@latest add anthropics/skills@frontend-design \
+  --agent github-copilot --copy -y
 ```
 
 spec, ticket, defect 규약은 [local work item tracker](docs/agents/issue-tracker.md)를

@@ -15,6 +15,7 @@
 | Claude harness 인증 (Anthropic) | https://code.claude.com/docs/en/authentication |
 | 클라우드/로컬 샌드박스 | https://docs.github.com/ko/copilot/how-tos/cloud-and-local-sandboxes |
 | Matt Pocock skills 저장소 | https://github.com/mattpocock/skills |
+| Anthropic frontend-design skill | https://github.com/anthropics/skills |
 | skills.sh CLI | https://skills.sh/docs/cli |
 | GitHub Copilot agent skills | https://docs.github.com/en/copilot/how-tos/use-copilot-agents/copilot-coding-agent/customize-the-agent-environment/add-agent-skills |
 | GitHub GraphQL mutation reference | https://docs.github.com/en/graphql/reference/mutations |

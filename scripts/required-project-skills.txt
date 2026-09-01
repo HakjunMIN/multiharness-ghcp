@@ -1,6 +1,8 @@
 code-review
 codebase-design
+diagnosing-bugs
 domain-modeling
+frontend-design
 grill-with-docs
 grilling
 implement

@@ -7,7 +7,9 @@ cd "$ROOT"
 expected_skills="$(cat <<'SKILLS'
 code-review
 codebase-design
+diagnosing-bugs
 domain-modeling
+frontend-design
 grill-with-docs
 grilling
 implement
@@ -18,11 +20,11 @@ to-tickets
 SKILLS
 )"
 actual_skills="$(
-  grep -vE '^[[:space:]]*(#|$)' scripts/required-matt-skills.txt |
+  grep -vE '^[[:space:]]*(#|$)' scripts/required-project-skills.txt |
     LC_ALL=C sort
 )"
 [ "$actual_skills" = "$expected_skills" ] || {
-  printf 'FAIL: required Matt skills are not the agreed minimum\n' >&2
+  printf 'FAIL: required project skills are not the agreed inventory\n' >&2
   exit 1
 }
 
@@ -31,7 +33,7 @@ installed_skills="$(
     LC_ALL=C sort
 )"
 [ "$installed_skills" = "$expected_skills" ] || {
-  printf 'FAIL: installed Matt skills are not the agreed minimum\n' >&2
+  printf 'FAIL: installed project skills are not the agreed inventory\n' >&2
   exit 1
 }
 
@@ -42,7 +44,7 @@ locked_skills="$(
   '
 )"
 [ "$locked_skills" = "$expected_skills" ] || {
-  printf 'FAIL: locked Matt skills are not the agreed minimum\n' >&2
+  printf 'FAIL: locked project skills are not the agreed inventory\n' >&2
   exit 1
 }
 
@@ -97,6 +99,6 @@ if grep -InF \
   exit 1
 fi
 
-node scripts/check-matt-skills.mjs --required >/dev/null
+node scripts/check-project-skills.mjs --required >/dev/null
 
 printf 'OK: VS Code multi-agent harness workflow contract passed\n'

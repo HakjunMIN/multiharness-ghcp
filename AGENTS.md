@@ -30,6 +30,7 @@ response: {"answer":"...", ...}
 5. 검증자는 production implementation을 고치지 않고 재현 근거와 local defect 문서를 만듭니다.
 6. `git push --force`를 금지합니다.
 7. 전역(global) 스킬은 사용하지 않습니다. 스킬은 이 저장소의 `.agents/skills/`에 있는 project scope 스킬만 탐색하고 실행합니다.
+8. frontend의 한글 본문 서체는 나눔고딕을 우선 사용합니다. 제목용 display 서체는 이 규칙의 예외로 둘 수 있습니다.
 
 ## Main development flow
 

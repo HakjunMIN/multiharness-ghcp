@@ -117,10 +117,10 @@ for (const group of [project.dependencies, project.devDependencies]) {
 }
 PIN
 
-# --- 7) optional Matt skill installation contract ---
-if [ -f scripts/check-matt-skills.mjs ]; then
-  node scripts/check-matt-skills.mjs >/dev/null ||
-    err "Matt skill installation contract failed"
+# --- 7) optional project skill installation contract ---
+if [ -f scripts/check-project-skills.mjs ]; then
+  node scripts/check-project-skills.mjs >/dev/null ||
+    err "project skill installation contract failed"
 fi
 
 if [ "$fail" -ne 0 ]; then

@@ -45,9 +45,12 @@ superset입니다. 둘 다 같은 `POST /api/consult` contract를 사용합니�
 ```text
 npx skills experimental_install
 npx skills update code-review codebase-design \
-  domain-modeling grill-with-docs grilling implement research tdd to-spec to-tickets
+  diagnosing-bugs domain-modeling grill-with-docs grilling implement research tdd \
+  to-spec to-tickets
+npx skills update frontend-design
 ```
 
-샘플 스킬은 `.agents/skills/`에 미리 설치되어 있습니다.
+Matt Pocock 스킬 11개와 Anthropic의 `frontend-design`은 `.agents/skills/`에 미리
+설치되어 있습니다.
 `skills-lock.json`과 설치 파일을 함께 커밋하며 업데이트 diff를 검토합니다.
-Matt Pocock skills는 이 워크플로의 참고 구현체일 뿐 필수 전제는 아닙니다.
+이 project-scope 스킬은 이 워크플로의 참고 구현체일 뿐 필수 전제는 아닙니다.
