@@ -94,7 +94,7 @@ spec, ticket, defect 규약은 [local work item tracker](docs/agents/issue-track
 5. [Cold-start recovery](docs/labs/lab4-cold-start.md)
 6. [Behavior and full improvement](docs/labs/lab5-improvement.md)
 7. [Independent verification](docs/labs/lab6-verification.md)
-8. [Runtime comparison](docs/labs/lab7-runtime-comparison.md)
+8. [Combination comparison](docs/labs/lab7-runtime-comparison.md)
 9. [Integration](docs/labs/lab8-integration.md)
 
 ## 검증
