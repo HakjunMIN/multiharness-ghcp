@@ -6,8 +6,8 @@ TEMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TEMP_DIR"' EXIT INT TERM
 
 cp -R "$ROOT/app/api/." "$TEMP_DIR/"
-cp -R "$ROOT/docs/instructor/checkpoint/app/api/src/." "$TEMP_DIR/src/"
-cp -R "$ROOT/docs/instructor/checkpoint/app/api/tests/." "$TEMP_DIR/tests/"
+cp -R "$ROOT/docs/setup/checkpoint/app/api/src/." "$TEMP_DIR/src/"
+cp -R "$ROOT/docs/setup/checkpoint/app/api/tests/." "$TEMP_DIR/tests/"
 
 cd "$TEMP_DIR"
 export PYTHONPATH=src

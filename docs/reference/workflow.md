@@ -1,6 +1,6 @@
 # 에이전틱 개발 워크플로
 
-이 워크샵은 역할별 harness, model, skill, durable state를 조합하는 에이전틱
+이 과정은 역할별 harness, model, skill, durable state를 조합하는 에이전틱
 개발 워크플로를 local work item에 맞게 사용합니다. 이 저장소에 설치된
 `mattpocock/skills`는 이 워크플로를 구현하는 샘플 스킬 세트이며,
 Superpowers나 Ouroboros 등 다른 스킬 세트로 대체하거나 함께 활용할 수 있습니다.
@@ -56,8 +56,8 @@ Code는 이를 handoff로 취급해 full conversation history를 새 harness로 
 | 구현 | 구현 commit, 루트 `HANDOFF` |
 | 독립 검증 | UAT report, `docs/work/<feature>/defects/` |
 
-Day 1 종료에는 [`HANDOFF`](handoff-contract.md)에 첫 verify 명령을 남기고,
-Day 2는 이전 채팅 없이 commit된 durable state로 시작합니다.
+세션을 닫기 전에 [`HANDOFF`](handoff-contract.md)에 첫 verify 명령을 남기고,
+다음 세션은 이전 채팅 없이 commit된 durable state로 시작합니다.
 
 core는 Python API vertical slice이고 full은 core에 React UI를 더한 strict
 superset입니다. 둘 다 같은 `POST /api/consult` contract를 사용합니다.

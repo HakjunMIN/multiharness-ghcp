@@ -25,7 +25,7 @@ chat 입력창의 **language model picker**(드롭다운)에서 고릅니다. �
 비슷해도 harness와 model은 같은 개념이 아니라 서로 다른 컨트롤입니다.
 
 기존 세션에서 harness를 바꾸면 VS Code는 이를 **handoff**로 취급해 full
-conversation history와 누적 context를 새 harness로 옮깁니다. 이 워크숍은 네
+conversation history와 누적 context를 새 harness로 옮깁니다. 이 과정은 네
 역할을 모두 New Chat의 fresh session으로 분리하므로 handoff를 사용하지
 않습니다. 역할 사이의 문맥은 커밋된 durable artifact로만 전달합니다. 자세한
 개념은
@@ -33,6 +33,6 @@ conversation history와 누적 context를 새 harness로 옮깁니다. 이 워�
 문서를 참고합니다.
 
 필수 조합이 Session Target/model picker에 없으면 다른 모델로 대체하지 않고
-강사에게 알립니다. Codex + GPT-5.6 Terra는 Cloud가 아니라 local Codex의
-Copilot-backed provider를 사용합니다. Day 2 cold-start는 model memory가
+운영자에게 알립니다. Codex + GPT-5.6 Terra는 Cloud가 아니라 local Codex의
+Copilot-backed provider를 사용합니다. cold-start는 model memory가
 아니라 durable state의 품질을 평가합니다.

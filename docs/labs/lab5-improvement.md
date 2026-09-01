@@ -1,4 +1,4 @@
-# Lab 5 - 동작 개선과 full 확장 (75분)
+# Lab 5 - 동작 개선과 full 확장
 
 ## 이 랩에서 배우는 것
 
@@ -37,4 +37,4 @@ focused failing test, 최소 구현, focused GREEN, 전체 suite 순서를 지�
 ## 막힐 때
 
 - full UI가 지연되면 core behavior를 먼저 완결하고 UI 범위를 줄인다.
-- live 429가 필요하면 강사와 test window를 정하고 다른 참가자 key를 쓰지 않는다.
+- live 429가 필요하면 운영자와 test window를 정하고 다른 참가자 key를 쓰지 않는다.

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if WORKSHOP_CHECKPOINT_DIR=docs/instructor/checkpoint ./scripts/restore-checkpoint.sh; then
+if WORKSHOP_CHECKPOINT_DIR=docs/setup/checkpoint ./scripts/restore-checkpoint.sh; then
   echo 'restore unexpectedly succeeded without --confirm' >&2
   exit 1
 fi

@@ -5,7 +5,7 @@
 참가자가 발견 결과로 직접 채웁니다.
 
 작업 규칙은 [AGENTS.md](AGENTS.md), 되돌리기 어려운 결정은
-[docs/adr/](docs/adr/README.md)를 따릅니다. 워크숍 실행 환경 용어(host,
+[docs/adr/](docs/adr/README.md)를 따릅니다. 실행 환경 용어(host,
 harness, model, Session Target, fresh session)는 도메인 용어가 아니므로
 [개념](docs/00-concepts.md)에 있습니다.
 

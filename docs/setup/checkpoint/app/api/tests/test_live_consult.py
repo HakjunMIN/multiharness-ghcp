@@ -9,7 +9,7 @@ DEFAULT_SMOKE_QUESTION = "공개 제품 정보와 출처 하나를 알려 주세
 
 
 @pytest.mark.live
-def test_consult_through_instructor_apim():
+def test_consult_through_managed_apim():
     question = os.getenv("LIVE_SMOKE_QUESTION", DEFAULT_SMOKE_QUESTION)
 
     response = TestClient(app).post("/api/consult", json={"question": question})

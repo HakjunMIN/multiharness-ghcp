@@ -88,7 +88,7 @@ for file in README.md docs/reference/workflow.md docs/labs/lab1-discovery.md \
 done
 
 for file in docs/labs/lab2-spec-tickets.md docs/reference/model-harness-matrix.md \
-  docs/instructor/facilitation-notes.md; do
+  docs/reference/workflow.md; do
   if grep -InE 'Claude(로| harness).*handoff|handoff.*Claude' "$file" 2>/dev/null; then
     printf 'FAIL: %s still routes discovery into planning by handoff\n' "$file" >&2
     exit 1
@@ -113,7 +113,7 @@ fi
 
 if grep -InE \
   'Claude Opus 5|Claude Sonnet 5|/implement #[0-9]+|gh issue|GitHub Issue|spec Issue|defect Issue' \
-  AGENTS.md README.md docs/labs/*.md docs/instructor/*.md \
+  AGENTS.md README.md docs/labs/*.md docs/setup/*.md \
   docs/reference/workflow.md docs/reference/model-harness-matrix.md \
   docs/reference/handoff-contract.md 2>/dev/null; then
   printf 'FAIL: legacy role matrix or GitHub Issue workflow remains\n' >&2

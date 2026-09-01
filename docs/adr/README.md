@@ -10,6 +10,6 @@
 - 용어와 공유 언어는 ADR이 아니라 [CONTEXT.md](../../CONTEXT.md)에 씁니다.
 - 첫 ADR은 [Lab 1](../labs/lab1-discovery.md)에서 만듭니다.
 
-워크숍 진행 방식(harness, model, 세션 경계)은 결정 대상이 아니라 주어진
+진행 방식(harness, model, 세션 경계)은 결정 대상이 아니라 주어진
 전제이므로 ADR이 아니라 [AGENTS.md](../../AGENTS.md)와
 [개념](../00-concepts.md)에 있습니다.

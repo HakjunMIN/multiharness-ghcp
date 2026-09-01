@@ -1,4 +1,4 @@
-# Lab 6 - 독립 review와 UAT (60분)
+# Lab 6 - 독립 review와 UAT
 
 ## 이 랩에서 배우는 것
 
@@ -41,4 +41,4 @@ reproduction test를 추가할 수 있고, evidence와 severity를 담은 local 
 ## 막힐 때
 
 - 구현 의도를 추측하지 말고 spec acceptance criteria와 black-box response를 기준으로 판정한다.
-- live infrastructure 결함은 제품 결함과 분리해 강사에게 route/status를 전달한다.
+- live infrastructure 결함은 제품 결함과 분리해 운영자에게 route/status를 전달한다.

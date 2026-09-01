@@ -1,4 +1,4 @@
-# Lab 0 - runway 사전 점검 (30분)
+# Lab 0 - runway 사전 점검
 
 ## 이 랩에서 배우는 것
 
@@ -14,17 +14,17 @@ VS Code 1.128.0 이상, Node 22.18 이상, Python 3.11 이상, `uv`가 설치되
 
 ## 저장소 준비
 
-강사가 제공한 리포를 clone합니다. spec, ticket, defect는 저장소 문서이므로
-별도 tracker 권한이 필요하지 않습니다. 최종 PR이 필요한 과정에서만 자신의
+운영자가 제공한 리포를 clone합니다. spec, ticket, defect는 저장소 문서이므로
+별도 tracker 권한이 필요하지 않습니다. 최종 PR을 만들 때만 자신의
 fork를 origin으로 사용합니다.
 
 ```bash
-git clone <instructor-repo-url>
+git clone <repo-url>
 cd <repo>
 git remote -v
 ```
 
-최종 PR을 만들 참가자는 자신의 fork를 origin으로 설정합니다. 강사 리포 변경
+최종 PR을 만들 참가자는 자신의 fork를 origin으로 설정합니다. 운영자 리포 변경
 사항을 받아야 하면 upstream을 추가하고 merge합니다.
 
 ## 실행
@@ -32,7 +32,7 @@ git remote -v
 ```bash
 ./scripts/preflight.sh
 cp .env.example .env
-# 강사가 준 APIM 값을 .env에 직접 넣는다. 채팅이나 커밋에 붙이지 않는다.
+# 운영자가 준 APIM 값을 .env에 직접 넣는다. 채팅이나 커밋에 붙이지 않는다.
 ./scripts/dev.sh
 curl http://127.0.0.1:8000/healthz
 ```
@@ -85,7 +85,7 @@ WORKSHOP_CODEX_TERRA_CONFIRMED=1 \
 
 ## 막힐 때
 
-- 모델이나 skill이 없으면 임의 대체하지 말고 강사에게 알린다.
+- 모델이나 skill이 없으면 임의 대체하지 말고 운영자에게 알린다.
 - health만 실패하면 APIM보다 먼저 8000 포트와 Python 환경을 확인한다.
-- `.env`가 추적되면 값을 지우고 강사에게 key rotation을 요청한다.
+- `.env`가 추적되면 값을 지우고 운영자에게 key rotation을 요청한다.
 - 최종 PR 단계에서 push 권한이 없으면 자신의 fork를 origin으로 설정한다.

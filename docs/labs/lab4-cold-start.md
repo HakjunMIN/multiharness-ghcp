@@ -1,4 +1,4 @@
-# Lab 4 - cold-start 복구 (30분)
+# Lab 4 - cold-start 복구
 
 ## 이 랩에서 배우는 것
 
@@ -18,13 +18,13 @@ New Chat으로 이전 대화를 상속하지 않는 fresh session을 엽니다. 
 
 ```bash
 mkdir -p "$HOME/.workshop-checkpoint"
-tar -xzf /path/from-instructor/workshop-checkpoint.tar.gz \
+tar -xzf /path/to/workshop-checkpoint.tar.gz \
 	-C "$HOME/.workshop-checkpoint"
 WORKSHOP_CHECKPOINT_DIR="$HOME/.workshop-checkpoint" \
 	./scripts/restore-checkpoint.sh --confirm
 ```
 
-checkpoint archive는 participant bundle에 포함되지 않습니다. 20분 recovery gate를 넘긴 경우 강사가 별도 보안 채널로 전달한 archive만 사용합니다.
+checkpoint archive는 participant bundle에 포함되지 않습니다. 20분 recovery gate를 넘긴 경우 운영자가 별도 보안 채널로 전달한 archive만 사용합니다.
 
 어떤 durable artifact가 부족했는지 local defect 또는 UAT note에 기록합니다.
 

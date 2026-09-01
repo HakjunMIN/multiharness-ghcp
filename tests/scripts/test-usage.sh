@@ -14,12 +14,12 @@ for script in restore-checkpoint.sh build-participant-bundle.sh; do
   fi
 done
 
-grep -Fq '2026-04-01' docs/instructor/azure-setup.md
-grep -Fq 'Web Knowledge Source' docs/instructor/azure-setup.md
-grep -Fq '참가자별 subscription key' docs/instructor/azure-setup.md
-grep -Fq 'APIM_BASE_URL' docs/instructor/azure-setup.md
-grep -Fq 'BRAND_NAME' docs/instructor/azure-setup.md
-grep -Fq './scripts/test-live.sh' docs/instructor/azure-setup.md
+grep -Fq '2026-04-01' docs/setup/azure-setup.md
+grep -Fq 'Web Knowledge Source' docs/setup/azure-setup.md
+grep -Fq '참가자별 subscription key' docs/setup/azure-setup.md
+grep -Fq 'APIM_BASE_URL' docs/setup/azure-setup.md
+grep -Fq 'BRAND_NAME' docs/setup/azure-setup.md
+grep -Fq './scripts/test-live.sh' docs/setup/azure-setup.md
 
 policy_files=()
 while IFS= read -r file; do

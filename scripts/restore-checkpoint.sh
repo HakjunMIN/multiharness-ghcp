@@ -12,7 +12,7 @@ cd "$ROOT"
 SOURCE="${WORKSHOP_CHECKPOINT_DIR:-}"
 
 if [ -z "$SOURCE" ]; then
-  printf 'FAIL: WORKSHOP_CHECKPOINT_DIR에 강사용 checkpoint 디렉터리를 지정하세요.\n' >&2
+  printf 'FAIL: WORKSHOP_CHECKPOINT_DIR에 운영자용 checkpoint 디렉터리를 지정하세요.\n' >&2
   exit 2
 fi
 if [ -n "$(git status --porcelain)" ]; then

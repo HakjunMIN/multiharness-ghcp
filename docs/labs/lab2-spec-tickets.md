@@ -1,4 +1,4 @@
-# Lab 2 - Spec과 ticket (45분)
+# Lab 2 - Spec과 ticket
 
 ## 이 랩에서 배우는 것
 

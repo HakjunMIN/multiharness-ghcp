@@ -1,6 +1,6 @@
 # 세션 간 인계 계약
 
-이 워크숍의 네 역할은 모두 fresh session입니다. VS Code에서 Session Target을
+이 과정의 네 역할은 모두 fresh session입니다. VS Code에서 Session Target을
 바꾸는 handoff는 **full conversation history**와 누적 context를 새 harness로
 전달하므로 사용하지 않습니다. 세션 사이의 문맥은 커밋된 durable artifact로만
 전달하며, 그 artifact가 fresh session과 cold-start의 기준점입니다.

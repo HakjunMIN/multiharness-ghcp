@@ -23,7 +23,7 @@ while IFS= read -r path || [ -n "$path" ]; do
   [ -e "$path" ] || err "manifest path missing: $path"
 done < "$MANIFEST"
 
-for legacy_path in seed agent-seed docs/instructor/reference-solution; do
+for legacy_path in seed agent-seed docs/setup/reference-solution; do
   [ ! -e "$legacy_path" ] || err "legacy workshop path must stay removed: $legacy_path"
 done
 

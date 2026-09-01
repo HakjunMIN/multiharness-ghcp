@@ -115,8 +115,8 @@ history를 상속하지 않으며 역할 간 context는 durable artifact로 전�
 
 발견, 기획, 구현과 검증은 역할별 fresh session으로 나눕니다. 발견 세션은
 discovery 문서를, 기획 세션은 spec과 ticket을, 구현 세션은 commit과 `HANDOFF`를
-다음 역할의 입력으로 남깁니다. Day 1 종료에는 `CONTEXT.md`, ADR, local work
-items, commits와 `HANDOFF`를 남기고 Day 2는 이것만으로 cold-start합니다.
+다음 역할의 입력으로 남깁니다. 세션을 닫기 전에 `CONTEXT.md`, ADR, local work
+items, commits와 `HANDOFF`를 남기고, 다음 세션은 이것만으로 cold-start합니다.
 
 ## Verification commands
 
@@ -127,4 +127,4 @@ for test in tests/scripts/test-*.sh; do "$test"; done
 ./scripts/check-repo.sh
 ```
 
-Live smoke는 강사가 지정한 gate에서만 `(cd app/api && uv run --frozen pytest -m live -q)`로 실행합니다.
+Live smoke는 운영자가 지정한 gate에서만 `(cd app/api && uv run --frozen pytest -m live -q)`로 실행합니다.

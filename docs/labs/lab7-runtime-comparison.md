@@ -1,4 +1,4 @@
-# Lab 7 - runtime 비교 (30분)
+# Lab 7 - runtime 비교
 
 ## 이 랩에서 배우는 것
 

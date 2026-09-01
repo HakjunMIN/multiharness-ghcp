@@ -1,6 +1,6 @@
-# Greenfield Product Consultation Agent Workshop
+# Greenfield Product Consultation Agent
 
-Microsoft Agent Framework Python backend와 React frontend로 공개 웹 근거 기반 제품 상담 app을 만드는 2일 hands-on workshop입니다. Foundry IQ retrieval과 model endpoint는 instructor APIM 뒤에 있으며, 참가자는 origin credentials를 받지 않습니다.
+Microsoft Agent Framework Python backend와 React frontend로 공개 웹 근거 기반 제품 상담 app을 만드는 hands-on 과정입니다. Foundry IQ retrieval과 model endpoint는 운영자가 관리하는 APIM 뒤에 있으며, 참가자는 origin credentials를 받지 않습니다.
 
 ## 범위
 
@@ -11,19 +11,19 @@ full은 별도 출발점이 아니라 core의 strict superset입니다.
 
 ## 시작
 
-강사가 제공한 리포를 clone합니다. 최종 PR이 필요한 과정에서는 자신의 fork를
+운영자가 제공한 리포를 clone합니다. 최종 PR을 만들 때는 자신의 fork를
 사용하지만 spec, ticket, defect는 모두 저장소의 local work item으로 관리하므로
 remote tracker 권한과 연결은 요구하지 않습니다.
 
 ```bash
-git clone <instructor-repo-url>
+git clone <repo-url>
 cd <repo>
 ./scripts/preflight.sh
 cp .env.example .env
 ./scripts/dev.sh
 ```
 
-강사가 전달한 다섯 runtime 값은 `.env`에만 둡니다. 커밋된 예시는 non-routable입니다.
+운영자가 전달한 다섯 runtime 값은 `.env`에만 둡니다. 커밋된 예시는 non-routable입니다.
 
 ## Main flow
 
@@ -64,7 +64,7 @@ model picker**에서 model을 별도로 고릅니다. 공식 절차는
 - **Cloud Codex**는 이 검증 경로가 아닙니다. Session Target과 provider 아래에
   exact model이 없으면 Auto나 다른 모델로 대체하지 말고 사전 점검을 중단합니다.
 
-이 워크샵의 에이전틱 개발 워크플로는 특정 스킬 세트에 종속되지 않습니다.
+이 과정의 에이전틱 개발 워크플로는 특정 스킬 세트에 종속되지 않습니다.
 Matt Pocock 스킬과 Anthropic의 `frontend-design`은 `.agents/skills/`에 포함된
 project-scope 샘플 구현체입니다. 설치 계약은 `./scripts/check-repo.sh`로
 확인합니다. 복원이 필요할 때만 잠금 파일에서 `npx skills experimental_install`을
