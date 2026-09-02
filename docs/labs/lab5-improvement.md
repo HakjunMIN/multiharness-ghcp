@@ -10,16 +10,17 @@
 
 ```text
 Host: VS Code
-Agent runtime: Copilot harness (New Chat → Session Target: Copilot)
-Model: GPT-5.6 Sol (chat 입력창의 language model picker)
+Recommended agent runtime: Copilot harness (New Chat → Session Target: Copilot)
+Recommended model: GPT-5.6 Sol (chat 입력창의 language model picker)
 Context: ticket 하나의 fresh session
 ```
 
 Lab 3의 상담 흐름에 no-evidence behavior와 actionable한 error/429 UI를
 추가합니다. answer와 structured citations가 함께 유지되는지도 검증합니다.
 
-New Chat으로 fresh session을 열고 Session Target을 Copilot로, model picker에서
-GPT-5.6 Sol을 선택한 뒤 채팅에 다음을 입력합니다.
+New Chat으로 fresh session을 엽니다. 권장 조합은 Session Target Copilot과
+GPT-5.6 Sol입니다. 다른 조합을 사용하면 `HANDOFF`에 실제 host, harness, model,
+skill을 기록합니다. 채팅에 다음을 입력합니다.
 
 ```text
 /implement docs/work/<feature>/tickets/<behavior-or-ui-ticket>.md

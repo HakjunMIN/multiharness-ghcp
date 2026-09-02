@@ -64,15 +64,22 @@ grep -Fq 'chat.agentHost.codexAgent.enabled' README.md
 grep -Fq 'Copilot Pro+' README.md
 grep -Fq 'Cloud Codex' README.md
 grep -Fq 'agent-harnesses' README.md
+grep -Fq '권장 기본값' AGENTS.md
+grep -Fq '권장 기본값' docs/reference/model-harness-matrix.md
+grep -Fq '실제로 사용한' docs/reference/handoff-contract.md
+grep -Fq '실제로 사용한' docs/templates/uat-report.md
 grep -Fq 'WORKSHOP_CLAUDE_OPUS48_CONFIRMED' docs/labs/lab0-preflight.md
 grep -Fq 'WORKSHOP_CODEX_TERRA_CONFIRMED' docs/labs/lab0-preflight.md
 grep -Fq 'WORKSHOP_CLAUDE_OPUS48_CONFIRMED' scripts/preflight.sh
 grep -Fq 'WORKSHOP_CODEX_TERRA_CONFIRMED' scripts/preflight.sh
+grep -Fq 'warn_ "권장 Claude harness + Claude Opus 4.8 미확인"' scripts/preflight.sh
+grep -Fq 'warn_ "권장 Copilot harness + GPT-5.6 Sol 미확인"' scripts/preflight.sh
+grep -Fq 'warn_ "권장 local Codex + GPT-5.6 Terra 미확인"' scripts/preflight.sh
 
 grep -Fq 'docs/work/<feature>/' docs/agents/issue-tracker.md
 grep -Fq 'discovery.md' docs/agents/issue-tracker.md
 grep -Fq 'full conversation history' docs/reference/handoff-contract.md
-grep -Fq 'fresh Codex' docs/reference/handoff-contract.md
+grep -Fq 'fresh verifier' docs/reference/handoff-contract.md
 grep -Fq 'local ticket' docs/labs/lab3-tracer-bullet.md
 grep -Fq 'local defect' docs/labs/lab6-verification.md
 grep -Fq 'Host: VS Code' docs/labs/lab8-integration.md
@@ -139,6 +146,15 @@ if grep -InE \
   docs/reference/workflow.md docs/reference/model-harness-matrix.md \
   docs/reference/handoff-contract.md 2>/dev/null; then
   printf 'FAIL: legacy role matrix or GitHub Issue workflow remains\n' >&2
+  exit 1
+fi
+
+if grep -InE \
+  '필수 조합|exact harness/model|다른 model로 대체하지|임의 대체하지|Cloud Codex를 선택하지 않습니다' \
+  AGENTS.md README.md docs/labs/*.md docs/setup/*.md \
+  docs/reference/workflow.md docs/reference/model-harness-matrix.md \
+  docs/reference/handoff-contract.md 2>/dev/null; then
+  printf 'FAIL: recommended runtime profile is still documented as mandatory\n' >&2
   exit 1
 fi
 

@@ -10,14 +10,16 @@
 
 ```text
 Host: VS Code
-Agent runtime: Codex harness (New Chat → Session Target: Codex)
-Model: GPT-5.6 Terra, Copilot-backed provider (language model picker)
+Recommended agent runtime: Codex harness (New Chat → Session Target: Codex)
+Recommended model: GPT-5.6 Terra, Copilot-backed provider (language model picker)
 Context: 구현 세션과 분리된 새 세션
 ```
 
 구현 세션을 handoff하지 않습니다. New Chat으로 fresh session을 열고 Session
-Target을 local Codex로, provider를 Copilot-backed로, model을 GPT-5.6 Terra로
-선택한 뒤 채팅에 다음을 입력합니다. Cloud Codex를 선택하지 않습니다.
+Target local Codex, Copilot-backed provider, GPT-5.6 Terra를 권장 조합으로
+사용합니다. 다른 조합을 사용해도 되지만 구현 세션의 대화를 상속하지 않고
+구현을 직접 수정하지 않는 독립 verifier여야 하며, 실제 host, harness, model,
+skill을 UAT report에 기록합니다.
 
 ```text
 /code-review main

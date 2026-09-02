@@ -12,7 +12,9 @@
 - **Foundry IQ:** 공개 웹에서 cited evidence를 가져오는 retrieval 경계
 - **APIM:** 참가자 key를 origin credential과 분리하고 quota를 적용하는 gateway
 
-이 과정은 같은 host에서 harness와 model을 역할별로 바꾸는 에이전틱 개발
-워크플로를 사용합니다. `mattpocock/skills`는 이 흐름을 위한 샘플 구현체이며,
-Superpowers나 Ouroboros를 포함한 다른 스킬 세트도 활용할 수 있습니다. 기본 test는
+이 과정은 같은 host에서 역할별 fresh session을 분리하는 에이전틱 개발
+워크플로를 사용합니다. 역할별 harness와 model 표는 권장 기본값이며 다른 조합도
+사용할 수 있습니다. 실제 선택은 durable artifact에 기록합니다.
+`mattpocock/skills`는 이 흐름을 위한 샘플 구현체이며, Superpowers나
+Ouroboros를 포함한 다른 스킬 세트도 활용할 수 있습니다. 기본 test는
 deterministic하며 실제 APIM smoke는 `live` marker로 분리합니다.

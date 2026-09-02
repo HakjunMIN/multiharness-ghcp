@@ -6,10 +6,10 @@
 Superpowers나 Ouroboros 등 다른 스킬 세트로 대체하거나 함께 활용할 수 있습니다.
 
 ```text
-Copilot grill-with-docs → discovery.md
-→ fresh Claude to-spec → to-tickets
-→ fresh Copilot implement → commit + HANDOFF
-→ fresh Codex code-review + UAT
+discovery grill-with-docs → discovery.md
+→ fresh planning to-spec → to-tickets
+→ fresh implementation implement → commit + HANDOFF
+→ fresh independent verification code-review + UAT
 ```
 
 역할이 바뀌면 새 세션을 엽니다. 세션 사이의 문맥은 채팅 history가 아니라
@@ -17,24 +17,32 @@ Copilot grill-with-docs → discovery.md
 
 ## 역할별 실행
 
-발견은 New Chat에서 Session Target을 Copilot, model을 GPT-5.6 Sol로 선택하고
+아래 runtime/model은 권장 기본값입니다. 사용할 수 없으면 필요한 skill을
+지원하는 다른 조합을 선택하고 실제 선택을 durable artifact에 기록합니다.
+
+발견은 New Chat에서 권장 Session Target인 Copilot, model인 GPT-5.6 Sol을 선택하고
 `/grill-with-docs`를 실행합니다. 결정 frontier가 닫히고 사용자가 합의를
 승인하면 `docs/work/<feature>/discovery.md`, `CONTEXT.md`, 필요한 ADR을
 커밋합니다.
 
-아키텍처·기획은 New Chat으로 fresh session을 열고 Session Target을 Claude,
-model을 Claude Opus 4.8로 선택합니다. `AGENTS.md`, `CONTEXT.md`, discovery
+아키텍처·기획은 New Chat으로 fresh session을 열고 권장 Session Target인 Claude,
+model인 Claude Opus 4.8을 선택합니다. `AGENTS.md`, `CONTEXT.md`, discovery
 문서와 연결된 ADR을 먼저 읽은 뒤 `codebase-design`, `/to-spec`,
 `/to-tickets`로 local work item을 만듭니다.
 
-구현은 local ticket마다 fresh session을 열고 Session Target을 Copilot,
-model picker에서 GPT-5.6 Sol을 선택한 뒤
+구현은 local ticket마다 fresh session을 열고 권장 Session Target인 Copilot,
+model인 GPT-5.6 Sol을 선택한 뒤
 `/implement docs/work/<feature>/tickets/<ticket>.md`를 사용합니다. 완료 시
 구현 commit과 루트 `HANDOFF`를 남깁니다.
 
-검증도 New Chat을 엽니다. Session Target을 Codex, provider를 Copilot-backed,
-model을 GPT-5.6 Terra로 선택합니다. local spec과 acceptance matrix를 먼저 읽고
+검증도 New Chat을 엽니다. 권장 Session Target인 Codex, provider인
+Copilot-backed, model인 GPT-5.6 Terra를 선택합니다. local spec과 acceptance
+matrix를 먼저 읽고
 `/code-review main`을 수행한 뒤 독립 UAT를 실행합니다.
+
+권장 조합을 대체할 때도 역할별 fresh session을 유지합니다. 특히 verifier는
+구현 세션의 대화를 상속하거나 구현 코드를 직접 수정하지 않으며, 실제 host,
+harness, model, skill을 UAT report에 기록합니다.
 
 harness(Session Target)와 model(picker)은 서로 다른 컨트롤입니다. 자세한
 전환 방법은 [Host/harness/model 매트릭스](model-harness-matrix.md)를,

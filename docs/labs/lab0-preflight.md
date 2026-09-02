@@ -58,15 +58,17 @@ Copilot 또는 Anthropic 인증 경로를 설정합니다. Codex는 OpenAI Codex
 extension을 설치하거나 `chat.agentHost.codexAgent.enabled`를 활성화합니다.
 Terra 검증에는 GitHub 로그인과 Copilot Pro+가 필요합니다.
 
-VS Code Chat view(또는 Agents 창)에서 다음 네 조합을 확인합니다.
+VS Code Chat view(또는 Agents 창)에서 다음 권장 조합을 확인합니다.
 
 - Copilot + GPT-5.6 Sol: 발견
 - Claude + Claude Opus 4.8: 아키텍처·기획
 - Copilot + GPT-5.6 Sol: 구현
 - local Codex의 Copilot-backed provider + GPT-5.6 Terra: 독립 검증
 
-Cloud Codex, Auto, 다른 model로 대체하지 않습니다. strict preflight를 실행할
-때는 확인 결과를 다음처럼 전달합니다.
+권장 조합을 사용할 수 없으면 역할에 필요한 skill을 지원하는 다른 조합으로
+진행할 수 있습니다. 역할별 fresh session과 구현/검증 분리는 유지하고 실제
+조합을 `HANDOFF`와 UAT report에 기록합니다. strict preflight를 실행할 때
+권장 조합 확인 결과는 다음처럼 전달합니다.
 
 ```bash
 WORKSHOP_GPT56_SOL_CONFIRMED=1 \
@@ -78,14 +80,15 @@ WORKSHOP_CODEX_TERRA_CONFIRMED=1 \
 ## 종료 조건
 
 - 리포를 clone했고 최종 PR이 필요하면 자신의 fork를 origin으로 설정했다.
-- 필수 스킬과 네 역할의 exact harness/model 조합을 열 수 있다.
+- 필수 project skill을 확인했고 네 역할의 권장 harness/model 가용성을 점검했다.
 - 두 서버가 시작되고 health가 설정된 브랜드를 반환한다.
 - API 기본 테스트와 web test/build가 통과한다.
 - `.env`가 무시되며 APIM key가 채팅이나 commit에 없다.
 
 ## 막힐 때
 
-- 모델이나 skill이 없으면 임의 대체하지 말고 운영자에게 알린다.
+- 권장 모델이나 harness가 없으면 대체 조합과 실제 선택을 durable artifact에 기록한다.
+- 역할에 필요한 skill 자체가 없으면 운영자에게 알린다.
 - health만 실패하면 APIM보다 먼저 8000 포트와 Python 환경을 확인한다.
 - `.env`가 추적되면 값을 지우고 운영자에게 key rotation을 요청한다.
 - 최종 PR 단계에서 push 권한이 없으면 자신의 fork를 origin으로 설정한다.

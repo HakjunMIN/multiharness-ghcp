@@ -10,6 +10,7 @@
 - 용어와 공유 언어는 ADR이 아니라 [CONTEXT.md](../../CONTEXT.md)에 씁니다.
 - 첫 ADR은 [Lab 1](../labs/lab1-discovery.md)에서 만듭니다.
 
-진행 방식(harness, model, 세션 경계)은 결정 대상이 아니라 주어진
-전제이므로 ADR이 아니라 [AGENTS.md](../../AGENTS.md)와
-[개념](../00-concepts.md)에 있습니다.
+진행 방식의 필수 interface인 역할 분리, fresh session, durable artifact는
+과정의 주어진 전제입니다. 역할별 harness와 model은 권장 기본값이며 실제 선택은
+각 artifact에 기록합니다. 이 운영 규칙은 ADR이 아니라
+[AGENTS.md](../../AGENTS.md)와 [개념](../00-concepts.md)에 있습니다.

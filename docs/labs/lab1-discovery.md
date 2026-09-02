@@ -11,16 +11,17 @@
 
 ```text
 Host: VS Code
-Agent runtime: Copilot harness (New Chat → Session Target: Copilot)
-Model: GPT-5.6 Sol (chat 입력창의 language model picker)
+Recommended agent runtime: Copilot harness (New Chat → Session Target: Copilot)
+Recommended model: GPT-5.6 Sol (chat 입력창의 language model picker)
 Context: fresh session. 결과는 채팅이 아니라 커밋된 문서로 남긴다.
 ```
 
 ## 시작
 
-VS Code Chat view(또는 Agents 창)에서 New Chat으로 세션을 열고 Session
-Target을 Copilot로, model picker에서 GPT-5.6 Sol을 선택합니다. 이후 채팅에
-다음을 붙여넣습니다.
+VS Code Chat view(또는 Agents 창)에서 New Chat으로 세션을 엽니다. 권장 조합은
+Session Target Copilot과 GPT-5.6 Sol입니다. 다른 조합을 사용하면 discovery
+문서에 실제 host, harness, model, skill을 기록합니다. 이후 채팅에 다음을
+붙여넣습니다.
 
 ```text
 /grill-with-docs

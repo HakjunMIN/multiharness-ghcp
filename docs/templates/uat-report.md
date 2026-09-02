@@ -1,8 +1,10 @@
 # Independent UAT Report
 
-- Host: VS Code
-- Agent runtime: local Codex harness
-- Model: GPT-5.6 Terra (Copilot-backed)
+- Host: <실제로 사용한 host>
+- Agent runtime: <실제로 사용한 harness>
+- Model: <실제로 사용한 model/provider>
+- Skill: <실제로 사용한 review/UAT skill>
+- Recommended profile used: yes/no
 - Review fixed point: `main`
 - Local spec:
 - Tested commit:

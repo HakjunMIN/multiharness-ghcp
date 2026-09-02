@@ -31,16 +31,19 @@ cp .env.example .env
 ## Main flow
 
 ```text
-Copilot /grill-with-docs -> docs/work/<feature>/discovery.md
-  -- fresh --> Claude /to-spec -> /to-tickets
-  -- fresh --> Copilot /implement <local-ticket-path>
-  -- fresh --> Codex /code-review main
+discovery /grill-with-docs -> docs/work/<feature>/discovery.md
+  -- fresh --> planning /to-spec -> /to-tickets
+  -- fresh --> implementation /implement <local-ticket-path>
+  -- fresh --> independent verification /code-review main
 ```
 
 역할이 바뀌면 새 세션을 엽니다. 세션 사이의 문맥은 채팅 history가 아니라
 커밋된 durable artifact로 전달합니다.
 
-| 역할 | Agent runtime | Model | 다음 역할에 남기는 것 |
+아래 runtime/model은 권장 기본값입니다. 다른 조합을 사용해도 되지만 역할별
+fresh session과 durable artifact를 유지하고 실제 조합을 기록합니다.
+
+| 역할 | 권장 agent runtime | 권장 model | 다음 역할에 남기는 것 |
 | --- | --- | --- | --- |
 | 발견 | Copilot fresh session | GPT-5.6 Sol | `discovery.md`, `CONTEXT.md`, ADR |
 | 아키텍처, 기획 | Claude fresh session | Claude Opus 4.8 | `spec.md`, `tickets/` |
@@ -64,8 +67,10 @@ model picker**에서 model을 별도로 고릅니다. 공식 절차는
   `chat.agentHost.codexAgent.enabled`를 활성화합니다. GPT-5.6 Terra는 local
   Codex의 Copilot-backed provider에서 확인하며 GitHub 로그인과
   **Copilot Pro+**가 필요합니다.
-- **Cloud Codex**는 이 검증 경로가 아닙니다. Session Target과 provider 아래에
-  exact model이 없으면 Auto나 다른 모델로 대체하지 말고 사전 점검을 중단합니다.
+- 독립 검증의 권장 경로는 local Codex입니다. 사용할 수 없으면 구현 세션과
+  분리된 다른 verifier runtime/model을 선택하고 UAT report에 실제 조합을
+  기록합니다. **Cloud Codex**도 이 조건을 충족하는 경우 대안으로 사용할 수
+  있습니다.
 
 이 과정의 에이전틱 개발 워크플로는 특정 스킬 세트에 종속되지 않습니다.
 Matt Pocock 스킬과 Anthropic의 `frontend-design`은 `.agents/skills/`에 포함된
@@ -99,6 +104,11 @@ spec, ticket, defect 규약은 [local work item tracker](docs/agents/issue-track
 7. [Independent verification](docs/labs/lab6-verification.md)
 8. [Combination comparison](docs/labs/lab7-runtime-comparison.md)
 9. [Integration](docs/labs/lab8-integration.md)
+10. [Cloud agent (선택)](docs/labs/lab9-cloud-agent.md)
+
+Lab 9는 선택입니다. Copilot cloud agent와 cloud partner agent는 별도 plan과
+정책이 필요하므로 조건이 갖춰진 참가자만 진행하고 Lab 0~8의 평가 경로에는
+포함하지 않습니다.
 
 ## 검증
 

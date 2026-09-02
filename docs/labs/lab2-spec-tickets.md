@@ -11,15 +11,16 @@
 
 ```text
 Host: VS Code
-Agent runtime: Claude harness (New Chat → Session Target: Claude)
-Model: Claude Opus 4.8 (chat 입력창의 language model picker)
+Recommended agent runtime: Claude harness (New Chat → Session Target: Claude)
+Recommended model: Claude Opus 4.8 (chat 입력창의 language model picker)
 Context: fresh session. Lab 1 대화를 물려받지 않고 커밋된 문서만 읽는다.
 ```
 
 ## Spec
 
-New Chat으로 fresh session을 열고 Session Target을 Claude로, model picker에서
-Claude Opus 4.8을 선택합니다. Lab 1 세션은 닫아 두고, 먼저 `AGENTS.md`,
+New Chat으로 fresh session을 엽니다. 권장 조합은 Session Target Claude와
+Claude Opus 4.8입니다. 다른 조합을 사용하면 spec에 실제 host, harness, model,
+skill을 기록합니다. Lab 1 세션은 닫아 두고, 먼저 `AGENTS.md`,
 `CONTEXT.md`, `docs/work/<feature>/discovery.md`와 연결된 ADR을 읽습니다.
 이전 채팅 요약을 붙여넣지 않습니다.
 

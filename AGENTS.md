@@ -37,11 +37,14 @@ response: {"answer":"...", ...}
 
 ## Main development flow
 
-1. Copilot 세션에서 `/grill-with-docs`
+아래 runtime/model은 권장 기본값입니다. 사용할 수 없으면 역할에 필요한 스킬을
+실행할 수 있는 다른 조합을 선택하고, 실제 조합을 durable artifact에 기록합니다.
+
+1. 발견 세션에서 `/grill-with-docs` (권장: Copilot)
 2. 승인된 발견 결정을 `docs/work/<feature>/discovery.md`에 영속화
-3. fresh Claude 세션에서 discovery 문서를 읽고 `/to-spec`, `/to-tickets`
-4. local ticket별 fresh Copilot 세션에서 `/implement`
-5. fresh Codex 세션에서 `/code-review main`과 UAT
+3. fresh 기획 세션에서 discovery 문서를 읽고 `/to-spec`, `/to-tickets` (권장: Claude)
+4. local ticket별 fresh 구현 세션에서 `/implement` (권장: Copilot)
+5. 구현과 분리된 fresh 검증 세션에서 `/code-review main`과 UAT (권장: Codex)
 
 역할이 바뀌면 agent runtime도 새 세션에서 선택합니다. 새 세션은 이전 대화
 history를 상속하지 않는다고 전제하며, chat handoff만으로 역할 경계를 넘지
@@ -51,20 +54,20 @@ artifact를 먼저 남기고, 받는 세션은 그 artifact를 읽은 뒤 작업
 ### Discovery → spec/tickets 경계
 
 - `/grill-with-docs`의 decision frontier가 닫히고 사용자가 합의를 승인하면,
-  Copilot 발견 세션은 `docs/work/<feature>/discovery.md`를 만듭니다.
+  발견 세션은 `docs/work/<feature>/discovery.md`를 만듭니다.
 - discovery 문서에는 승인된 결정, 확인한 사실과 출처, 제약, 의존성, 열린 질문,
   관련 `CONTEXT.md`와 ADR 링크를 기록합니다. 채팅 history만을 입력으로 남기지
   않습니다.
-- fresh Claude 세션은 `AGENTS.md`, `CONTEXT.md`, discovery 문서와 연결된 ADR을
+- fresh 기획 세션은 `AGENTS.md`, `CONTEXT.md`, discovery 문서와 연결된 ADR을
   먼저 읽고 `/to-spec`, `/to-tickets`를 수행합니다.
 - spec과 ticket이 생성되어 검토되기 전에는 구현 세션을 시작하지 않습니다.
 
 ### Tickets → implementation 경계
 
-- Claude 기획 세션은 승인된 spec과 local ticket을
+- 기획 세션은 승인된 spec과 local ticket을
   `docs/work/<feature>/` 아래에 영속화합니다. ticket에는 범위, 선행 조건,
   acceptance criteria, 검증 명령과 관련 결정 링크가 있어야 합니다.
-- 각 ticket은 별도의 fresh Copilot 구현 세션에서 수행합니다. 구현 세션은 이전
+- 각 ticket은 별도의 fresh 구현 세션에서 수행합니다. 구현 세션은 이전
   기획 대화를 전제로 하지 않고 `AGENTS.md`, `CONTEXT.md`, 해당 spec, ticket과
   ADR을 읽어 작업을 재구성합니다.
 - 구현 세션은 완료한 변경, 검증 결과, 남은 위험과 다음 세션의 첫 verify 명령을
@@ -103,7 +106,12 @@ credential, 질문·답변 원문과 provider payload는 구현 commit이나 `HA
 
 VS Code Chat view(또는 Agents 창)의 **Session Target** 컨트롤에서 harness를, 채팅 입력창의 **language model picker**에서 model을 고릅니다. `/agent`, `/model` 같은 슬래시 명령은 없습니다.
 
-| 역할 | Agent runtime (harness) | Model | 스킬 |
+아래 표는 과정의 **권장 기본값**이며 특정 조합을 강제하지 않습니다. 권장 조합을 사용할 수
+없으면 역할에 필요한 스킬을 지원하는 다른 harness/model을 선택합니다. 단,
+역할별 fresh session, durable artifact, 구현과 검증의 분리는 유지하고 실제
+host, harness, model, skill을 `HANDOFF`와 UAT report에 기록합니다.
+
+| 역할 | 권장 agent runtime (harness) | 권장 model | 스킬 |
 | --- | --- | --- | --- |
 | 발견 | Copilot harness, fresh session | GPT-5.6 Sol | `grill-with-docs`, `grilling`, `domain-modeling`, `research` |
 | 아키텍처, 기획 | Claude harness, fresh session | Claude Opus 4.8 | `codebase-design`, `to-spec`, `to-tickets` |

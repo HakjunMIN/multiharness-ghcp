@@ -8,7 +8,11 @@
 - **Skill:** 선택한 runtime이 수행할 절차와 quality gate
 - **Durable state:** 세션 밖의 local work items, docs, commits, tests
 
-| 역할 | Host | Agent runtime | Model | Matt skill |
+아래 조합은 과정의 **권장 기본값**입니다. 특정 harness/model 자체보다 역할별
+fresh session, 필요한 skill 실행, durable state 전달, 구현과 검증의 분리가
+워크플로의 필수 interface입니다.
+
+| 역할 | Host | 권장 agent runtime | 권장 model | Matt skill |
 | --- | --- | --- | --- | --- |
 | 발견 | VS Code | Copilot harness, fresh session | GPT-5.6 Sol | `grill-with-docs`, `grilling`, `domain-modeling`, `research` |
 | 아키텍처·기획 | VS Code | Claude harness, fresh session | Claude Opus 4.8 | `codebase-design`, `to-spec`, `to-tickets` |
@@ -32,7 +36,9 @@ conversation history와 누적 context를 새 harness로 옮깁니다. 이 과�
 [Sessions and handoff](https://code.visualstudio.com/docs/agents/concepts/sessions)
 문서를 참고합니다.
 
-필수 조합이 Session Target/model picker에 없으면 다른 모델로 대체하지 않고
-운영자에게 알립니다. Codex + GPT-5.6 Terra는 Cloud가 아니라 local Codex의
-Copilot-backed provider를 사용합니다. cold-start는 model memory가
-아니라 durable state의 품질을 평가합니다.
+권장 조합이 Session Target/model picker에 없으면 역할에 필요한 skill을 지원하는
+다른 조합을 선택할 수 있습니다. 실제 host, harness, model, skill은 `HANDOFF`와
+UAT report에 기록합니다. 독립 검증은 구현 세션과 분리된 fresh session이어야
+합니다. 권장 Codex + GPT-5.6 Terra 경로는 local Codex의 Copilot-backed
+provider입니다. cold-start는 model memory가 아니라 durable state의 품질을
+평가합니다.

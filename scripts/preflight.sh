@@ -101,21 +101,21 @@ fi
 
 if [ "$strict" -eq 1 ]; then
   if [ "${WORKSHOP_CLAUDE_OPUS48_CONFIRMED:-0}" = "1" ]; then
-    ok "Claude harness + Claude Opus 4.8 확인"
+    ok "권장 Claude harness + Claude Opus 4.8 확인"
   else
-    bad "Claude harness + Claude Opus 4.8 미확인" "New Chat에서 Session Target을 Claude로 두고 model picker에서 Claude Opus 4.8을 확인하세요."
+    warn_ "권장 Claude harness + Claude Opus 4.8 미확인" "사용 가능한 다른 runtime/model로 진행하고 실제 선택을 durable artifact에 기록하세요."
   fi
 
   if [ "${WORKSHOP_GPT56_SOL_CONFIRMED:-0}" = "1" ]; then
-    ok "Copilot harness + GPT-5.6 Sol 확인"
+    ok "권장 Copilot harness + GPT-5.6 Sol 확인"
   else
-    bad "Copilot harness + GPT-5.6 Sol 미확인" "Session Target을 Copilot로 두고 model picker에서 GPT-5.6 Sol을 확인하세요."
+    warn_ "권장 Copilot harness + GPT-5.6 Sol 미확인" "사용 가능한 다른 runtime/model로 진행하고 실제 선택을 durable artifact에 기록하세요."
   fi
 
   if [ "${WORKSHOP_CODEX_TERRA_CONFIRMED:-0}" = "1" ]; then
-    ok "local Codex + Copilot-backed GPT-5.6 Terra 확인"
+    ok "권장 local Codex + Copilot-backed GPT-5.6 Terra 확인"
   else
-    bad "local Codex + GPT-5.6 Terra 미확인" "Codex extension 또는 Agent Host를 설정하고 Copilot-backed provider에서 GPT-5.6 Terra를 확인하세요."
+    warn_ "권장 local Codex + GPT-5.6 Terra 미확인" "구현 세션과 분리된 verifier runtime/model을 선택하고 실제 선택을 UAT report에 기록하세요."
   fi
 fi
 
