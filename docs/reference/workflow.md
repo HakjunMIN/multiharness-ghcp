@@ -38,7 +38,10 @@ model인 GPT-5.6 Sol을 선택한 뒤
 검증도 New Chat을 엽니다. 권장 Session Target인 Codex, provider인
 Copilot-backed, model인 GPT-5.6 Terra를 선택합니다. local spec과 acceptance
 matrix를 먼저 읽고
-`/code-review main`을 수행한 뒤 독립 UAT를 실행합니다.
+`/code-review main`을 수행한 뒤 network-free
+`(cd app/web && npm run test:e2e)`와 운영자가 승인한 gate에서만
+`(cd app/web && npm run test:e2e:live)`를 실행합니다. 정적 review,
+deterministic Playwright, live Playwright 결과는 UAT report에서 분리합니다.
 
 권장 조합을 대체할 때도 역할별 fresh session을 유지합니다. 특히 verifier는
 구현 세션의 대화를 상속하거나 구현 코드를 직접 수정하지 않으며, 실제 host,

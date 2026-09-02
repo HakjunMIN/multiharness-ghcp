@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 
-for index in 0 1 2 3 4 5 6 7 8 9; do
+for index in 0 1 2 3 4 5 6 9; do
   lab="$(ls docs/labs/lab${index}-*.md)"
   for section in '## 이 랩에서 배우는 것' '## 종료 조건' '## 막힐 때'; do
     grep -Fq "$section" "$lab" || {
@@ -12,6 +12,19 @@ for index in 0 1 2 3 4 5 6 7 8 9; do
       exit 1
     }
   done
+done
+
+lab6="docs/labs/lab6-verification.md"
+for requirement in \
+  '/code-review main' \
+  'npm run test:e2e' \
+  'npm run test:e2e:live' \
+  'Playwright'; do
+  grep -Fq "$requirement" "$lab6" || {
+    printf 'FAIL: %s is missing verification step %s\n' \
+      "$lab6" "$requirement" >&2
+    exit 1
+  }
 done
 
 # 랩은 일정이 아니라 순서로만 이어진다. 소요 시간과 일차 구분을 되돌리지 않는다.

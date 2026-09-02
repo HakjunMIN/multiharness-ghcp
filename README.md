@@ -121,12 +121,10 @@ Target으로 직접 합니다.
 5. [Cold-start recovery](docs/labs/lab4-cold-start.md)
 6. [Consultation UX improvement](docs/labs/lab5-improvement.md)
 7. [Independent verification](docs/labs/lab6-verification.md)
-8. [Combination comparison](docs/labs/lab7-runtime-comparison.md)
-9. [Integration](docs/labs/lab8-integration.md)
-10. [Cloud agent (선택)](docs/labs/lab9-cloud-agent.md)
+8. [Cloud agent (선택)](docs/labs/lab9-cloud-agent.md)
 
 Lab 9는 선택입니다. Copilot cloud agent와 cloud partner agent는 별도 plan과
-정책이 필요하므로 조건이 갖춰진 참가자만 진행하고 Lab 0~8의 평가 경로에는
+정책이 필요하므로 조건이 갖춰진 참가자만 진행하고 Lab 0~6의 평가 경로에는
 포함하지 않습니다.
 
 ## 검증

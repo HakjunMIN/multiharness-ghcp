@@ -73,7 +73,7 @@ cloud 실행 환경은 운영자가 준 APIM 값이 담긴 gitignored `.env`를 
 ## local session과 비교
 
 같은 bounded prompt를 local harness와 cloud session에서 각각 한 번씩
-실행하고 결과를 비교합니다. 비교 기록은 Lab 7의 표 형식을 재사용합니다.
+실행하고 결과를 비교합니다. 비교 결과는 아래 표에 evidence와 함께 남깁니다.
 
 | 항목 | local session | cloud session |
 | --- | --- | --- |

@@ -87,8 +87,8 @@ grep -Fq 'full conversation history' docs/reference/handoff-contract.md
 grep -Fq 'fresh verifier' docs/reference/handoff-contract.md
 grep -Fq 'local ticket' docs/labs/lab3-tracer-bullet.md
 grep -Fq 'local defect' docs/labs/lab6-verification.md
-grep -Fq 'Host: VS Code' docs/labs/lab8-integration.md
-grep -Fq 'Copilot, Claude, Codex' docs/labs/lab8-integration.md
+grep -Fq 'Host: VS Code' docs/labs/lab6-verification.md
+grep -Fq 'Copilot, Claude, Codex' docs/00-concepts.md
 
 # React UI는 선택형 full 범위가 아니라 첫 tracer부터 UAT까지 필수다.
 for file in README.md AGENTS.md docs/labs/lab1-discovery.md \
