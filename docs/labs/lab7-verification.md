@@ -1,4 +1,4 @@
-# Lab 6 - 독립 검증
+# Lab 7 - 독립 검증
 
 ## 이 랩에서 배우는 것
 
@@ -26,7 +26,7 @@ skill을 UAT report에 기록합니다.
 /code-review main
 ```
 
-`/code-review main`은 standards/spec 정적 검토만 담당하며 이것만으로 Lab 6를
+`/code-review main`은 standards/spec 정적 검토만 담당하며 이것만으로 Lab 7을
 종료하지 않습니다. 이어서 [UAT matrix](../uat/acceptance-matrix.md)를 기준으로
 다음 두 Playwright suite를 실행합니다.
 
@@ -51,9 +51,13 @@ blocking spec finding으로 기록하고 local defect를 만듭니다.
 
 ### 2. Gated live E2E
 
-운영자가 Lab 6를 live gate로 지정하고 gitignored `.env`에
+운영자가 Lab 7을 live gate로 지정하고 gitignored `.env`에
 `APIM_BASE_URL`, `APIM_KEY`와 공개 정보만 묻는 synthetic 질문을 준비한
-경우에만 실행합니다.
+경우에만 실행합니다. deterministic suite와 달리 route interception이 없으므로
+Playwright가 실제로 때리는 API 서버(uvicorn)와 웹 서버가 모두 기동돼 있어야
+합니다. Playwright `webServer` 설정이 `scripts/dev.sh`처럼 두 서버를 함께
+올리지 않는다면, 이 suite를 실행하기 전에 `./scripts/dev.sh` 등으로 API와
+web을 먼저 띄워 둡니다.
 
 ```bash
 (cd app/web && npm run test:e2e:live)

@@ -85,15 +85,16 @@ grep -Fq 'docs/work/<feature>/' docs/agents/issue-tracker.md
 grep -Fq 'discovery.md' docs/agents/issue-tracker.md
 grep -Fq 'full conversation history' docs/reference/handoff-contract.md
 grep -Fq 'fresh verifier' docs/reference/handoff-contract.md
-grep -Fq 'local ticket' docs/labs/lab3-tracer-bullet.md
-grep -Fq 'local defect' docs/labs/lab6-verification.md
-grep -Fq 'Host: VS Code' docs/labs/lab6-verification.md
+grep -Fq 'local ticket' docs/labs/lab4-tracer-bullet.md
+grep -Fq 'local defect' docs/labs/lab7-verification.md
+grep -Fq 'Host: VS Code' docs/labs/lab7-verification.md
 grep -Fq 'Copilot, Claude, Codex' docs/00-concepts.md
 
 # React UI는 선택형 full 범위가 아니라 첫 tracer부터 UAT까지 필수다.
 for file in README.md AGENTS.md docs/labs/lab1-discovery.md \
-  docs/labs/lab2-spec-tickets.md docs/labs/lab3-tracer-bullet.md \
-  docs/labs/lab5-improvement.md docs/labs/lab6-verification.md \
+  docs/labs/lab2-spec-tickets.md docs/labs/lab3-acceptance-scenarios.md \
+  docs/labs/lab4-tracer-bullet.md \
+  docs/labs/lab6-improvement.md docs/labs/lab7-verification.md \
   docs/uat/acceptance-matrix.md; do
   grep -Fq 'React' "$file" || {
     printf 'FAIL: %s does not include the required React UI scope\n' "$file" >&2
@@ -101,7 +102,7 @@ for file in README.md AGENTS.md docs/labs/lab1-discovery.md \
   }
 done
 
-grep -Fq '첫 vertical slice는 React 질문 입력' docs/labs/lab3-tracer-bullet.md
+grep -Fq '첫 vertical slice는 React 질문 입력' docs/labs/lab4-tracer-bullet.md
 grep -Fq 'React와 API는 모두 필수 UAT 범위' docs/uat/acceptance-matrix.md
 
 if grep -InE \

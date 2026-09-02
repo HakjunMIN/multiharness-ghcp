@@ -12,7 +12,7 @@ docs/work/<feature>/defects/<NN>-<slug>.md
 
 - `discovery.md`는 [Lab 1](../labs/lab1-discovery.md)의 fresh 발견 세션이 만듭니다.
 - `spec.md`와 `tickets/`는 [Lab 2](../labs/lab2-spec-tickets.md)의 fresh 기획 세션이 만듭니다.
-- `defects/`는 [Lab 6](../labs/lab6-verification.md)의 독립 검증 세션이 만듭니다.
+- `defects/`는 [Lab 7](../labs/lab7-verification.md)의 독립 검증 세션이 만듭니다.
 
 각 역할의 runtime/model은 랩의 권장 기본값을 따르거나 사용 가능한 조합으로
 대체할 수 있습니다. 문서에는 실제로 사용한 host, harness, model, skill을

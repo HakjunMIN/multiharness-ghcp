@@ -1,4 +1,4 @@
-# Lab 4 - cold-start 복구
+# Lab 5 - cold-start 복구
 
 ## 이 랩에서 배우는 것
 

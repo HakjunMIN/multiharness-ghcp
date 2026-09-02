@@ -1,9 +1,10 @@
-# Lab 3 - tracer bullet 구현
+# Lab 4 - tracer bullet 구현
 
 ## 이 랩에서 배우는 것
 
 - ticket 하나를 fresh session에서 red-green으로 완결한다.
 - React UI, API, Microsoft Agent Framework, Foundry IQ adapter, citations를 한 vertical slice로 연결한다.
+- Lab 3의 실패 시나리오 하나를 실제 구현으로 green으로 만든다.
 - live smoke와 deterministic test를 분리한다.
 
 ## Runtime card
@@ -35,11 +36,11 @@ exception, fixture에 남기지 않습니다.
 citations 렌더링까지 포함합니다. backend나 frontend만 완성한 상태는 이 랩의
 완료가 아닙니다.
 
-브라우저 검증은 Playwright로 추가하고 `app/web`에 다음 두 script를 남깁니다.
-`test:e2e`는 route interception이나 verifier가 통제하는 test adapter를 사용해
-네트워크 없이 실행하고, `test:e2e:live`는 실제 React → FastAPI → APIM →
-Foundry IQ 상담 흐름만 검증합니다. live script는 `.env`가 준비된 명시적
-Lab gate 밖에서 자동 실행되면 안 됩니다.
+브라우저 검증은 Lab 3에서 만든 실패 시나리오로 판정합니다. 이 랩에서는 새
+suite를 늘리지 않고 tracer bullet에 해당하는 deterministic 시나리오 하나를
+green으로 만듭니다. no-evidence와 오류 시나리오는 실패한 채로 두고 Lab 6에서
+갚습니다. `test:e2e`와 `test:e2e:live`의 분리와 gate 조건은 Lab 3에서 정한
+그대로 유지하고, live script를 이 랩에서 자동 실행하지 않습니다.
 
 ```bash
 (cd app/api && uv run --frozen pytest -q)
@@ -50,7 +51,7 @@ Lab gate 밖에서 자동 실행되면 안 됩니다.
 
 기본 suite는 네트워크 없이 통과해야 한다. live suite는 운영자 APIM을 통해
 질문 하나와 citations를 확인한다. `npm run test:e2e:live`는 최종 독립 검증인
-Lab 6에서 실행한다.
+Lab 7에서 실행한다.
 
 ## 15분 인계
 
@@ -59,6 +60,7 @@ Lab 6에서 실행한다.
 ## 종료 조건
 
 - 질문 하나가 React UI에서 API와 Foundry IQ를 거쳐 answer와 citations로 표시된다.
+- Lab 3의 tracer bullet 시나리오가 `npm run test:e2e`에서 green이 된다.
 - deterministic Playwright E2E와 gated live Playwright script가 분리되어 있다.
 - focused RED와 GREEN, 기본 suite, live smoke 근거가 있다.
 - 구현이 commit됐고 ticket 상태가 갱신됐다.

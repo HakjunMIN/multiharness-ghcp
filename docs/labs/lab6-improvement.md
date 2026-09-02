@@ -1,4 +1,4 @@
-# Lab 5 - 상담 UX와 오류 상태 개선
+# Lab 6 - 상담 UX와 오류 상태 개선
 
 ## 이 랩에서 배우는 것
 
@@ -15,7 +15,7 @@ Recommended model: GPT-5.6 Sol (chat 입력창의 language model picker)
 Context: ticket 하나의 fresh session
 ```
 
-Lab 3의 상담 흐름에 no-evidence behavior와 actionable한 error/429 UI를
+Lab 4의 상담 흐름에 no-evidence behavior와 actionable한 error/429 UI를
 추가합니다. answer와 structured citations가 함께 유지되는지도 검증합니다.
 
 New Chat으로 fresh session을 엽니다. 권장 조합은 Session Target Copilot과
@@ -33,6 +33,8 @@ API와 React focused failing test, 최소 구현, focused GREEN, 전체 suite �
 
 - no-evidence 또는 오류 상태 ticket 하나가 red-green 근거와 함께 commit됐다.
 - React에서 질문, loading, answer, citations, no-evidence와 오류 상태를 검증했다.
+- Lab 3에서 남겨 둔 no-evidence와 오류 시나리오가 `npm run test:e2e`에서
+  green이 되고, deterministic suite 전체가 통과한다.
 - API 기본 suite와 web test/build가 통과한다.
 
 ## 막힐 때

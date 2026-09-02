@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 
-for index in 0 1 2 3 4 5 6 9; do
+for index in 0 1 2 3 4 5 6 7 9; do
   lab="$(ls docs/labs/lab${index}-*.md)"
   for section in '## 이 랩에서 배우는 것' '## 종료 조건' '## 막힐 때'; do
     grep -Fq "$section" "$lab" || {
@@ -14,15 +14,29 @@ for index in 0 1 2 3 4 5 6 9; do
   done
 done
 
-lab6="docs/labs/lab6-verification.md"
+lab7="docs/labs/lab7-verification.md"
 for requirement in \
   '/code-review main' \
   'npm run test:e2e' \
   'npm run test:e2e:live' \
   'Playwright'; do
-  grep -Fq "$requirement" "$lab6" || {
+  grep -Fq "$requirement" "$lab7" || {
     printf 'FAIL: %s is missing verification step %s\n' \
-      "$lab6" "$requirement" >&2
+      "$lab7" "$requirement" >&2
+    exit 1
+  }
+done
+
+# 검증 랩이 실행하는 suite를 만들어 내는 랩이 없으면 Lab 7을 재현할 수 없다.
+lab3="docs/labs/lab3-acceptance-scenarios.md"
+for requirement in \
+  'npm run test:e2e' \
+  'test:e2e:live' \
+  'Playwright' \
+  'route interception'; do
+  grep -Fq "$requirement" "$lab3" || {
+    printf 'FAIL: %s is missing acceptance scenario step %s\n' \
+      "$lab3" "$requirement" >&2
     exit 1
   }
 done

@@ -117,14 +117,15 @@ Target으로 직접 합니다.
 1. [Runway preflight](docs/labs/lab0-preflight.md)
 2. [Discovery](docs/labs/lab1-discovery.md)
 3. [Spec and tickets](docs/labs/lab2-spec-tickets.md)
-4. [Tracer bullet](docs/labs/lab3-tracer-bullet.md)
-5. [Cold-start recovery](docs/labs/lab4-cold-start.md)
-6. [Consultation UX improvement](docs/labs/lab5-improvement.md)
-7. [Independent verification](docs/labs/lab6-verification.md)
-8. [Cloud agent (선택)](docs/labs/lab9-cloud-agent.md)
+4. [Acceptance scenarios](docs/labs/lab3-acceptance-scenarios.md)
+5. [Tracer bullet](docs/labs/lab4-tracer-bullet.md)
+6. [Cold-start recovery](docs/labs/lab5-cold-start.md)
+7. [Consultation UX improvement](docs/labs/lab6-improvement.md)
+8. [Independent verification](docs/labs/lab7-verification.md)
+9. [Cloud agent (선택)](docs/labs/lab9-cloud-agent.md)
 
 Lab 9는 선택입니다. Copilot cloud agent와 cloud partner agent는 별도 plan과
-정책이 필요하므로 조건이 갖춰진 참가자만 진행하고 Lab 0~6의 평가 경로에는
+정책이 필요하므로 조건이 갖춰진 참가자만 진행하고 Lab 0~7의 평가 경로에는
 포함하지 않습니다.
 
 ## 검증

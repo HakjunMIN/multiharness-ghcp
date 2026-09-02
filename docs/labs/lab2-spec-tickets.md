@@ -44,6 +44,10 @@ retrieve를 거쳐 answer와 구조화된 citations가 화면에 표시되는 tr
 bullet이어야 한다. model layer, search layer, frontend layer 같은 horizontal
 ticket은 거부한다. no-evidence behavior와 429 UI는 후속 ticket으로 둔다.
 
+acceptance criteria를 브라우저에서 실행 가능한 시나리오로 옮기는 ticket도
+함께 만든다. 이 ticket은 Lab 3에서 먼저 수행하며 구현보다 앞서므로 tracer
+bullet ticket의 선행 조건이 아니라 실패 상태로 완료되는 별도 ticket이다.
+
 각 ticket을 `docs/work/<feature>/tickets/` 아래의 개별 문서로 만들고 observable
 acceptance criteria, focused test, 전체 검증 명령, `ready-for-agent`, 실제
 blocking edge를 기록합니다.

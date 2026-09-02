@@ -77,10 +77,11 @@ docs/setup/troubleshooting.md
 docs/labs/lab0-preflight.md
 docs/labs/lab1-discovery.md
 docs/labs/lab2-spec-tickets.md
-docs/labs/lab3-tracer-bullet.md
-docs/labs/lab4-cold-start.md
-docs/labs/lab5-improvement.md
-docs/labs/lab6-verification.md
+docs/labs/lab3-acceptance-scenarios.md
+docs/labs/lab4-tracer-bullet.md
+docs/labs/lab5-cold-start.md
+docs/labs/lab6-improvement.md
+docs/labs/lab7-verification.md
 docs/labs/lab9-cloud-agent.md
 docs/reference/handoff-contract.md
 docs/reference/model-harness-matrix.md
