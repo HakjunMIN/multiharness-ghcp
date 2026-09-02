@@ -93,6 +93,25 @@ spec, ticket, defect 규약은 [local work item tracker](docs/agents/issue-track
 [`docs/work/`](docs/work/README.md)는 비어 있는 상태로 시작하며 참가자가 랩을
 진행하면서 직접 채웁니다.
 
+## 선택: `/workflow` conductor
+
+지금 어느 단계인지, 다음에 어떤 세션을 열어야 하는지 헷갈릴 때는 이 저장소가
+직접 작성한 project-scope 스킬 `/workflow`를 사용할 수 있습니다. 커밋된 durable
+artifact를 읽어 현재 단계를 판정하고, 직전 단계의 exit gate를 검증하고, 다음
+fresh session의 harness/model과 붙여넣을 명령을 알려 줍니다.
+
+```text
+/workflow                     현재 단계 판정과 다음 한 걸음
+/workflow product-consultation  특정 feature root를 대상으로 판정
+/workflow status              판정만 하고 하위 스킬은 실행하지 않음
+```
+
+`/workflow`는 **선택 경로**입니다. `/grill-with-docs`, `/to-spec`,
+`/to-tickets`, `/implement`, `/code-review`를 직접 실행하는 기존 흐름은 그대로
+유효하며, conductor는 이 스킬들을 참조만 하고 대체하지 않습니다. conductor도
+역할별 fresh session 규칙을 우회하지 않습니다. 세션 전환은 사람이 Session
+Target으로 직접 합니다.
+
 ## Labs
 
 1. [Runway preflight](docs/labs/lab0-preflight.md)

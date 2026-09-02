@@ -51,6 +51,11 @@ history를 상속하지 않는다고 전제하며, chat handoff만으로 역할 
 않습니다. 보내는 세션은 다음 세션이 채팅 없이 작업을 재구성할 수 있는 durable
 artifact를 먼저 남기고, 받는 세션은 그 artifact를 읽은 뒤 작업을 시작합니다.
 
+선택적으로 project scope 스킬 `/workflow`를 conductor로 사용할 수 있습니다.
+현재 단계 판정, 직전 단계 exit gate 검증, 다음 fresh session 안내만 수행하며
+위 스킬들을 대체하지 않습니다. conductor를 쓰더라도 역할별 fresh session,
+durable artifact, 구현과 검증의 분리는 그대로 적용됩니다.
+
 ### Discovery → spec/tickets 경계
 
 - `/grill-with-docs`의 decision frontier가 닫히고 사용자가 합의를 승인하면,

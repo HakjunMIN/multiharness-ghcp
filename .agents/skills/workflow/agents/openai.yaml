@@ -1,0 +1,5 @@
+interface:
+  display_name: "Workflow"
+  short_description: "Route the agentic workflow to its next fresh session"
+policy:
+  allow_implicit_invocation: false

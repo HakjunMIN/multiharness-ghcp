@@ -71,6 +71,28 @@ Code는 이를 handoff로 취급해 full conversation history를 새 harness로 
 answer와 citations 렌더링까지 앱 전체를 관통합니다. 이후 ticket은 같은
 `POST /api/consult` contract 위에서 no-evidence와 오류 UI를 개선합니다.
 
+## 선택: `/workflow` conductor
+
+`.agents/skills/workflow/`는 이 저장소가 직접 작성한 project-scope 스킬입니다.
+외부에서 설치하지 않으므로 `skills-lock.json`에는 없고
+`scripts/local-project-skills.txt`가 인벤토리입니다.
+
+conductor는 다음 순서로 동작합니다.
+
+1. `docs/work/<feature>/`의 discovery, spec, tickets, defects와 루트 `HANDOFF`,
+   `git status`를 읽는다.
+2. 처음 일치하는 조건으로 현재 단계를 판정한다.
+3. 직전 단계의 exit gate를 실제로 검증한다. `HANDOFF`의 `verify` 명령까지
+   실행한다.
+4. phase, evidence, gate, blockers, 다음 harness/model, 다음 명령을 담은 status
+   card를 출력한다.
+5. 판정된 단계가 현재 세션의 역할과 같을 때만 해당 하위 스킬을 실행한다.
+   다르면 실행하지 않고 새 fresh session을 열라고 안내한다.
+
+conductor는 필수가 아닙니다. 개별 스킬을 직접 실행하는 흐름과 동등하게
+지원되며, 어느 쪽을 쓰든 역할별 fresh session과 durable artifact 규칙은
+동일하게 적용됩니다.
+
 ## 샘플 스킬 설치와 업데이트
 
 ```text

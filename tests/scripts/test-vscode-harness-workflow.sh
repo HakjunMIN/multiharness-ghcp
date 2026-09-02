@@ -28,11 +28,16 @@ actual_skills="$(
   exit 1
 }
 
+local_skills="$(
+  grep -vE '^[[:space:]]*(#|$)' scripts/local-project-skills.txt |
+    LC_ALL=C sort
+)"
+expected_installed="$(printf '%s\n%s\n' "$expected_skills" "$local_skills" | LC_ALL=C sort)"
 installed_skills="$(
   find .agents/skills -mindepth 1 -maxdepth 1 -type d -exec basename {} \; |
     LC_ALL=C sort
 )"
-[ "$installed_skills" = "$expected_skills" ] || {
+[ "$installed_skills" = "$expected_installed" ] || {
   printf 'FAIL: installed project skills are not the agreed inventory\n' >&2
   exit 1
 }
