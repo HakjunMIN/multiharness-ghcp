@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 
-for index in 0 1 2 3 4 5 6 7 8; do
+for index in 0 1 2 3 4 5 6 7 8 9; do
   lab="$(ls docs/labs/lab${index}-*.md)"
   for section in '## 이 랩에서 배우는 것' '## 종료 조건' '## 막힐 때'; do
     grep -Fq "$section" "$lab" || {
