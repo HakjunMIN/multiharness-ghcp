@@ -16,6 +16,11 @@ response: {"answer":"...", ...}
 
 참가자는 이 경계를 확장할 수 있지만 시작 필드와 응답 필드를 바꾸지 않습니다. runway는 health와 개발 plumbing만 제공하며 상담 동작은 ticket에서 구현합니다.
 
+## 고정 APIM runtime 경계
+
+APIM 접근은 `APIM_BASE_URL`과 `APIM_KEY` 하나의 조합만 사용합니다. 별도 model
+endpoint나 model ID runtime 설정을 추가하지 않습니다.
+
 ## 범위
 
 모든 참가자는 다음을 포함한 제품 상담 앱 전체를 구현합니다.
