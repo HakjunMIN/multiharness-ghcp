@@ -24,10 +24,19 @@ skill을 기록합니다. 채팅에 다음을 입력합니다.
 
 ```text
 /implement docs/work/<feature>/tickets/<behavior-or-ui-ticket>.md
+
+no-evidence 동작과 actionable하고 secret-safe한 오류/429 UI를 API와 React
+focused failing test로 먼저 실패시키고 최소 구현으로 green을 만드세요. Lab
+3에서 실패한 채로 남겨 둔 no-evidence와 오류 브라우저 시나리오도 같은 구현으로
+green이 되어야 하고 answer와 structured citations는 계속 통과해야 합니다. UI는
+POST /api/consult 외에 별도 domain logic을 만들지 마세요. 새 화면을 추가하지
+말고 기존 상담 화면의 상태 전환으로 처리하세요. 오류 문구에 APIM key, origin,
+provider payload를 노출하지 마세요. 끝나면 구현 commit과 루트 HANDOFF를 남기고
+실제로 사용한 host, harness, model, skill을 기록하세요.
 ```
 
 API와 React focused failing test, 최소 구현, focused GREEN, 전체 suite 순서를
-지킨다. UI는 `POST /api/consult` 외에 별도 domain logic을 만들지 않는다.
+지킨다. 경로를 frontier의 실제 local ticket으로 바꾼다.
 
 ## 종료 조건
 

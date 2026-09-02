@@ -32,13 +32,26 @@ skill을 기록합니다. 먼저 `AGENTS.md`, `CONTEXT.md`,
 
 ```text
 /implement docs/work/<feature>/tickets/<acceptance-scenarios-ticket>.md
+
+이 ticket의 acceptance criteria를 브라우저에서 실행되는 실패 시나리오로만
+옮기세요. production code는 고치지 마세요. React UI에서 사용자가 하는
+행동으로 시나리오를 쓰고, 컴포넌트 내부 상태나 함수 이름이 아니라 질문 입력,
+제출, loading, answer, citation 링크, 근거 부족 안내, 오류 문구를 확인하세요.
+`app/web`에 두 script를 남기세요. `test:e2e`는 `/healthz`와
+POST /api/consult seam을 route interception으로 대체해 네트워크 없이 실행하고,
+`test:e2e:live`는 interception 없이 실제 흐름만 검증하며 gate 값이 없으면
+조용히 통과하지 말고 실패해야 합니다. 두 suite 모두 trace, screenshot,
+video를 끄고 report에 provider payload나 credential을 남기지 마세요.
+시나리오는 지금 실패하는 것이 정상이니 통과시키려고 단언을 약하게 고치지
+마세요.
 ```
 
-시나리오는 React UI에서 사용자가 하는 행동으로만 씁니다. 컴포넌트 내부 상태나
-함수 이름이 아니라 질문 입력, 제출, 화면에 나타나는 loading, answer, citation
-링크, 근거 부족 안내, 오류 문구를 확인합니다.
+`<feature>`와 ticket 파일 이름을 실제 경로로 바꿉니다. 시나리오는 React UI에서
+사용자가 하는 행동으로만 씁니다. 컴포넌트 내부 상태나 함수 이름이 아니라 질문
+입력, 제출, 화면에 나타나는 loading, answer, citation 링크, 근거 부족 안내,
+오류 문구를 확인합니다.
 
-`app/web`에 다음 두 script를 남깁니다.
+두 script의 책임은 다음과 같습니다.
 
 - `test:e2e`는 `/healthz`와 `POST /api/consult` seam을 route interception이나
   verifier가 통제하는 test adapter로 대체해 네트워크 없이 실행합니다. 최소한

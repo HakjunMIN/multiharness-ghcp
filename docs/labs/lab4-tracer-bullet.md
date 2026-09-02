@@ -24,17 +24,23 @@ skill을 기록합니다. 채팅에 다음을 입력합니다.
 
 ```text
 /implement docs/work/<feature>/tickets/01-<ticket>.md
+
+recorded Foundry IQ response를 사용하는 API test와 사용자의 질문부터
+answer/citations 렌더링까지 검증하는 React test를 먼저 실패시키고 최소
+구현으로 green을 만드세요. Lab 3에서 만든 tracer bullet 브라우저 시나리오도
+같은 구현으로 green이 되어야 합니다. production code는 APIM adapter 경계를
+통해서만 모델과 knowledgebases/{name}/retrieve를 호출하세요. key를 log,
+exception, fixture, commit에 남기지 마세요. 새 E2E suite를 늘리지 말고
+no-evidence와 오류 시나리오는 실패한 채로 두세요. 끝나면 구현 commit과 루트
+HANDOFF를 남기고 실제로 사용한 host, harness, model, skill을 기록하세요.
 ```
 
-경로를 frontier의 실제 local ticket으로 바꿉니다. recorded Foundry IQ
-response를 사용하는 API test와 사용자의 질문부터 answer/citations 렌더링까지
-검증하는 React test를 먼저 실패시킵니다. production code는 APIM adapter
-경계를 통해 모델과 `knowledgebases/{name}/retrieve`를 호출합니다. key를 log,
-exception, fixture에 남기지 않습니다.
+경로를 frontier의 실제 local ticket으로 바꿉니다. 이 랩의 red-green은 API와
+React 양쪽에서 동시에 성립해야 합니다. backend나 frontend만 완성한 상태는 이
+랩의 완료가 아닙니다.
 
 첫 vertical slice는 React 질문 입력, loading, API 호출, answer와 structured
-citations 렌더링까지 포함합니다. backend나 frontend만 완성한 상태는 이 랩의
-완료가 아닙니다.
+citations 렌더링까지 포함합니다.
 
 브라우저 검증은 Lab 3에서 만든 실패 시나리오로 판정합니다. 이 랩에서는 새
 suite를 늘리지 않고 tracer bullet에 해당하는 deterministic 시나리오 하나를

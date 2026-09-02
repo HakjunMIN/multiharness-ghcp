@@ -24,6 +24,12 @@ skill을 UAT report에 기록합니다.
 
 ```text
 /code-review main
+
+main 이후 변경을 standards와 spec 두 축으로 검토하세요. 기준은
+docs/work/<feature>/spec.md, 해당 ticket, CONTEXT.md, docs/adr/입니다.
+production implementation은 고치지 말고, 발견한 문제는 기대값, 실제값, 재현
+명령, Standards/Spec 구분과 severity를 담아 보고하세요. credential, 질문과
+답변 원문, provider payload는 보고서에 남기지 마세요.
 ```
 
 `/code-review main`은 standards/spec 정적 검토만 담당하며 이것만으로 Lab 7을

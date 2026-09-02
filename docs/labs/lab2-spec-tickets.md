@@ -26,7 +26,19 @@ skill을 기록합니다. Lab 1 세션은 닫아 두고, 먼저 `AGENTS.md`,
 
 ```text
 /to-spec
+
+커밋된 `docs/work/<feature>/discovery.md`, `CONTEXT.md`, `docs/adr/`를 먼저
+읽고 그 결정만으로 제품 상담 기능의 spec을 발행하세요. 저를 인터뷰하지 말고,
+discovery 문서에 없는 결정은 추측하지 말고 열린 질문으로 남기세요. spec에는
+POST /api/consult의 request/response envelope, 공개 웹 근거 전달 경계, 근거
+없음과 상충 시 동작, React 질문/loading/answer/citations/오류 상태, 그리고
+deterministic unit, recorded contract, gated live로 나뉘는 test seam을
+포함하세요. 실제로 사용한 host, harness, model, skill도 기록하세요.
 ```
+
+`<feature>`를 실제 기능 root 이름으로 바꿉니다. 이 세션은 Lab 1 대화를
+물려받지 않으므로 스킬이 종합할 재료는 커밋된 문서뿐입니다. 프롬프트에 읽을
+문서를 지정하지 않으면 spec이 비거나 스킬이 추측하기 시작합니다.
 
 Problem, solution, user stories, HTTP contract, behavior decisions, testing
 decisions, out of scope를 검토한 뒤 `docs/work/<feature>/spec.md`에 발행합니다.
@@ -36,21 +48,30 @@ discovery 문서에 없는 결정이 필요하면 추측하지 말고 Lab 1의 �
 ## Tickets
 
 ```text
-/to-tickets
+/to-tickets docs/work/<feature>/spec.md
+
+발행된 spec을 vertical tracer-bullet ticket으로 자르세요. 첫 ticket은 React
+질문 입력에서 POST /api/consult와 Foundry IQ retrieve를 거쳐 answer와
+structured citations가 화면에 보이는 한 흐름이어야 합니다. 그 앞에 acceptance
+criteria를 실패하는 브라우저 시나리오로 옮기는 ticket을 따로 두세요. model
+layer, search layer, frontend layer 같은 horizontal ticket은 만들지 마세요.
+no-evidence 동작과 오류/429 UI는 후속 ticket으로 두세요. 각 ticket에 범위,
+선행 조건, observable acceptance criteria, focused test, 전체 검증 명령,
+`ready-for-agent` 상태, 실제 blocking edge를 적으세요.
 ```
 
-첫 ticket은 React에서 질문 하나를 입력해 `POST /api/consult`, Foundry IQ
-retrieve를 거쳐 answer와 구조화된 citations가 화면에 표시되는 tracer
-bullet이어야 한다. model layer, search layer, frontend layer 같은 horizontal
-ticket은 거부한다. no-evidence behavior와 429 UI는 후속 ticket으로 둔다.
+생성된 ticket을 다음 기준으로 검토합니다.
 
-acceptance criteria를 브라우저에서 실행 가능한 시나리오로 옮기는 ticket도
-함께 만든다. 이 ticket은 Lab 3에서 먼저 수행하며 구현보다 앞서므로 tracer
-bullet ticket의 선행 조건이 아니라 실패 상태로 완료되는 별도 ticket이다.
-
-각 ticket을 `docs/work/<feature>/tickets/` 아래의 개별 문서로 만들고 observable
-acceptance criteria, focused test, 전체 검증 명령, `ready-for-agent`, 실제
-blocking edge를 기록합니다.
+- 첫 tracer bullet은 React 질문 입력부터 answer와 citations 표시까지 한
+  흐름을 자른다. model layer, search layer, frontend layer 같은 horizontal
+  ticket은 거부한다.
+- 인수 시나리오 ticket이 별도로 있다. 이 ticket은 Lab 3에서 구현보다 먼저
+  수행하며 실패하는 시나리오를 산출물로 남기므로, tracer bullet ticket의
+  blocking edge로 걸지 않는다.
+- no-evidence behavior와 오류/429 UI는 후속 ticket으로 남는다.
+- 각 ticket이 `docs/work/<feature>/tickets/` 아래 개별 문서이고 observable
+  acceptance criteria, focused test, 전체 검증 명령, `ready-for-agent`, 실제
+  blocking edge를 갖는다.
 
 ## 종료 조건
 
