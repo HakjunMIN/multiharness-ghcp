@@ -27,9 +27,16 @@ skill을 기록합니다. Lab 1 세션은 닫아 두고, 먼저 `AGENTS.md`,
 ```text
 /to-spec
 
-커밋된 `docs/work/<feature>/discovery.md`, `CONTEXT.md`, `docs/adr/`를 먼저
-읽고 그 결정만으로 spec을 발행하세요. 저를 인터뷰하지 말고, discovery 문서에
-없는 결정은 추측하지 말고 열린 질문으로 남기세요.
+`AGENTS.md`, 커밋된 `docs/work/<feature>/discovery.md`, `CONTEXT.md`,
+그리고 discovery에서 참조한 `docs/adr/` 문서를 먼저 읽으세요.
+
+이 문서에 기록된 승인된 결정만 사용하여
+`docs/work/<feature>/spec.md`를 발행하세요. 인터뷰, test seam 확인,
+spec 초안 승인 등 추가 질문은 하지 마세요.
+
+문서에 없는 결정은 추측하거나 새로 결정하지 말고 열린 질문으로 명시하세요.
+열린 질문이 있더라도 확정된 범위의 spec은 발행하되, 구현을 막는 질문은
+명확히 구분하세요.
 ```
 
 `<feature>`를 실제 기능 root 이름으로 바꿉니다. 이 스킬은 현재 대화를 종합할
@@ -38,21 +45,27 @@ skill을 기록합니다. Lab 1 세션은 닫아 두고, 먼저 `AGENTS.md`,
 
 Problem, solution, user stories, HTTP contract, behavior decisions, testing
 decisions, out of scope를 검토한 뒤 `docs/work/<feature>/spec.md`에 발행합니다.
-discovery 문서에 없는 결정이 필요하면 추측하지 말고 Lab 1의 열린 질문으로
-되돌립니다.
+구현을 막는 열린 질문은 Lab 1로 되돌아가 discovery 문서를 보강합니다.
 
 ## Tickets
 
 ```text
 /to-tickets docs/work/<feature>/spec.md
 
-인수 시나리오 ticket을 tracer bullet ticket의 blocker로 걸지 마세요. 구현보다
-먼저 수행하지만 실패하는 시나리오를 산출물로 남기는 ticket입니다.
+인수 시나리오 ticket을 별도로 만들되 tracer bullet ticket의 blocker로 걸지
+마세요. 구현보다 먼저 수행하지만 실패하는 시나리오를 산출물로 남기는
+ticket입니다. ticket breakdown 승인을 묻지 말고 spec만으로 전체 ticket을
+발행하세요. 구현을 막는 열린 질문이 있으면 추측하지 말고 ticket 발행을 멈춘 뒤
+Lab 1에서 보강할 질문을 명시하세요.
 ```
 
 spec 경로를 인자로 넘겨야 스킬이 그 문서를 읽습니다. vertical slice, blocking
 edge, ticket 문서 형식과 `ready-for-agent` 상태는 스킬이 이미 규정하므로
 프롬프트에 반복하지 않습니다.
+
+Lab 2에서 미리 만드는 것은 실행 코드가 아니라 인수 시나리오 ticket과 구체적인
+acceptance criteria입니다. 실패하는 deterministic/live 브라우저 시나리오
+코드는 Lab 3의 fresh 구현 세션에서 만들고, 최종 독립 UAT는 Lab 7에서 수행합니다.
 
 생성된 ticket을 다음 기준으로 검토합니다.
 

@@ -1,8 +1,0 @@
-## HANDOFF
-- from/to: Copilot harness/GPT-5.6 Sol → fresh verifier session (recommended: Codex harness/GPT-5.6 Terra)
-- artifacts: implementation commit `f3ab810`; `AGENTS.md`, `README.md`, `docs/00-concepts.md`, `docs/adr/README.md`, `docs/labs/lab0-preflight.md`, `docs/labs/lab1-discovery.md`, `docs/labs/lab2-spec-tickets.md`, `docs/labs/lab3-tracer-bullet.md`, `docs/labs/lab5-improvement.md`, `docs/labs/lab6-verification.md`, `docs/reference/handoff-contract.md`, `docs/reference/model-harness-matrix.md`, `docs/reference/workflow.md`, `docs/setup/troubleshooting.md`, `docs/templates/team-adoption.md`, `docs/templates/uat-report.md`, `docs/work/README.md`, `scripts/preflight.sh`, `tests/scripts/test-vscode-harness-workflow.sh`
-- done: 역할별 harness/model을 강제 조합에서 권장 기본값으로 변경했고, 대체 조합의 실제 host/harness/model/skill 기록과 fresh session, durable artifact, 독립 검증 규칙을 유지했다. strict preflight는 권장 조합 미확인을 failure 대신 warning으로 보고한다.
-- not done: 독립 검증과 UAT
-- decisions: `AGENTS.md`, `docs/00-concepts.md`, `docs/reference/model-harness-matrix.md`, `docs/reference/workflow.md`, `docs/reference/handoff-contract.md`
-- verify: `tests/scripts/test-vscode-harness-workflow.sh && ./scripts/check-repo.sh && ./scripts/preflight.sh --strict`
-- risks: 추적되지 않은 `docs/labs/lab9-cloud-agent.md`와 별도 변경된 `docs/reference/sources.md`, `scripts/repo-manifest.txt`, `tests/scripts/test-lab-structure.sh`는 구현 commit에서 제외했다. `test-usage.sh`는 해당 Lab 9 파일의 기존 금지 표현 때문에 실패하므로 verifier가 소유자를 확인해야 한다.

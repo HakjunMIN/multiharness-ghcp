@@ -1,6 +1,14 @@
 import os
 from dataclasses import dataclass
 
+from dotenv import load_dotenv
+
+# Skip under pytest (PYTEST_VERSION is set for the whole session) so unit
+# tests stay isolated from the real .env, which can hold a real customer
+# brand name and APIM secrets; only the running server process auto-loads it.
+if "PYTEST_VERSION" not in os.environ:
+    load_dotenv(override=False)
+
 
 @dataclass(frozen=True)
 class Settings:

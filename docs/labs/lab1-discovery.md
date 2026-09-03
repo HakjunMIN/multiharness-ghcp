@@ -26,11 +26,14 @@ Session Target Copilot과 GPT-5.6 Sol입니다. 다른 조합을 사용하면 di
 ```text
 /grill-with-docs
 
-Microsoft Agent Framework Python backend와 React frontend로 제품 상담 agent를
-만듭니다. 구현하지 말고 다음 결정을 문서로 확정하세요: POST /api/consult의
-request/response fields, 공개 웹 근거 전달 경계, 근거 없음/상충 시 행동,
-React 질문/응답/citation/loading/error 상태, deterministic unit/recorded
-contract/live APIM test seams.
+Microsoft Agent Framework Python backend와 React frontend로 제품 상담 agent를 만듭니다. 
+구현하지 말고 다음 결정을 문서로 확정하세요: 
+ - POST /api/consult의 request/response fields
+ - 공개 웹 근거 전달 경계, 근거 없음/상충 시 행동
+ - React 질문/응답/citation/loading/error 상태
+ - deterministic unit/recorded contract/live APIM test seams.
+ - 기타 필요한 요구사항 결정할 것들. 
+ - 프론트엔드 디자인 스타일
 ```
 
 반드시 결정할 항목:

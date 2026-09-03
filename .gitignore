@@ -11,3 +11,8 @@ __pycache__/
 .pytest_cache/
 app/web/dist/
 *.tsbuildinfo
+
+# per-harness local overrides (machine-specific, not shared)
+.claude/settings.json
+.codex/config.toml
+.github/copilot/settings.local.json
