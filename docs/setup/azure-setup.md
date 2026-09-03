@@ -8,7 +8,7 @@
 2. 웹 요약에 사용할 모델 deployment를 만들고 용량을 확인한다. knowledge base가 참조할 수 있는 모델은 `gpt-5.4` 계열까지이므로 그보다 새 모델만 있는 프로젝트라면 `gpt-5.4-mini` 같은 지원 모델을 따로 배포한다. 참가자 채팅용 모델은 이 제약과 무관하다.
 3. 공개 제품 근거를 검색하도록 Web Knowledge Source를 만든다.
 4. 이 source와 모델을 참조하는 knowledge base를 만들고 retrieve API를 `2026-04-01`로 고정한다.
-5. OpenAI-compatible 모델 base route를 `${APIM_BASE_URL}/model/v1`에 두고 `workshop-model` alias를 실제 deployment로 rewrite한다. Agent Framework는 `/chat/completions`가 아니라 **`/responses`** 를 호출하므로 두 operation을 모두 노출한다. Search의 `knowledgebases/{name}/retrieve` route도 같은 APIM base 뒤에 둔다.
+5. OpenAI-compatible 모델 base route를 `${APIM_BASE_URL}/model/v1`에 두고 `workshop-model` alias를 실제 deployment로 rewrite한다. 답변 합성은 `${APIM_BASE_URL}/model/v1/responses`를 호출한다. Agent Framework는 `/chat/completions`가 아니라 **`/responses`** 를 사용하므로 이 operation을 반드시 노출한다. Foundry IQ 근거 검색은 `${APIM_BASE_URL}/search/knowledgebases/{name}/retrieve`로 노출한다.
 6. backend로 전달하기 전에 참가자의 `Authorization`과 `Ocp-Apim-Subscription-Key` header를 제거한다. APIM managed identity 또는 Key Vault-backed named value로 origin 인증을 policy 안에서 주입한다.
 7. 참가자별 subscription key를 발급하고 한 사람에게 하나만 배정한다.
 8. key별 request rate를 적용한다. 초과 시 APIM은 429와 재시도 가능한 안내를 반환해야 한다. APIM **Consumption SKU는 `rate-limit-by-key`와 `azure-openai-token-limit`을 지원하지 않으므로** product scope의 `rate-limit`·`quota`로 구독별 한도를 건다. token 단위 제한이 필요하면 v2 SKU를 쓴다.
@@ -39,6 +39,13 @@ KNOWLEDGE_BASE_NAME=workshop-products
 BRAND_NAME=한빛전자
 LIVE_SMOKE_QUESTION="공개 제품 정보와 출처를 요청하는 질문"
 ```
+
+`APIM_BASE_URL`에는 host까지만 넣는다. 애플리케이션은 답변 합성 시
+`${APIM_BASE_URL}/model/v1/responses`, 근거 검색 시
+`${APIM_BASE_URL}/search/knowledgebases/${KNOWLEDGE_BASE_NAME}/retrieve`를
+호출한다. 두 요청 모두 `APIM_KEY`를 `Ocp-Apim-Subscription-Key` header로
+전달한다. 별도 model endpoint, search endpoint 또는 model ID 환경 변수는
+추가하지 않는다.
 
 `LIVE_SMOKE_QUESTION`은 Web Knowledge Source에서 실제로 답과 citation을
 반환할 수 있는 공개 제품 질문이어야 한다. 값에 공백이 있으면 따옴표로 감싼다.

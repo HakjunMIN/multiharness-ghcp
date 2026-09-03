@@ -21,6 +21,14 @@ response: {"answer":"...", ...}
 APIM 접근은 `APIM_BASE_URL`과 `APIM_KEY` 하나의 조합만 사용합니다. 별도 model
 endpoint나 model ID runtime 설정을 추가하지 않습니다.
 
+- 답변 합성은 `${APIM_BASE_URL}/model/v1/responses`를 호출합니다.
+- Foundry IQ 근거 검색은
+  `${APIM_BASE_URL}/search/knowledgebases/${KNOWLEDGE_BASE_NAME}/retrieve`를
+  호출합니다.
+- `KNOWLEDGE_BASE_NAME`의 실습 기본값은 `workshop-products`입니다.
+- 두 API 모두 `APIM_KEY`를 `Ocp-Apim-Subscription-Key` header로 전달합니다.
+- 실제 `APIM_BASE_URL`과 `APIM_KEY`는 gitignored 루트 `.env`에만 둡니다.
+
 ## 범위
 
 모든 참가자는 다음을 포함한 제품 상담 앱 전체를 구현합니다.
