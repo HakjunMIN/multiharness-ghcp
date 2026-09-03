@@ -37,8 +37,11 @@ discovery -> mandatory prototype -> spec/tickets
   -> UX/error improvement -> independent verification
 ```
 
+<details>
+<summary><strong>전체 흐름 다이어그램 펼쳐보기</strong></summary>
+
 ```mermaid
-flowchart TD
+flowchart LR
     START["Lab 0 · Runway preflight<br/>환경·스킬·기본 test 검증"]
     DISCOVERY["Lab 1 · Discovery<br/>Copilot fresh session<br/>/grill-with-docs"]
     DISCOVERY_STATE[("discovery.md<br/>CONTEXT.md · ADR")]
@@ -79,6 +82,8 @@ flowchart TD
     class DISCOVERY_STATE,PROTOTYPE_STATE,PLAN_STATE,BACKEND_HANDOFF,HANDOFF,DEFECT_STATE,DEFECT_HANDOFF artifact;
     class TICKETS,DEFECT,CLOUD_DECISION decision;
 ```
+
+</details>
 
 실선으로 연결된 역할이 바뀔 때마다 **New Chat**으로 fresh session을 엽니다.
 원통형 노드는 다음 세션이 이전 채팅 없이 읽는 durable artifact입니다. Lab 10은

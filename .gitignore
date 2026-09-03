@@ -10,6 +10,7 @@ docs/superpowers/
 __pycache__/
 .pytest_cache/
 app/web/dist/
+app/web/test-results/
 *.tsbuildinfo
 
 # per-harness local overrides (machine-specific, not shared)
