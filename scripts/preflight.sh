@@ -42,10 +42,23 @@ fi
 
 # --- web runway ---
 if [ -f app/web/package.json ]; then
-  if (cd app/web && npm test >/dev/null 2>&1 && npm run build >/dev/null 2>&1); then
-    ok "web test/build 통과"
+  web_ready=1
+  if [ ! -d app/web/node_modules ]; then
+    if (cd app/web && npm ci >/dev/null 2>&1); then
+      ok "web 의존성 설치"
+    else
+      bad "web 의존성 설치 실패" "실행해서 원인을 확인하세요: cd app/web && npm ci"
+      web_ready=0
+    fi
   else
-    bad "web test/build 실패" "실행해서 원인을 확인하세요: cd app/web && npm test && npm run build"
+    ok "web 의존성 설치됨"
+  fi
+  if [ "$web_ready" -eq 1 ]; then
+    if (cd app/web && npm test >/dev/null 2>&1 && npm run build >/dev/null 2>&1); then
+      ok "web test/build 통과"
+    else
+      warn_ "web test/build 실패" "환경이 아니라 작업 중 코드 문제일 수 있습니다. 확인하세요: cd app/web && npm test && npm run build"
+    fi
   fi
 else
   bad "app/web/package.json 없음" "리포 루트에서 실행하세요."
@@ -55,10 +68,15 @@ fi
 if [ -f app/api/pyproject.toml ]; then
   if command -v uv >/dev/null 2>&1; then
     ok "uv $(uv --version | awk '{print $2}')"
-    if (cd app/api && uv run --frozen pytest -q >/dev/null 2>&1); then
-      ok "API 기본 테스트 통과"
+    if (cd app/api && uv sync --frozen >/dev/null 2>&1); then
+      ok "API 의존성 설치"
+      if (cd app/api && uv run --frozen pytest -q >/dev/null 2>&1); then
+        ok "API 기본 테스트 통과"
+      else
+        warn_ "API 기본 테스트 실패" "환경이 아니라 작업 중 코드 문제일 수 있습니다. 확인하세요: cd app/api && uv run --frozen pytest -q"
+      fi
     else
-      bad "API 기본 테스트 실패" "먼저 의존성을 받으세요: cd app/api && uv sync --frozen"
+      bad "API 의존성 설치 실패" "실행해서 원인을 확인하세요: cd app/api && uv sync --frozen"
     fi
   else
     bad "uv 없음" "API runway에 필요합니다. 설치: https://docs.astral.sh/uv/"

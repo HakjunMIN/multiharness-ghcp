@@ -11,14 +11,15 @@ jobs:
   verify:
     strategy:
       matrix:
+        # macOS는 Bash 3.2와 참가자 실제 환경을 지키기 위해 남긴다.
+        # Node는 최소 지원 버전 하나만 검증한다.
         os: [ubuntu-latest, macos-latest]
-        node: ['22.18.0', '24']
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node }}
+          node-version: '22.18.0'
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'

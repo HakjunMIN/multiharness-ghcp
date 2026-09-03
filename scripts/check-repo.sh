@@ -2,8 +2,9 @@
 set -euo pipefail
 
 # Repository asset integrity gate.
-#  1) every path in the manifest exists
-#  2) no forbidden strings, customer identifiers, or committed secrets
+#  1) every anchor in the manifest exists
+#  2) no customer identifiers or committed secrets. placeholder 금지는
+#     교재(docs, scripts, 루트 문서)에만 적용하고 참가자 코드인 app/은 제외한다.
 #  3) relative markdown links resolve to real files
 #  4) shell scripts parse, are executable, and follow the house style
 
@@ -14,13 +15,13 @@ MANIFEST="scripts/repo-manifest.txt"
 fail=0
 err() { printf 'FAIL: %s\n' "$1" >&2; fail=1; }
 
-# --- 1) manifest paths ---
+# --- 1) manifest anchors ---
 count=0
 while IFS= read -r path || [ -n "$path" ]; do
   [ -z "$path" ] && continue
   case "$path" in \#*) continue ;; esac
   count=$((count + 1))
-  [ -e "$path" ] || err "manifest path missing: $path"
+  [ -e "$path" ] || err "manifest anchor missing: $path"
 done < "$MANIFEST"
 
 for legacy_path in seed agent-seed docs/setup/reference-solution; do
@@ -28,18 +29,26 @@ for legacy_path in seed agent-seed docs/setup/reference-solution; do
 done
 
 # --- 2) forbidden strings ---
-targets=()
-for d in app docs .github scripts; do [ -d "$d" ] && targets+=("$d"); done
-for f in README.md AGENTS.md CLAUDE.md; do [ -f "$f" ] && targets+=("$f"); done
+# 교재 대상: placeholder 금지는 여기에만 적용한다.
+doc_targets=()
+for d in docs .github scripts; do [ -d "$d" ] && doc_targets+=("$d"); done
+for f in README.md AGENTS.md CLAUDE.md; do [ -f "$f" ] && doc_targets+=("$f"); done
 
-if [ ${#targets[@]} -gt 0 ]; then
+# 전체 대상: 고객 식별자와 패키지 피드는 참가자 코드까지 검사한다.
+targets=("${doc_targets[@]}")
+[ -d app ] && targets+=(app)
+
+if [ ${#doc_targets[@]} -gt 0 ]; then
   if hits=$(grep -rInE '\b(TBD|TODO|FIXME)\b|작성 예정' \
-        "${targets[@]}" \
+        "${doc_targets[@]}" \
         --exclude-dir=superpowers --exclude-dir=node_modules \
         --exclude-dir=.venv --exclude-dir=__pycache__ \
         --exclude=repo-manifest.txt --exclude=check-repo.sh 2>/dev/null); then
     err "placeholder found:"$'\n'"$hits"
   fi
+fi
+
+if [ ${#targets[@]} -gt 0 ]; then
   if hits=$(grep -rInE '삼성|Samsung|SAMSUNG' \
         "${targets[@]}" \
         --exclude-dir=superpowers --exclude-dir=node_modules \
@@ -127,4 +136,4 @@ if [ "$fail" -ne 0 ]; then
   printf 'FAIL: repo check failed\n' >&2
   exit 1
 fi
-printf 'OK: repo check passed (%d paths)\n' "$count"
+printf 'OK: repo check passed (%d anchors)\n' "$count"

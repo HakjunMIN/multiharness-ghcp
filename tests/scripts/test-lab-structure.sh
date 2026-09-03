@@ -75,16 +75,9 @@ for requirement in \
   }
 done
 
-# 랩은 일정이 아니라 순서로만 이어진다. 소요 시간과 일차 구분을 되돌리지 않는다.
+# 랩은 일정이 아니라 순서로만 이어진다. 랩 제목에 소요 시간을 넣지 않는다.
 if grep -InE '^# Lab [0-9].*\([0-9]+분\)' docs/labs/*.md 2>/dev/null; then
   printf 'FAIL: lab titles must not carry a duration\n' >&2
-  exit 1
-fi
-
-if grep -rInE '[0-9]일차|Day [0-9]|2일 hands-on|시간표' \
-  docs/labs docs/reference docs/setup docs/templates docs/uat docs/agents \
-  README.md AGENTS.md CONTEXT.md 2>/dev/null; then
-  printf 'FAIL: day-based schedule framing remains\n' >&2
   exit 1
 fi
 

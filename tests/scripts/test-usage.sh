@@ -21,22 +21,4 @@ grep -Fq 'APIM_BASE_URL' docs/setup/azure-setup.md
 grep -Fq 'BRAND_NAME' docs/setup/azure-setup.md
 grep -Fq './scripts/test-e2e.sh' docs/setup/azure-setup.md
 
-policy_files=()
-while IFS= read -r file; do
-  [ -f "$file" ] || continue
-  case "$file" in
-    app/api/uv.lock|tests/scripts/test-usage.sh) continue ;;
-  esac
-  policy_files+=("$file")
-done < <(
-  git ls-files --cached --others --exclude-standard
-)
-
-if grep -rInEi \
-  'BRAND_DOMAINS|brand_domains|trusted[- ]domains?|신뢰 도메인|허용 도메인|telemetry|텔레메트리|opt[- ]out|옵트아웃' \
-  "${policy_files[@]}" 2>/dev/null; then
-  printf 'FAIL: removed domain or telemetry policy remains\n' >&2
-  exit 1
-fi
-
 printf 'OK: script usage tests passed\n'

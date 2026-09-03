@@ -37,6 +37,10 @@ cp .env.example .env
 curl http://127.0.0.1:8000/healthz
 ```
 
+preflight는 toolchain과 의존성 설치만 FAIL로 막습니다. runway test나 build
+실패는 환경이 아니라 작업 중 코드 문제일 수 있으므로 WARN으로 보고하며,
+랩 진행을 막지 않습니다.
+
 별도 터미널에서 API 기본 테스트와 web 테스트를 실행한다.
 
 ```bash
