@@ -3,7 +3,7 @@
 ## 이 랩에서 배우는 것
 
 - 구현 문맥을 상속하지 않는 verifier를 운영한다.
-- API 통합, API e2e, browser deterministic, browser live 결과를 분리한다.
+- API 통합, API e2e, React browser deterministic, browser live 결과를 분리한다.
 - 결함을 재현 근거와 local defect 문서로 넘기고 구현은 고치지 않는다.
 
 ## Runtime card

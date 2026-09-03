@@ -3,7 +3,7 @@
 이 과정의 네 역할은 모두 fresh session입니다. VS Code에서 Session Target을
 바꾸는 handoff는 **full conversation history**와 누적 context를 새 harness로
 전달하므로 사용하지 않습니다. 세션 사이의 문맥은 커밋된 durable artifact로만
-전달하며, 그 artifact가 fresh session과 cold-start의 기준점입니다.
+전달하며, 그 artifact가 fresh session 복구의 기준점입니다.
 
 발견은 discovery 문서를, 아키텍처·기획은 spec과 tickets를 남깁니다. 이 단계
 전환에는 discovery 문서, spec, tickets, `CONTEXT.md`, ADR이면 충분합니다.
@@ -30,7 +30,7 @@
 
 - `from/to`: 실제로 사용한 host, harness, model, skill과 다음 역할의 예정 조합을
   기록해 세션 분리와 재현 가능성을 확인한다.
-- `artifacts`: fresh session과 cold-start가 채팅 없이 상태를 재구성하는 입력이다.
+- `artifacts`: fresh session이 채팅 없이 상태를 재구성하는 입력이다.
 - `done`: 수신자가 이미 끝난 작업을 반복하지 않게 한다.
 - `not done`: 남은 범위를 명시해 “거의 완료” 같은 모호한 상태를 없앤다.
 - `decisions`: 구현의 근거와 열린 질문을 추적 가능한 local work item에 연결한다.

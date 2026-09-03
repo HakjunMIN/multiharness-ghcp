@@ -17,7 +17,7 @@ Context: fresh session. Lab 1~2 대화가 아니라 커밋된 artifact만 읽는
 
 ## Spec
 
-먼저 `AGENTS.md`, `CONTEXT.md`, discovery, `prototype.md`,
+먼저 `AGENTS.md`, `CONTEXT.md`, `discovery.md`, `prototype.md`,
 `docs/work/<feature>/prototype/`와 연결된 ADR을 읽습니다.
 
 ```text
@@ -46,7 +46,7 @@ contract-first 2단 vertical로 ticket을 만드세요. API 인수 시나리오,
   관찰되는 지점까지 자릅니다.
 - 브라우저 인수 시나리오 ticket은 production code를 수정하지 않고 실패하는
   Playwright 시나리오를 남깁니다.
-- frontend ticket은 backend ticket을 blocker로 두고 질문부터 화면 렌더링과
+- React frontend ticket은 backend ticket을 blocker로 두고 질문부터 화면 렌더링과
   prototype 시각 일치까지 자릅니다.
 - model, search, component layer 같은 horizontal ticket은 거부합니다.
 

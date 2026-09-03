@@ -15,7 +15,7 @@ fresh session, 필요한 skill 실행, durable state 전달, 구현과 검증의
 | 역할 | Host | 권장 agent runtime | 권장 model | Matt skill |
 | --- | --- | --- | --- | --- |
 | 발견 | VS Code | Copilot harness, fresh session | GPT-5.6 Sol | `grill-with-docs`, `grilling`, `domain-modeling`, `research` |
-| Prototype (선택) | VS Code | Copilot harness, fresh session | GPT-5.6 Sol | `prototype`, `frontend-design` |
+| Prototype | VS Code | Copilot harness, fresh session | GPT-5.6 Sol | `prototype`, `frontend-design` |
 | 아키텍처·기획 | VS Code | Claude harness, fresh session | Claude Opus 4.8 | `codebase-design`, `to-spec`, `to-tickets` |
 | 구현 | VS Code | Copilot harness, fresh session | GPT-5.6 Sol | `implement`, `tdd` |
 | 독립 검증 | VS Code | Codex harness, fresh session | GPT-5.6 Terra | `code-review` |
@@ -31,7 +31,7 @@ chat 입력창의 **language model picker**(드롭다운)에서 고릅니다. �
 
 기존 세션에서 harness를 바꾸면 VS Code는 이를 **handoff**로 취급해 full
 conversation history와 누적 context를 새 harness로 옮깁니다. 이 과정은 발견,
-선택적 prototype, 기획, 구현, 검증 역할을 모두 New Chat의 fresh session으로
+prototype, 기획, 구현, 검증 역할을 모두 New Chat의 fresh session으로
 분리하므로 handoff를 사용하지 않습니다. 역할 사이의 문맥은 커밋된 durable
 artifact로만 전달합니다. 자세한 개념은
 [Sessions and handoff](https://code.visualstudio.com/docs/agents/concepts/sessions)
@@ -41,5 +41,4 @@ artifact로만 전달합니다. 자세한 개념은
 다른 조합을 선택할 수 있습니다. 실제 host, harness, model, skill은 `HANDOFF`와
 UAT report에 기록합니다. 독립 검증은 구현 세션과 분리된 fresh session이어야
 합니다. 권장 Codex + GPT-5.6 Terra 경로는 local Codex의 Copilot-backed
-provider입니다. cold-start는 model memory가 아니라 durable state의 품질을
-평가합니다.
+provider입니다. fresh session은 model memory 대신 durable state로 복구합니다.

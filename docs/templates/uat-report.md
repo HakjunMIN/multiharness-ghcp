@@ -13,6 +13,20 @@
 
 ## Spec findings
 
+## API unit and integration results
+
+- Command: `(cd app/api && uv run --frozen pytest -q)`
+- Result: pass/fail
+- Secret-safe evidence:
+
+## Gated Python e2e results
+
+- Gate approved by:
+- Command: `(cd app/api && uv run --frozen pytest -m e2e -q)`
+- Result: pass/fail/not run
+- Not-run reason:
+- Infrastructure findings:
+
 ## Deterministic Playwright results
 
 | ID | Behavior | Evidence | Verdict |

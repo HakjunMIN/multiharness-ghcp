@@ -20,8 +20,9 @@ adapter, citation contract, no-evidence behavior와 React UI states 결정을
 
 ## Testing Decisions
 
-network-free unit/contract tests, React component tests, recorded response,
-`live` APIM smoke와 관찰할 end-to-end 동작을 기록합니다.
+network-free unit/integration tests, React component tests, recorded response,
+gated Python `e2e` APIM smoke, deterministic browser e2e와 gated live browser
+e2e에서 관찰할 동작을 기록합니다.
 
 ## Out of Scope
 
