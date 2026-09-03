@@ -1,6 +1,7 @@
 ---
 name: microsoft-agent-framework
 description: 'Create, update, refactor, explain, or review Microsoft Agent Framework code in this repository. Binds MAF usage to the fixed APIM runtime boundary defined in AGENTS.md.'
+disable-model-invocation: true
 ---
 
 # Microsoft Agent Framework
