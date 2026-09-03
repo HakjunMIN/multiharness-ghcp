@@ -38,8 +38,54 @@ discovery /grill-with-docs -> docs/work/<feature>/discovery.md
   -- fresh --> independent verification /code-review main
 ```
 
-역할이 바뀌면 새 세션을 엽니다. 세션 사이의 문맥은 채팅 history가 아니라
-커밋된 durable artifact로 전달합니다.
+```mermaid
+flowchart TD
+    START["Lab 0 · Runway preflight<br/>환경·스킬·기본 test 검증"]
+    DISCOVERY["Lab 1 · Discovery<br/>Copilot fresh session<br/>/grill-with-docs"]
+    DISCOVERY_STATE[("discovery.md<br/>CONTEXT.md · ADR")]
+    PROTOTYPE_DECISION{"Prototype: required?"}
+    PROTOTYPE["선택 · Prototype<br/>Copilot fresh session<br/>/prototype"]
+    PROTOTYPE_STATE[("prototype.md<br/>throwaway branch ref")]
+    PLANNING["Lab 2 · Spec과 tickets<br/>Claude fresh session<br/>/to-spec → /to-tickets"]
+    PLAN_STATE[("spec.md · tickets/")]
+    ACCEPTANCE["Lab 3 · 인수 시나리오<br/>Copilot fresh session<br/>실패하는 deterministic E2E"]
+    IMPLEMENT["Lab 4 · Tracer bullet<br/>Copilot fresh session<br/>/implement ticket"]
+    HANDOFF[("구현 commit<br/>HANDOFF")]
+    RECOVERY["Lab 5 · Cold-start 복구<br/>fresh session에서 HANDOFF verify"]
+    IMPROVE["Lab 6 · UX·오류 개선<br/>ticket별 Copilot fresh session"]
+    TICKETS{"완료할 ticket이 남았나?"}
+    VERIFY["Lab 7 · 독립 검증<br/>Codex fresh session<br/>/code-review main + UAT"]
+    DEFECT{"미해결 defect?"}
+    DEFECT_STATE[("defects/")]
+    DEFECT_FIX["Defect 수정<br/>Copilot fresh session<br/>/implement defect"]
+    DEFECT_HANDOFF[("수정 commit<br/>HANDOFF")]
+    COMPLETE["완료<br/>UAT report · acceptance matrix"]
+    CLOUD_DECISION{"Cloud 실습 조건 충족?"}
+    CLOUD["Lab 9 · 선택 Cloud agent<br/>비밀이 필요 없는 bounded task"]
+
+    START --> DISCOVERY --> DISCOVERY_STATE --> PROTOTYPE_DECISION
+    PROTOTYPE_DECISION -- "예" --> PROTOTYPE --> PROTOTYPE_STATE --> PLANNING
+    PROTOTYPE_DECISION -- "아니요" --> PLANNING
+    PLANNING --> PLAN_STATE --> ACCEPTANCE --> IMPLEMENT --> HANDOFF
+    HANDOFF --> RECOVERY --> IMPROVE --> TICKETS
+    TICKETS -- "예" --> IMPROVE
+    TICKETS -- "아니요" --> VERIFY --> DEFECT
+    DEFECT -- "예" --> DEFECT_STATE --> DEFECT_FIX --> DEFECT_HANDOFF --> VERIFY
+    DEFECT -- "아니요" --> COMPLETE --> CLOUD_DECISION
+    CLOUD_DECISION -- "예" --> CLOUD
+    CLOUD_DECISION -- "아니요" --> END["종료"]
+    CLOUD --> END
+
+    classDef artifact fill:#eef5ed,stroke:#426257,color:#17201d;
+    classDef decision fill:#fff4dc,stroke:#b7791f,color:#17201d;
+    class DISCOVERY_STATE,PROTOTYPE_STATE,PLAN_STATE,HANDOFF,DEFECT_STATE,DEFECT_HANDOFF artifact;
+    class PROTOTYPE_DECISION,TICKETS,DEFECT,CLOUD_DECISION decision;
+```
+
+실선으로 연결된 역할이 바뀔 때마다 **New Chat**으로 fresh session을 엽니다.
+원통형 노드는 다음 세션이 이전 채팅 없이 읽는 durable artifact입니다. Lab 9는
+완료 조건에 포함되지 않는 선택 경로이며, 언제든 비밀이 필요 없는 bounded
+task에만 사용할 수 있습니다.
 
 아래 runtime/model은 권장 기본값입니다. 다른 조합을 사용해도 되지만 역할별
 fresh session과 durable artifact를 유지하고 실제 조합을 기록합니다.
