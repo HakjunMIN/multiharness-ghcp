@@ -41,7 +41,7 @@ endpoint나 model ID runtime 설정을 추가하지 않습니다.
 
 1. 고객사를 식별할 수 있는 이름, origin credential, APIM key를 commit, Issue, 채팅, 로그에 남기지 않습니다.
 2. 실제 runtime 값은 gitignored `.env`에만 둡니다. 커밋 기본 브랜드는 `한빛전자`이고 URL 예시는 `example.invalid` 같은 non-routable 값만 사용합니다.
-3. 기본 unit/contract test는 네트워크를 사용하지 않습니다. live APIM test는 `live` marker로 분리합니다.
+3. 기본 unit/contract test는 네트워크를 사용하지 않습니다. 실제 APIM test는 `e2e` marker로 분리합니다.
 4. 결정은 local work item, `CONTEXT.md`, ADR에 남깁니다. 채팅만 믿지 않습니다.
 5. 검증자는 production implementation을 고치지 않고 재현 근거와 local defect 문서를 만듭니다.
 6. `git push --force`를 금지합니다.
@@ -55,12 +55,15 @@ endpoint나 model ID runtime 설정을 추가하지 않습니다.
 
 1. 발견 세션에서 `/grill-with-docs` (권장: Copilot)
 2. 승인된 발견 결정을 `docs/work/<feature>/discovery.md`에 영속화
-3. discovery가 `Prototype: required`이면 fresh prototype 세션에서
-   `/prototype`을 실행하고 선택 결과를 `prototype.md`에 영속화 (권장: Copilot)
-4. fresh 기획 세션에서 discovery와 선택적 prototype 문서를 읽고 `/to-spec`,
+3. fresh prototype 세션에서 `/prototype`을 실행하고 선택 결과와 정적 참조를
+   `prototype.md`, `prototype/`에 영속화 (권장: Copilot)
+4. fresh 기획 세션에서 discovery와 prototype 문서를 읽고 `/to-spec`,
    `/to-tickets` (권장: Claude)
-5. local ticket별 fresh 구현 세션에서 `/implement` (권장: Copilot)
-6. 구현과 분리된 fresh 검증 세션에서 `/code-review main`과 UAT (권장: Codex)
+5. fresh API 인수 세션에서 실패하는 TestClient와 gated e2e 시나리오 작성
+6. fresh backend 구현 세션에서 `/implement` (권장: Copilot)
+7. fresh 브라우저 인수 세션에서 실패하는 Playwright 시나리오 작성
+8. fresh frontend 통합 세션에서 `/implement`하고 prototype 시각 일치 확인
+9. 구현과 분리된 fresh 검증 세션에서 `/code-review main`과 UAT (권장: Codex)
 
 역할이 바뀌면 agent runtime도 새 세션에서 선택합니다. 새 세션은 이전 대화
 history를 상속하지 않는다고 전제하며, chat handoff만으로 역할 경계를 넘지
@@ -72,20 +75,19 @@ artifact를 먼저 남기고, 받는 세션은 그 artifact를 읽은 뒤 작업
 위 스킬들을 대체하지 않습니다. conductor를 쓰더라도 역할별 fresh session,
 durable artifact, 구현과 검증의 분리는 그대로 적용됩니다.
 
-### Discovery → spec/tickets 경계
+### Discovery → prototype → spec/tickets 경계
 
 - `/grill-with-docs`의 decision frontier가 닫히고 사용자가 합의를 승인하면,
   발견 세션은 `docs/work/<feature>/discovery.md`를 만듭니다.
 - discovery 문서에는 승인된 결정, 확인한 사실과 출처, 제약, 의존성, 열린 질문,
   관련 `CONTEXT.md`와 ADR 링크를 기록합니다. 채팅 history만을 입력으로 남기지
   않습니다.
-- UI나 state model을 눈으로 검증해야 하면 discovery 문서에
-  `Prototype: required`를 선언합니다. fresh prototype 세션은 `/prototype`으로
-  throwaway code를 `prototype/<feature>-<slug>` branch에 만들고, 질문, 선택,
-  이유와 prototype ref를 `docs/work/<feature>/prototype.md`에 기록합니다.
-- fresh 기획 세션은 `AGENTS.md`, `CONTEXT.md`, discovery 문서, 선택적
-  `prototype.md`와 연결된 ADR을 먼저 읽고 `/to-spec`, `/to-tickets`를
-  수행합니다.
+- fresh prototype 세션은 `/prototype`으로 throwaway code를
+  `prototype/<feature>-<slug>` branch에 만들고, 질문, 선택, 이유와 ref를
+  `prototype.md`에 기록합니다. 선택 시안의 HTML/CSS, 상태별 스크린샷,
+  `tokens.md`와 landmark는 `docs/work/<feature>/prototype/`에 커밋합니다.
+- fresh 기획 세션은 `AGENTS.md`, `CONTEXT.md`, discovery, `prototype.md`,
+  `prototype/`과 연결된 ADR을 먼저 읽고 `/to-spec`, `/to-tickets`를 수행합니다.
 - spec과 ticket이 생성되어 검토되기 전에는 구현 세션을 시작하지 않습니다.
 
 ### Tickets → implementation 경계
@@ -99,6 +101,11 @@ durable artifact, 구현과 검증의 분리는 그대로 적용됩니다.
 - 구현 세션은 완료한 변경, 검증 결과, 남은 위험과 다음 세션의 첫 verify 명령을
   commit과 `HANDOFF`에 남깁니다. ticket과 durable artifact 없이 채팅 지시만으로
   구현하지 않습니다.
+- ticket은 API 인수 시나리오, backend, 브라우저 인수 시나리오, frontend 통합
+  순서의 contract-first vertical slice로 구성합니다. 인수 시나리오 세션은
+  production code를 고치지 않고 실패하는 테스트를 남깁니다.
+- frontend 구현은 `prototype/tokens.md`와 상태별 landmark를 test로 고정하고
+  구현 화면과 prototype 스크린샷의 육안 비교 결과를 `HANDOFF`에 기록합니다.
 
 구현 ticket을 마칠 때는 다음 순서를 따릅니다.
 
@@ -116,7 +123,7 @@ durable artifact, 구현과 검증의 분리는 그대로 적용됩니다.
    - not done: <다음 ticket 또는 남은 범위>
    - decisions: <spec, ticket, CONTEXT.md, ADR 경로>
    - verify: <다음 세션이 첫 단계로 실행할 복사 가능한 명령>
-   - risks: <실패한 시도, 외부 의존성, live gate 등 남은 위험>
+   - risks: <실패한 시도, 외부 의존성, e2e gate 등 남은 위험>
    ```
 
 4. `HANDOFF`만 별도 documentation commit으로 남깁니다. 현재 구현 commit SHA를
@@ -140,7 +147,7 @@ host, harness, model, skill을 `HANDOFF`와 UAT report에 기록합니다.
 | 역할 | 권장 agent runtime (harness) | 권장 model | 스킬 |
 | --- | --- | --- | --- |
 | 발견 | Copilot harness, fresh session | GPT-5.6 Sol | `grill-with-docs`, `grilling`, `domain-modeling`, `research` |
-| Prototype (선택) | Copilot harness, fresh session | GPT-5.6 Sol | `prototype`, `frontend-design` |
+| Prototype | Copilot harness, fresh session | GPT-5.6 Sol | `prototype`, `frontend-design` |
 | 아키텍처, 기획 | Claude harness, fresh session | Claude Opus 4.8 | `codebase-design`, `to-spec`, `to-tickets` |
 | 구현 | Copilot harness, fresh session | GPT-5.6 Sol | `implement`, `tdd` |
 | 독립 검증 | Codex harness, fresh session | GPT-5.6 Terra | `code-review` + UAT |
@@ -151,11 +158,11 @@ history를 상속하지 않으며 역할 간 context는 durable artifact로 전�
 
 ## Durable state와 세션 경계
 
-발견, 선택적 prototype, 기획, 구현과 검증은 역할별 fresh session으로 나눕니다.
-발견 세션은 discovery 문서를, prototype 세션은 `prototype.md`와 throwaway
-branch ref를, 기획 세션은 spec과 ticket을, 구현 세션은 commit과 `HANDOFF`를
+발견, prototype, 기획, 구현과 검증은 역할별 fresh session으로 나눕니다.
+발견 세션은 discovery 문서를, prototype 세션은 `prototype.md`, 정적 참조와
+throwaway branch ref를, 기획 세션은 spec과 ticket을, 구현 세션은 commit과 `HANDOFF`를
 다음 역할의 입력으로 남깁니다. 세션을 닫기 전에 `CONTEXT.md`, ADR, local work
-items, commits와 `HANDOFF`를 남기고, 다음 세션은 이것만으로 cold-start합니다.
+items, commits와 `HANDOFF`를 남기고, 다음 세션은 이것만으로 상태를 복구합니다.
 
 ## Verification commands
 
@@ -166,4 +173,4 @@ for test in tests/scripts/test-*.sh; do "$test"; done
 ./scripts/check-repo.sh
 ```
 
-Live smoke는 운영자가 지정한 gate에서만 `(cd app/api && uv run --frozen pytest -m live -q)`로 실행합니다.
+실제 APIM smoke는 운영자가 지정한 gate에서만 `(cd app/api && uv run --frozen pytest -m e2e -q)`로 실행합니다.

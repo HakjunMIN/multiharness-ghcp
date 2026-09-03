@@ -66,9 +66,10 @@ for artifact in \
 done
 
 for phrase in \
-  'Prototype: required' \
+  'prototype은 필수' \
   'Status: decided' \
   'prototype/<feature>-<slug>' \
+  'prototype/' \
   'prototype → planning'; do
   grep -Fq "$phrase" "$conductor" ||
     fail "workflow skill is missing the prototype contract: $phrase"

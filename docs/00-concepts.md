@@ -17,4 +17,4 @@
 사용할 수 있습니다. 실제 선택은 durable artifact에 기록합니다.
 `mattpocock/skills`는 이 흐름을 위한 샘플 구현체이며, Superpowers나
 Ouroboros를 포함한 다른 스킬 세트도 활용할 수 있습니다. 기본 test는
-deterministic하며 실제 APIM smoke는 `live` marker로 분리합니다.
+deterministic하며 실제 APIM smoke는 `e2e` marker로 분리합니다.

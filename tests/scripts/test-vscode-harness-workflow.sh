@@ -86,16 +86,16 @@ grep -Fq 'docs/work/<feature>/' docs/agents/issue-tracker.md
 grep -Fq 'discovery.md' docs/agents/issue-tracker.md
 grep -Fq 'full conversation history' docs/reference/handoff-contract.md
 grep -Fq 'fresh verifier' docs/reference/handoff-contract.md
-grep -Fq 'local ticket' docs/labs/lab4-tracer-bullet.md
-grep -Fq 'local defect' docs/labs/lab7-verification.md
-grep -Fq 'Host: VS Code' docs/labs/lab7-verification.md
+grep -Fq 'ticket' docs/labs/lab5-backend-slice.md
+grep -Fq 'local defect' docs/labs/lab9-verification.md
+grep -Fq 'Host: VS Code' docs/labs/lab9-verification.md
 grep -Fq 'Copilot, Claude, Codex' docs/00-concepts.md
 
 # React UI는 선택형 full 범위가 아니라 첫 tracer부터 UAT까지 필수다.
 for file in README.md AGENTS.md docs/labs/lab1-discovery.md \
-  docs/labs/lab2-spec-tickets.md docs/labs/lab3-acceptance-scenarios.md \
-  docs/labs/lab4-tracer-bullet.md \
-  docs/labs/lab6-improvement.md docs/labs/lab7-verification.md \
+  docs/labs/lab2-prototype.md docs/labs/lab3-spec-tickets.md \
+  docs/labs/lab6-browser-acceptance.md docs/labs/lab7-frontend-integration.md \
+  docs/labs/lab8-improvement.md docs/labs/lab9-verification.md \
   docs/uat/acceptance-matrix.md; do
   grep -Fq 'React' "$file" || {
     printf 'FAIL: %s does not include the required React UI scope\n' "$file" >&2
@@ -103,7 +103,7 @@ for file in README.md AGENTS.md docs/labs/lab1-discovery.md \
   }
 done
 
-grep -Fq '첫 vertical slice는 React 질문 입력' docs/labs/lab4-tracer-bullet.md
+grep -Fq 'backend contract를 소비' docs/labs/lab7-frontend-integration.md
 grep -Fq 'React와 API는 모두 필수 UAT 범위' docs/uat/acceptance-matrix.md
 
 if grep -InE \
@@ -116,14 +116,14 @@ fi
 
 # 발견 -> 기획 경계는 handoff가 아니라 커밋된 discovery 문서다.
 for file in README.md docs/reference/workflow.md docs/labs/lab1-discovery.md \
-  docs/labs/lab2-spec-tickets.md; do
+  docs/labs/lab3-spec-tickets.md; do
   grep -Fq 'discovery.md' "$file" || {
     printf 'FAIL: %s does not name the discovery durable artifact\n' "$file" >&2
     exit 1
   }
 done
 
-for file in docs/labs/lab2-spec-tickets.md docs/reference/model-harness-matrix.md \
+for file in docs/labs/lab3-spec-tickets.md docs/reference/model-harness-matrix.md \
   docs/reference/workflow.md; do
   if grep -InE 'Claude(로| harness).*handoff|handoff.*Claude' "$file" 2>/dev/null; then
     printf 'FAIL: %s still routes discovery into planning by handoff\n' "$file" >&2

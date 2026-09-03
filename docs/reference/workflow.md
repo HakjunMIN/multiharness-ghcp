@@ -7,9 +7,11 @@ Superpowers나 Ouroboros 등 다른 스킬 세트로 대체하거나 함께 활�
 
 ```text
 discovery grill-with-docs → discovery.md
-→ optional fresh prototype → prototype.md + throwaway branch ref
+→ fresh prototype → prototype.md + prototype/ + throwaway branch ref
 → fresh planning to-spec → to-tickets
-→ fresh implementation implement → commit + HANDOFF
+→ fresh API acceptance → fresh backend implementation
+→ fresh browser acceptance → fresh frontend integration
+→ UX/error improvement
 → fresh independent verification code-review + UAT
 ```
 
@@ -26,29 +28,31 @@ discovery grill-with-docs → discovery.md
 승인하면 `docs/work/<feature>/discovery.md`, `CONTEXT.md`, 필요한 ADR을
 커밋합니다.
 
-discovery가 `Prototype: required`를 선언하면 New Chat에서 권장 Session Target인
-Copilot, model인 GPT-5.6 Sol을 선택하고 `/prototype`을 실행합니다. prototype
-source는 `prototype/<feature>-<slug>` branch에 보존하고, 질문, 선택, 이유와
-branch ref는 `docs/work/<feature>/prototype.md`에 커밋합니다. `Status: decided`
-전에는 planning으로 넘어가지 않습니다.
+New Chat에서 권장 Session Target인 Copilot, model인 GPT-5.6 Sol을 선택하고
+`/prototype`을 실행합니다. 전체 source는 `prototype/<feature>-<slug>` branch에
+보존하고, 질문, 선택, 이유와 branch ref는 `prototype.md`에, 선택 시안의 HTML,
+CSS, token, landmark와 상태별 screenshot은 `prototype/`에 커밋합니다.
+`Status: decided`와 정적 참조가 모두 갖춰지기 전에는 planning으로 넘어가지 않습니다.
 
 아키텍처·기획은 New Chat으로 fresh session을 열고 권장 Session Target인 Claude,
 model인 Claude Opus 4.8을 선택합니다. `AGENTS.md`, `CONTEXT.md`, discovery
-문서, 선택적 `prototype.md`와 연결된 ADR을 먼저 읽은 뒤 `codebase-design`,
+문서, `prototype.md`, `prototype/`와 연결된 ADR을 먼저 읽은 뒤 `codebase-design`,
 `/to-spec`, `/to-tickets`로 local work item을 만듭니다.
 
-구현은 local ticket마다 fresh session을 열고 권장 Session Target인 Copilot,
-model인 GPT-5.6 Sol을 선택한 뒤
-`/implement docs/work/<feature>/tickets/<ticket>.md`를 사용합니다. 완료 시
-구현 commit과 루트 `HANDOFF`를 남깁니다.
+구현은 API 인수, backend, browser 인수, frontend 통합 ticket마다 fresh
+session을 엽니다. 인수 세션은 production code를 고치지 않고 실패하는 scenario를
+남깁니다. backend는 HTTP contract까지, frontend는 같은 contract와 선택된
+prototype의 시각 언어를 화면까지 연결합니다. 각 구현은 commit과 루트
+`HANDOFF`를 남깁니다.
 
 검증도 New Chat을 엽니다. 권장 Session Target인 Codex, provider인
 Copilot-backed, model인 GPT-5.6 Terra를 선택합니다. local spec과 acceptance
 matrix를 먼저 읽고
-`/code-review main`을 수행한 뒤 network-free
-`(cd app/web && npm run test:e2e)`와 운영자가 승인한 gate에서만
-`(cd app/web && npm run test:e2e:live)`를 실행합니다. 정적 review,
-deterministic Playwright, live Playwright 결과는 UAT report에서 분리합니다.
+`/code-review main`을 수행한 뒤 API 기본 suite, 운영자 gate의
+`pytest -m e2e`, network-free `npm run test:e2e`, 운영자 gate의
+`npm run test:e2e:live`를 실행합니다. Python e2e는 실제 APIM을 호출하지만
+JavaScript `test:e2e`는 route interception을 사용합니다. 네 결과는 UAT
+report에서 분리합니다.
 
 권장 조합을 대체할 때도 역할별 fresh session을 유지합니다. 특히 verifier는
 구현 세션의 대화를 상속하거나 구현 코드를 직접 수정하지 않으며, 실제 host,
@@ -61,7 +65,7 @@ harness(Session Target)와 model(picker)은 서로 다른 컨트롤입니다. �
 
 ## Session boundaries
 
-발견, 선택적 prototype, 기획, 구현, 검증 역할은 모두 fresh session입니다. 기존
+발견, prototype, 기획, 구현, 검증 역할은 모두 fresh session입니다. 기존
 세션의 Session Target을 바꾸면 VS Code는 이를 handoff로 취급해 full
 conversation history를 새 harness로 옮기므로, 이 워크플로에서는 사용하지
 않습니다.
@@ -71,7 +75,7 @@ conversation history를 새 harness로 옮기므로, 이 워크플로에서는 �
 | 세션 | 남기는 durable artifact |
 | --- | --- |
 | 발견 | `docs/work/<feature>/discovery.md`, `CONTEXT.md`, ADR |
-| Prototype (선택) | `docs/work/<feature>/prototype.md`, `prototype/<feature>-<slug>` branch ref |
+| Prototype | `prototype.md`, `prototype/`, `prototype/<feature>-<slug>` branch ref |
 | 아키텍처·기획 | `docs/work/<feature>/spec.md`, `tickets/` |
 | 구현 | 구현 commit, 루트 `HANDOFF` |
 | 독립 검증 | UAT report, `docs/work/<feature>/defects/` |
@@ -79,9 +83,9 @@ conversation history를 새 harness로 옮기므로, 이 워크플로에서는 �
 세션을 닫기 전에 [`HANDOFF`](handoff-contract.md)에 첫 verify 명령을 남기고,
 다음 세션은 이전 채팅 없이 commit된 durable state로 시작합니다.
 
-첫 vertical slice는 React 질문 입력부터 Python API, Foundry IQ retrieval,
-answer와 citations 렌더링까지 앱 전체를 관통합니다. 이후 ticket은 같은
-`POST /api/consult` contract 위에서 no-evidence와 오류 UI를 개선합니다.
+첫 vertical slice는 Python API, Foundry IQ retrieval, answer와 citations를
+HTTP contract까지 연결합니다. 다음 slice는 React 질문 입력부터 같은 contract의
+렌더링까지 연결합니다. 이후 ticket은 no-evidence와 오류 UI를 개선합니다.
 
 ## 선택: `/workflow` conductor
 
@@ -91,7 +95,7 @@ answer와 citations 렌더링까지 앱 전체를 관통합니다. 이후 ticket
 
 conductor는 다음 순서로 동작합니다.
 
-1. `docs/work/<feature>/`의 discovery, prototype, spec, tickets, defects와 루트
+1. `docs/work/<feature>/`의 discovery, prototype 정적 참조, spec, tickets, defects와 루트
    `HANDOFF`, `git status`를 읽는다.
 2. 처음 일치하는 조건으로 현재 단계를 판정한다.
 3. 직전 단계의 exit gate를 실제로 검증한다. `HANDOFF`의 `verify` 명령까지

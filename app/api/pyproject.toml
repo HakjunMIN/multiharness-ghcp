@@ -30,7 +30,7 @@ packages = ["src/consult"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
-addopts = ["-m", "not live"]
+addopts = ["-m", "not e2e"]
 markers = [
-    "live: calls the instructor APIM and requires workshop credentials",
+    "e2e: calls the instructor APIM and requires workshop credentials",
 ]

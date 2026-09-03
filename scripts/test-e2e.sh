@@ -7,4 +7,4 @@ set -a
 set +a
 
 cd "$ROOT/app/api"
-exec uv run --frozen pytest -m live -q
+exec uv run --frozen pytest -m e2e -q

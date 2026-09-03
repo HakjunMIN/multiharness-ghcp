@@ -684,7 +684,7 @@ Ensure `tests/scripts/test-usage.sh`:
 
 - tests only `build-participant-bundle.sh` usage;
 - requires `./scripts/test-e2e.sh` in Azure setup;
-- retains all secret/domain/telemetry policy scans.
+- retains all existing removed-policy and secret scans.
 
 - [ ] **Step 3: Run all repository shell tests**
 
@@ -805,4 +805,3 @@ require an operator-approved gate and credentials:
 (cd app/api && uv run --frozen pytest -m e2e -q)
 (cd app/web && npm run test:e2e:live)
 ```
-

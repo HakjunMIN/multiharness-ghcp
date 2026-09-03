@@ -53,10 +53,10 @@ LIVE_SMOKE_QUESTION="공개 제품 정보와 출처를 요청하는 질문"
 참가자는 값을 gitignored `.env`에만 넣는다. 채팅, Issue, commit, UAT 캡처에는 key를 남기지 않는다. Lab gate에서 다음 live smoke를 한 번 실행한다.
 
 ```bash
-./scripts/test-live.sh
+./scripts/test-e2e.sh
 ```
 
-기본 `uv run --frozen pytest -q`는 live marker를 제외하며 네트워크를 호출하지 않는다.
+기본 `uv run --frozen pytest -q`는 e2e marker를 제외하며 네트워크를 호출하지 않는다.
 
 ## 장애 라우팅
 

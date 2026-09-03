@@ -99,6 +99,6 @@ prototype이 선택된 뒤 production 구현 ticket은 별도의 focused UI test
 - 공유 경계: [`CONTEXT.md`](../../../CONTEXT.md)
 - 작업 규칙: [`AGENTS.md`](../../../AGENTS.md)
 - Spec과 ticket 절차:
-  [`docs/labs/lab2-spec-tickets.md`](../../labs/lab2-spec-tickets.md)
+  [`docs/labs/lab3-spec-tickets.md`](../../labs/lab3-spec-tickets.md)
 - 별도 ADR은 필요하지 않다. prototype은 되돌릴 수 있는 일회성 설계 도구이며
   production 경계는 바꾸지 않는다.

@@ -31,11 +31,10 @@ cp .env.example .env
 ## Main flow
 
 ```text
-discovery /grill-with-docs -> docs/work/<feature>/discovery.md
-  -- optional fresh --> prototype /prototype -> prototype.md + throwaway branch
-  -- fresh --> planning /to-spec -> /to-tickets
-  -- fresh --> implementation /implement <local-ticket-path>
-  -- fresh --> independent verification /code-review main
+discovery -> mandatory prototype -> spec/tickets
+  -> API acceptance -> backend implementation
+  -> browser acceptance -> frontend integration
+  -> UX/error improvement -> independent verification
 ```
 
 ```mermaid
@@ -43,31 +42,30 @@ flowchart TD
     START["Lab 0 · Runway preflight<br/>환경·스킬·기본 test 검증"]
     DISCOVERY["Lab 1 · Discovery<br/>Copilot fresh session<br/>/grill-with-docs"]
     DISCOVERY_STATE[("discovery.md<br/>CONTEXT.md · ADR")]
-    PROTOTYPE_DECISION{"Prototype: required?"}
-    PROTOTYPE["선택 · Prototype<br/>Copilot fresh session<br/>/prototype"]
-    PROTOTYPE_STATE[("prototype.md<br/>throwaway branch ref")]
-    PLANNING["Lab 2 · Spec과 tickets<br/>Claude fresh session<br/>/to-spec → /to-tickets"]
+    PROTOTYPE["Lab 2 · Prototype<br/>Copilot fresh session<br/>/prototype"]
+    PROTOTYPE_STATE[("prototype.md · prototype/<br/>throwaway branch ref")]
+    PLANNING["Lab 3 · Spec과 tickets<br/>Claude fresh session<br/>/to-spec → /to-tickets"]
     PLAN_STATE[("spec.md · tickets/")]
-    ACCEPTANCE["Lab 3 · 인수 시나리오<br/>Copilot fresh session<br/>실패하는 deterministic E2E"]
-    IMPLEMENT["Lab 4 · Tracer bullet<br/>Copilot fresh session<br/>/implement ticket"]
-    HANDOFF[("구현 commit<br/>HANDOFF")]
-    RECOVERY["Lab 5 · Cold-start 복구<br/>fresh session에서 HANDOFF verify"]
-    IMPROVE["Lab 6 · UX·오류 개선<br/>ticket별 Copilot fresh session"]
+    API_ACCEPTANCE["Lab 4 · API 인수 시나리오<br/>실패하는 TestClient + gated e2e"]
+    BACKEND["Lab 5 · Backend slice<br/>Copilot fresh session"]
+    BACKEND_HANDOFF[("backend commit<br/>HANDOFF")]
+    BROWSER_ACCEPTANCE["Lab 6 · 브라우저 인수 시나리오<br/>실패하는 Playwright"]
+    FRONTEND["Lab 7 · Frontend·통합<br/>prototype 이식"]
+    HANDOFF[("frontend commit<br/>HANDOFF")]
+    IMPROVE["Lab 8 · UX·오류 개선<br/>ticket별 Copilot fresh session"]
     TICKETS{"완료할 ticket이 남았나?"}
-    VERIFY["Lab 7 · 독립 검증<br/>Codex fresh session<br/>/code-review main + UAT"]
+    VERIFY["Lab 9 · 독립 검증<br/>Codex fresh session<br/>/code-review main + UAT"]
     DEFECT{"미해결 defect?"}
     DEFECT_STATE[("defects/")]
     DEFECT_FIX["Defect 수정<br/>Copilot fresh session<br/>/implement defect"]
     DEFECT_HANDOFF[("수정 commit<br/>HANDOFF")]
     COMPLETE["완료<br/>UAT report · acceptance matrix"]
     CLOUD_DECISION{"Cloud 실습 조건 충족?"}
-    CLOUD["Lab 9 · 선택 Cloud agent<br/>비밀이 필요 없는 bounded task"]
+    CLOUD["Lab 10 · 선택 Cloud agent<br/>비밀이 필요 없는 bounded task"]
 
-    START --> DISCOVERY --> DISCOVERY_STATE --> PROTOTYPE_DECISION
-    PROTOTYPE_DECISION -- "예" --> PROTOTYPE --> PROTOTYPE_STATE --> PLANNING
-    PROTOTYPE_DECISION -- "아니요" --> PLANNING
-    PLANNING --> PLAN_STATE --> ACCEPTANCE --> IMPLEMENT --> HANDOFF
-    HANDOFF --> RECOVERY --> IMPROVE --> TICKETS
+    START --> DISCOVERY --> DISCOVERY_STATE --> PROTOTYPE --> PROTOTYPE_STATE --> PLANNING
+    PLANNING --> PLAN_STATE --> API_ACCEPTANCE --> BACKEND --> BACKEND_HANDOFF
+    BACKEND_HANDOFF --> BROWSER_ACCEPTANCE --> FRONTEND --> HANDOFF --> IMPROVE --> TICKETS
     TICKETS -- "예" --> IMPROVE
     TICKETS -- "아니요" --> VERIFY --> DEFECT
     DEFECT -- "예" --> DEFECT_STATE --> DEFECT_FIX --> DEFECT_HANDOFF --> VERIFY
@@ -78,12 +76,12 @@ flowchart TD
 
     classDef artifact fill:#eef5ed,stroke:#426257,color:#17201d;
     classDef decision fill:#fff4dc,stroke:#b7791f,color:#17201d;
-    class DISCOVERY_STATE,PROTOTYPE_STATE,PLAN_STATE,HANDOFF,DEFECT_STATE,DEFECT_HANDOFF artifact;
-    class PROTOTYPE_DECISION,TICKETS,DEFECT,CLOUD_DECISION decision;
+    class DISCOVERY_STATE,PROTOTYPE_STATE,PLAN_STATE,BACKEND_HANDOFF,HANDOFF,DEFECT_STATE,DEFECT_HANDOFF artifact;
+    class TICKETS,DEFECT,CLOUD_DECISION decision;
 ```
 
 실선으로 연결된 역할이 바뀔 때마다 **New Chat**으로 fresh session을 엽니다.
-원통형 노드는 다음 세션이 이전 채팅 없이 읽는 durable artifact입니다. Lab 9는
+원통형 노드는 다음 세션이 이전 채팅 없이 읽는 durable artifact입니다. Lab 10은
 완료 조건에 포함되지 않는 선택 경로이며, 언제든 비밀이 필요 없는 bounded
 task에만 사용할 수 있습니다.
 
@@ -93,7 +91,7 @@ fresh session과 durable artifact를 유지하고 실제 조합을 기록합니�
 | 역할 | 권장 agent runtime | 권장 model | 다음 역할에 남기는 것 |
 | --- | --- | --- | --- |
 | 발견 | Copilot fresh session | GPT-5.6 Sol | `discovery.md`, `CONTEXT.md`, ADR |
-| Prototype (선택) | Copilot fresh session | GPT-5.6 Sol | `prototype.md`, throwaway branch ref |
+| Prototype | Copilot fresh session | GPT-5.6 Sol | `prototype.md`, `prototype/`, throwaway branch ref |
 | 아키텍처, 기획 | Claude fresh session | Claude Opus 4.8 | `spec.md`, `tickets/` |
 | 구현 | Copilot fresh session | GPT-5.6 Sol | 구현 commit, `HANDOFF` |
 | 독립 검증 | Codex fresh session | GPT-5.6 Terra | UAT report, `defects/` |
@@ -164,15 +162,17 @@ Session Target으로 직접 합니다.
 
 1. [Runway preflight](docs/labs/lab0-preflight.md)
 2. [Discovery](docs/labs/lab1-discovery.md)
-3. [Spec and tickets](docs/labs/lab2-spec-tickets.md)
-4. [Acceptance scenarios](docs/labs/lab3-acceptance-scenarios.md)
-5. [Tracer bullet](docs/labs/lab4-tracer-bullet.md)
-6. [Cold-start recovery](docs/labs/lab5-cold-start.md)
-7. [Consultation UX improvement](docs/labs/lab6-improvement.md)
-8. [Independent verification](docs/labs/lab7-verification.md)
-9. [Cloud agent (선택)](docs/labs/lab9-cloud-agent.md)
+3. [Prototype](docs/labs/lab2-prototype.md)
+4. [Spec and tickets](docs/labs/lab3-spec-tickets.md)
+5. [API acceptance scenarios](docs/labs/lab4-api-acceptance.md)
+6. [Backend consultation slice](docs/labs/lab5-backend-slice.md)
+7. [Browser acceptance scenarios](docs/labs/lab6-browser-acceptance.md)
+8. [Frontend and backend integration](docs/labs/lab7-frontend-integration.md)
+9. [Consultation UX improvement](docs/labs/lab8-improvement.md)
+10. [Independent verification](docs/labs/lab9-verification.md)
+11. [Cloud agent (선택)](docs/labs/lab10-cloud-agent.md)
 
-Lab 9는 선택입니다. Copilot cloud agent와 cloud partner agent는 별도 plan과
+Lab 10은 선택입니다. Copilot cloud agent와 cloud partner agent는 별도 plan과
 정책이 필요하므로 조건이 갖춰진 참가자만 진행하고 Lab 0~7의 평가 경로에는
 포함하지 않습니다.
 
