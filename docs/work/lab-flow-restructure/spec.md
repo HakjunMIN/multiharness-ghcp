@@ -209,8 +209,8 @@ for test in tests/scripts/test-*.sh; do "$test"; done
 
 - 상담 기능 자체의 구현. 이 저장소는 runway와 랩 문서만 제공하며 `app/api`와
   `app/web`의 상담 코드는 참가자가 랩에서 만듭니다.
-- `docs/work/consult-ui-prototype/discovery.md`의 내용 변경. 이미 커밋된 기존
-  발견 문서는 그대로 둡니다.
+- `docs/work/consult-ui-prototype/discovery.md`의 결정 내용 변경. 이미 커밋된
+  기존 발견 문서의 본문은 그대로 두고, 랩 번호가 바뀐 상대 링크만 고칩니다.
 - Playwright visual regression 도입.
 - 랩별 소요 시간이나 일차 구분 도입. `test-lab-structure.sh`가 계속 금지합니다.
 - `.worktrees/` 아래 이전 워크숍 사본.
