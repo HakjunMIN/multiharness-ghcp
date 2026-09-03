@@ -45,7 +45,7 @@ curl http://127.0.0.1:8000/healthz
 git check-ignore .env
 ```
 
-합의된 project-scope 스킬 12개(Matt Pocock 11개와 Anthropic `frontend-design`)는
+합의된 project-scope 스킬 13개(Matt Pocock 12개와 Anthropic `frontend-design`)는
 `.agents/skills/`에 미리 설치되어 있습니다. 잠금 파일과 설치 상태를 확인합니다.
 
 ```text
@@ -60,7 +60,7 @@ Terra 검증에는 GitHub 로그인과 Copilot Pro+가 필요합니다.
 
 VS Code Chat view(또는 Agents 창)에서 다음 권장 조합을 확인합니다.
 
-- Copilot + GPT-5.6 Sol: 발견
+- Copilot + GPT-5.6 Sol: 요구사항 디스커버리와 선택적 prototype
 - Claude + Claude Opus 4.8: 아키텍처·기획
 - Copilot + GPT-5.6 Sol: 구현
 - local Codex의 Copilot-backed provider + GPT-5.6 Terra: 독립 검증
