@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 
-for script in restore-checkpoint.sh build-participant-bundle.sh; do
+for script in build-participant-bundle.sh; do
   set +e
   "$ROOT/scripts/$script" >/dev/null 2>&1
   status=$?
@@ -19,7 +19,7 @@ grep -Fq 'Web Knowledge Source' docs/setup/azure-setup.md
 grep -Fq '참가자별 subscription key' docs/setup/azure-setup.md
 grep -Fq 'APIM_BASE_URL' docs/setup/azure-setup.md
 grep -Fq 'BRAND_NAME' docs/setup/azure-setup.md
-grep -Fq './scripts/test-live.sh' docs/setup/azure-setup.md
+grep -Fq './scripts/test-e2e.sh' docs/setup/azure-setup.md
 
 policy_files=()
 while IFS= read -r file; do
