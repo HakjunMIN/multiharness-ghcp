@@ -14,6 +14,8 @@
 구조적으로 다른 화면을 비교하고, 질문 입력부터 답변과 구조화된 출처 확인까지의
 정보 구조를 결정한다.
 
+Prototype: required
+
 ## 승인된 결정
 
 1. `mattpocock/skills`의 `prototype` 스킬만 저장소의
@@ -32,7 +34,7 @@
    - B: 답변과 출처를 나란히 두는 근거 우선 분할 화면
    - C: 질문, 핵심 결론과 출처를 단계별로 펼치는 상담 리포트
 7. 사용자는 브라우저의 switcher 버튼이나 좌우 화살표 키로 시안을 바꾸고, 선택한
-   시안과 이유를 이 feature의 durable artifact에 기록한다.
+   시안과 이유를 이 feature의 `prototype.md`에 기록한다.
 8. prototype에는 실제 mutation, persistence, live APIM 호출을 넣지 않는다.
 9. prototype variant에는 production 수준의 테스트나 추상화를 추가하지 않는다.
    설치 무결성과 앱 실행성만 기존 저장소 검증으로 확인한다.

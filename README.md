@@ -32,6 +32,7 @@ cp .env.example .env
 
 ```text
 discovery /grill-with-docs -> docs/work/<feature>/discovery.md
+  -- optional fresh --> prototype /prototype -> prototype.md + throwaway branch
   -- fresh --> planning /to-spec -> /to-tickets
   -- fresh --> implementation /implement <local-ticket-path>
   -- fresh --> independent verification /code-review main
@@ -46,6 +47,7 @@ fresh session과 durable artifact를 유지하고 실제 조합을 기록합니�
 | 역할 | 권장 agent runtime | 권장 model | 다음 역할에 남기는 것 |
 | --- | --- | --- | --- |
 | 발견 | Copilot fresh session | GPT-5.6 Sol | `discovery.md`, `CONTEXT.md`, ADR |
+| Prototype (선택) | Copilot fresh session | GPT-5.6 Sol | `prototype.md`, throwaway branch ref |
 | 아키텍처, 기획 | Claude fresh session | Claude Opus 4.8 | `spec.md`, `tickets/` |
 | 구현 | Copilot fresh session | GPT-5.6 Sol | 구현 commit, `HANDOFF` |
 | 독립 검증 | Codex fresh session | GPT-5.6 Terra | UAT report, `defects/` |
@@ -76,14 +78,14 @@ model picker**에서 model을 별도로 고릅니다. 공식 절차는
 Matt Pocock 스킬과 Anthropic의 `frontend-design`은 `.agents/skills/`에 포함된
 project-scope 샘플 구현체입니다. 설치 계약은 `./scripts/check-repo.sh`로
 확인합니다. 복원이 필요할 때만 잠금 파일에서 `npx skills experimental_install`을
-실행하고, 선택 설치를 다시 만들어야 하면 Matt Pocock 스킬 11개와
+실행하고, 선택 설치를 다시 만들어야 하면 Matt Pocock 스킬 12개와
 `frontend-design`을 함께 지정합니다.
 
 ```bash
 npx skills@latest add mattpocock/skills \
   --agent github-copilot --copy -y \
   --skill grill-with-docs grilling domain-modeling research codebase-design \
-  to-spec to-tickets implement tdd code-review diagnosing-bugs
+  to-spec to-tickets implement prototype tdd code-review diagnosing-bugs
 npx skills@latest add anthropics/skills@frontend-design \
   --agent github-copilot --copy -y
 ```
@@ -106,11 +108,11 @@ fresh session의 harness/model과 붙여넣을 명령을 알려 줍니다.
 /workflow status              판정만 하고 하위 스킬은 실행하지 않음
 ```
 
-`/workflow`는 **선택 경로**입니다. `/grill-with-docs`, `/to-spec`,
-`/to-tickets`, `/implement`, `/code-review`를 직접 실행하는 기존 흐름은 그대로
-유효하며, conductor는 이 스킬들을 참조만 하고 대체하지 않습니다. conductor도
-역할별 fresh session 규칙을 우회하지 않습니다. 세션 전환은 사람이 Session
-Target으로 직접 합니다.
+`/workflow`는 **선택 경로**입니다. `/grill-with-docs`, `/prototype`,
+`/to-spec`, `/to-tickets`, `/implement`, `/code-review`를 직접 실행하는 기존
+흐름은 그대로 유효하며, conductor는 이 스킬들을 참조만 하고 대체하지 않습니다.
+conductor도 역할별 fresh session 규칙을 우회하지 않습니다. 세션 전환은 사람이
+Session Target으로 직접 합니다.
 
 ## Labs
 

@@ -47,9 +47,12 @@ endpoint나 model ID runtime 설정을 추가하지 않습니다.
 
 1. 발견 세션에서 `/grill-with-docs` (권장: Copilot)
 2. 승인된 발견 결정을 `docs/work/<feature>/discovery.md`에 영속화
-3. fresh 기획 세션에서 discovery 문서를 읽고 `/to-spec`, `/to-tickets` (권장: Claude)
-4. local ticket별 fresh 구현 세션에서 `/implement` (권장: Copilot)
-5. 구현과 분리된 fresh 검증 세션에서 `/code-review main`과 UAT (권장: Codex)
+3. discovery가 `Prototype: required`이면 fresh prototype 세션에서
+   `/prototype`을 실행하고 선택 결과를 `prototype.md`에 영속화 (권장: Copilot)
+4. fresh 기획 세션에서 discovery와 선택적 prototype 문서를 읽고 `/to-spec`,
+   `/to-tickets` (권장: Claude)
+5. local ticket별 fresh 구현 세션에서 `/implement` (권장: Copilot)
+6. 구현과 분리된 fresh 검증 세션에서 `/code-review main`과 UAT (권장: Codex)
 
 역할이 바뀌면 agent runtime도 새 세션에서 선택합니다. 새 세션은 이전 대화
 history를 상속하지 않는다고 전제하며, chat handoff만으로 역할 경계를 넘지
@@ -68,8 +71,13 @@ durable artifact, 구현과 검증의 분리는 그대로 적용됩니다.
 - discovery 문서에는 승인된 결정, 확인한 사실과 출처, 제약, 의존성, 열린 질문,
   관련 `CONTEXT.md`와 ADR 링크를 기록합니다. 채팅 history만을 입력으로 남기지
   않습니다.
-- fresh 기획 세션은 `AGENTS.md`, `CONTEXT.md`, discovery 문서와 연결된 ADR을
-  먼저 읽고 `/to-spec`, `/to-tickets`를 수행합니다.
+- UI나 state model을 눈으로 검증해야 하면 discovery 문서에
+  `Prototype: required`를 선언합니다. fresh prototype 세션은 `/prototype`으로
+  throwaway code를 `prototype/<feature>-<slug>` branch에 만들고, 질문, 선택,
+  이유와 prototype ref를 `docs/work/<feature>/prototype.md`에 기록합니다.
+- fresh 기획 세션은 `AGENTS.md`, `CONTEXT.md`, discovery 문서, 선택적
+  `prototype.md`와 연결된 ADR을 먼저 읽고 `/to-spec`, `/to-tickets`를
+  수행합니다.
 - spec과 ticket이 생성되어 검토되기 전에는 구현 세션을 시작하지 않습니다.
 
 ### Tickets → implementation 경계
@@ -124,6 +132,7 @@ host, harness, model, skill을 `HANDOFF`와 UAT report에 기록합니다.
 | 역할 | 권장 agent runtime (harness) | 권장 model | 스킬 |
 | --- | --- | --- | --- |
 | 발견 | Copilot harness, fresh session | GPT-5.6 Sol | `grill-with-docs`, `grilling`, `domain-modeling`, `research` |
+| Prototype (선택) | Copilot harness, fresh session | GPT-5.6 Sol | `prototype`, `frontend-design` |
 | 아키텍처, 기획 | Claude harness, fresh session | Claude Opus 4.8 | `codebase-design`, `to-spec`, `to-tickets` |
 | 구현 | Copilot harness, fresh session | GPT-5.6 Sol | `implement`, `tdd` |
 | 독립 검증 | Codex harness, fresh session | GPT-5.6 Terra | `code-review` + UAT |
@@ -134,8 +143,9 @@ history를 상속하지 않으며 역할 간 context는 durable artifact로 전�
 
 ## Durable state와 세션 경계
 
-발견, 기획, 구현과 검증은 역할별 fresh session으로 나눕니다. 발견 세션은
-discovery 문서를, 기획 세션은 spec과 ticket을, 구현 세션은 commit과 `HANDOFF`를
+발견, 선택적 prototype, 기획, 구현과 검증은 역할별 fresh session으로 나눕니다.
+발견 세션은 discovery 문서를, prototype 세션은 `prototype.md`와 throwaway
+branch ref를, 기획 세션은 spec과 ticket을, 구현 세션은 commit과 `HANDOFF`를
 다음 역할의 입력으로 남깁니다. 세션을 닫기 전에 `CONTEXT.md`, ADR, local work
 items, commits와 `HANDOFF`를 남기고, 다음 세션은 이것만으로 cold-start합니다.
 

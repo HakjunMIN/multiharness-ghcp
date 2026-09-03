@@ -5,12 +5,15 @@
 
 ```text
 docs/work/<feature>/discovery.md
+docs/work/<feature>/prototype.md
 docs/work/<feature>/spec.md
 docs/work/<feature>/tickets/<NN>-<slug>.md
 docs/work/<feature>/defects/<NN>-<slug>.md
 ```
 
 - `discovery.md`는 [Lab 1](../labs/lab1-discovery.md)의 fresh 발견 세션이 만듭니다.
+- `prototype.md`는 discovery가 `Prototype: required`를 선언한 경우 fresh
+  prototype 세션이 만듭니다.
 - `spec.md`와 `tickets/`는 [Lab 2](../labs/lab2-spec-tickets.md)의 fresh 기획 세션이 만듭니다.
 - `defects/`는 [Lab 7](../labs/lab7-verification.md)의 독립 검증 세션이 만듭니다.
 

@@ -7,10 +7,10 @@ disable-model-invocation: true
 # Workflow
 
 `AGENTS.md`와 `docs/reference/workflow.md`의 워크플로를 조율하는 **선택적**
-conductor입니다. 참가자는 `/grill-with-docs`, `/to-spec`, `/to-tickets`,
-`/implement`, `/code-review`를 직접 실행해도 되고, 어디에 있는지 모를 때
-`/workflow`로 다음 한 걸음만 받아도 됩니다. 이 스킬은 하위 스킬을 대체하거나
-수정하지 않고 **참조만** 합니다.
+conductor입니다. 참가자는 `/grill-with-docs`, `/prototype`, `/to-spec`,
+`/to-tickets`, `/implement`, `/code-review`를 직접 실행해도 되고, 어디에
+있는지 모를 때 `/workflow`로 다음 한 걸음만 받아도 됩니다. 이 스킬은 하위
+스킬을 대체하거나 수정하지 않고 **참조만** 합니다.
 
 ## 이 스킬이 하지 않는 것
 
@@ -43,7 +43,8 @@ feature를 지정하지 않고 `docs/work/` 아래 feature root가 둘 이상이
 ### 1. 상태를 읽는다 (읽기 전용)
 
 - `AGENTS.md`, `CONTEXT.md`, `docs/agents/issue-tracker.md`
-- `docs/work/<feature>/discovery.md`, `spec.md`, `tickets/`, `defects/`
+- `docs/work/<feature>/discovery.md`, `prototype.md`, `spec.md`, `tickets/`,
+  `defects/`
 - 루트 `HANDOFF`
 - `docs/adr/`, `docs/uat/acceptance-matrix.md`
 - `git status --short`, `git log --oneline -5`
@@ -56,6 +57,7 @@ feature를 지정하지 않고 `docs/work/` 아래 feature root가 둘 이상이
 | --- | --- | --- | --- |
 | 미해결 defect가 `defects/`에 있음 | implementation (defect) | `/implement docs/work/<feature>/defects/<NN>-<slug>.md` | Copilot / GPT-5.6 Sol |
 | `discovery.md` 없음 | discovery | `/grill-with-docs` | Copilot / GPT-5.6 Sol |
+| `discovery.md`에 `Prototype: required`가 있고 `prototype.md`에 `Status: decided`가 없음 | prototype | `/prototype` | Copilot / GPT-5.6 Sol |
 | `spec.md` 없음 | planning (spec) | `/to-spec` | Claude / Claude Opus 4.8 |
 | `tickets/`에 ticket 없음 | planning (tickets) | `/to-tickets` | Claude / Claude Opus 4.8 |
 | `in-progress` ticket이 있음 | implementation (resume) | `HANDOFF`의 `verify`를 먼저 실행한 뒤 `/implement <ticket>` | Copilot / GPT-5.6 Sol |
@@ -69,6 +71,11 @@ feature를 지정하지 않고 `docs/work/` 아래 feature root가 둘 이상이
 `blocked` 상태 ticket만 남았다면 단계를 진행시키지 말고 무엇이 gate인지
 blockers에 적어 보고합니다.
 
+`Prototype: required`가 없거나 `Prototype: not-required`이면 prototype 단계를
+건너뜁니다. prototype은 production 구현이 아니라 설계 질문에 답하는 throwaway
+code입니다. 반드시 `prototype/<feature>-<slug>` branch에서 수행하고, main에는
+결정 artifact인 `prototype.md`만 남깁니다.
+
 권장 조합은 기본값입니다. 사용할 수 없으면 필요한 스킬을 지원하는 다른
 harness/model을 고르고, 실제 조합을 `HANDOFF`와 UAT report에 기록하라고
 안내합니다.
@@ -79,12 +86,28 @@ harness/model을 고르고, 실제 조합을 `HANDOFF`와 UAT report에 기록�
 못한 항목은 `blockers`에 넣고, 다음 명령 대신 **그 gate를 먼저 닫으라고**
 지시합니다.
 
-<gate name="discovery → planning">
+<gate name="discovery → prototype or planning">
 
 - `discovery.md`에 승인된 결정, 확인한 사실과 출처, 제약, 의존성, 열린 질문,
   관련 `CONTEXT.md`·ADR 링크가 모두 있다
 - 결정이 채팅 인용이 아니라 문서 본문으로 적혀 있다
 - 문서가 커밋되어 있다: `git status --short docs/work/<feature>/discovery.md`가 비어 있다
+
+</gate>
+
+<gate name="prototype → planning">
+
+- `prototype.md`에 다음 필드가 모두 있다.
+  - `Status: decided`
+  - `Question`
+  - `Selected`
+  - `Rationale`
+  - `Prototype ref`
+- `Prototype ref`가 `prototype/<feature>-<slug>` branch의 commit을 가리키며
+  `git rev-parse --verify <prototype-ref>^{commit}`이 성공한다
+- prototype variant와 switcher는 main에 없고, main에는 검증된 결정만 있다
+- `prototype.md`가 커밋되어 있다:
+  `git status --short docs/work/<feature>/prototype.md`가 비어 있다
 
 </gate>
 
@@ -133,6 +156,7 @@ harness/model을 고르고, 실제 조합을 `HANDOFF`와 UAT report에 기록�
 - phase: <단계>
 - evidence: <이 판정의 근거가 된 파일 경로>
 - gate: <직전 단계 gate 통과 / 미통과 항목>
+- prototype: <not-required / pending / decided와 선택 결과>
 - blockers: <없음 또는 먼저 닫아야 할 항목>
 - next session: <권장 harness> / <권장 model> (fresh session)
 - next command: <붙여넣을 명령 한 줄>

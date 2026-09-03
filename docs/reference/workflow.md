@@ -7,6 +7,7 @@ Superpowers나 Ouroboros 등 다른 스킬 세트로 대체하거나 함께 활�
 
 ```text
 discovery grill-with-docs → discovery.md
+→ optional fresh prototype → prototype.md + throwaway branch ref
 → fresh planning to-spec → to-tickets
 → fresh implementation implement → commit + HANDOFF
 → fresh independent verification code-review + UAT
@@ -25,10 +26,16 @@ discovery grill-with-docs → discovery.md
 승인하면 `docs/work/<feature>/discovery.md`, `CONTEXT.md`, 필요한 ADR을
 커밋합니다.
 
+discovery가 `Prototype: required`를 선언하면 New Chat에서 권장 Session Target인
+Copilot, model인 GPT-5.6 Sol을 선택하고 `/prototype`을 실행합니다. prototype
+source는 `prototype/<feature>-<slug>` branch에 보존하고, 질문, 선택, 이유와
+branch ref는 `docs/work/<feature>/prototype.md`에 커밋합니다. `Status: decided`
+전에는 planning으로 넘어가지 않습니다.
+
 아키텍처·기획은 New Chat으로 fresh session을 열고 권장 Session Target인 Claude,
 model인 Claude Opus 4.8을 선택합니다. `AGENTS.md`, `CONTEXT.md`, discovery
-문서와 연결된 ADR을 먼저 읽은 뒤 `codebase-design`, `/to-spec`,
-`/to-tickets`로 local work item을 만듭니다.
+문서, 선택적 `prototype.md`와 연결된 ADR을 먼저 읽은 뒤 `codebase-design`,
+`/to-spec`, `/to-tickets`로 local work item을 만듭니다.
 
 구현은 local ticket마다 fresh session을 열고 권장 Session Target인 Copilot,
 model인 GPT-5.6 Sol을 선택한 뒤
@@ -54,15 +61,17 @@ harness(Session Target)와 model(picker)은 서로 다른 컨트롤입니다. �
 
 ## Session boundaries
 
-네 역할은 모두 fresh session입니다. 기존 세션의 Session Target을 바꾸면 VS
-Code는 이를 handoff로 취급해 full conversation history를 새 harness로 옮기므로,
-이 워크플로에서는 사용하지 않습니다.
+발견, 선택적 prototype, 기획, 구현, 검증 역할은 모두 fresh session입니다. 기존
+세션의 Session Target을 바꾸면 VS Code는 이를 handoff로 취급해 full
+conversation history를 새 harness로 옮기므로, 이 워크플로에서는 사용하지
+않습니다.
 
 각 세션이 다음 역할에 남기는 입력은 다음과 같습니다.
 
 | 세션 | 남기는 durable artifact |
 | --- | --- |
 | 발견 | `docs/work/<feature>/discovery.md`, `CONTEXT.md`, ADR |
+| Prototype (선택) | `docs/work/<feature>/prototype.md`, `prototype/<feature>-<slug>` branch ref |
 | 아키텍처·기획 | `docs/work/<feature>/spec.md`, `tickets/` |
 | 구현 | 구현 commit, 루트 `HANDOFF` |
 | 독립 검증 | UAT report, `docs/work/<feature>/defects/` |
@@ -82,8 +91,8 @@ answer와 citations 렌더링까지 앱 전체를 관통합니다. 이후 ticket
 
 conductor는 다음 순서로 동작합니다.
 
-1. `docs/work/<feature>/`의 discovery, spec, tickets, defects와 루트 `HANDOFF`,
-   `git status`를 읽는다.
+1. `docs/work/<feature>/`의 discovery, prototype, spec, tickets, defects와 루트
+   `HANDOFF`, `git status`를 읽는다.
 2. 처음 일치하는 조건으로 현재 단계를 판정한다.
 3. 직전 단계의 exit gate를 실제로 검증한다. `HANDOFF`의 `verify` 명령까지
    실행한다.
@@ -101,12 +110,12 @@ conductor는 필수가 아닙니다. 개별 스킬을 직접 실행하는 흐름
 ```text
 npx skills experimental_install
 npx skills update code-review codebase-design \
-  diagnosing-bugs domain-modeling grill-with-docs grilling implement research tdd \
-  to-spec to-tickets
+  diagnosing-bugs domain-modeling grill-with-docs grilling implement prototype \
+  research tdd to-spec to-tickets
 npx skills update frontend-design
 ```
 
-Matt Pocock 스킬 11개와 Anthropic의 `frontend-design`은 `.agents/skills/`에 미리
+Matt Pocock 스킬 12개와 Anthropic의 `frontend-design`은 `.agents/skills/`에 미리
 설치되어 있습니다.
 `skills-lock.json`과 설치 파일을 함께 커밋하며 업데이트 diff를 검토합니다.
 이 project-scope 스킬은 이 워크플로의 참고 구현체일 뿐 필수 전제는 아닙니다.

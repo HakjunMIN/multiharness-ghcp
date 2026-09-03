@@ -44,6 +44,7 @@ done
 
 for command in \
   '/grill-with-docs' \
+  '/prototype' \
   '/to-spec' \
   '/to-tickets' \
   '/implement' \
@@ -54,6 +55,7 @@ done
 
 for artifact in \
   'docs/work/<feature>/discovery.md' \
+  'prototype.md' \
   'spec.md' \
   'tickets/' \
   'defects/' \
@@ -61,6 +63,15 @@ for artifact in \
   'docs/uat/acceptance-matrix.md'; do
   grep -Fq "$artifact" "$conductor" ||
     fail "workflow skill does not read the durable artifact $artifact"
+done
+
+for phrase in \
+  'Prototype: required' \
+  'Status: decided' \
+  'prototype/<feature>-<slug>' \
+  'prototype → planning'; do
+  grep -Fq "$phrase" "$conductor" ||
+    fail "workflow skill is missing the prototype contract: $phrase"
 done
 
 # conductor는 선택적 경로여야 한다.
