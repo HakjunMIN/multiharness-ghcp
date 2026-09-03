@@ -39,6 +39,10 @@ model인 Claude Opus 4.8을 선택합니다. `AGENTS.md`, `CONTEXT.md`, discover
 문서, `prototype.md`, `prototype/`와 연결된 ADR을 먼저 읽은 뒤 `codebase-design`,
 `/to-spec`, `/to-tickets`로 local work item을 만듭니다.
 
+기획은 **한 세션에서 기능의 spec 전체와 ticket 전체를 한 번에 발행**합니다.
+기능이 작다고 해서 spec이나 ticket을 slice별로 나눠 여러 기획 세션에서 만들지
+않습니다. 세션을 나누는 단위는 기획 산출물이 아니라 **구현**입니다.
+
 구현은 API 인수, backend, browser 인수, frontend 통합 ticket마다 fresh
 session을 엽니다. 인수 세션은 production code를 고치지 않고 실패하는 scenario를
 남깁니다. backend는 HTTP contract까지, frontend는 같은 contract와 선택된

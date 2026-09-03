@@ -88,6 +88,10 @@ durable artifact, 구현과 검증의 분리는 그대로 적용됩니다.
   `tokens.md`와 landmark는 `docs/work/<feature>/prototype/`에 커밋합니다.
 - fresh 기획 세션은 `AGENTS.md`, `CONTEXT.md`, discovery, `prototype.md`,
   `prototype/`과 연결된 ADR을 먼저 읽고 `/to-spec`, `/to-tickets`를 수행합니다.
+- 기획 세션 하나가 기능의 spec 전체와 ticket 전체를 한 번에 발행합니다. 기능이
+  작더라도 spec이나 ticket을 slice별로 나눠 여러 기획 세션에서 만들지 않습니다.
+  fresh session으로 나누는 단위는 ticket 하나당 구현 세션 하나와 구현과 분리된
+  검증 세션입니다.
 - spec과 ticket이 생성되어 검토되기 전에는 구현 세션을 시작하지 않습니다.
 
 ### Tickets → implementation 경계

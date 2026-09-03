@@ -71,6 +71,13 @@ feature를 지정하지 않고 `docs/work/` 아래 feature root가 둘 이상이
 `blocked` 상태 ticket만 남았다면 단계를 진행시키지 말고 무엇이 gate인지
 blockers에 적어 보고합니다.
 
+planning (spec)과 planning (tickets)는 **같은 기획 역할의 두 단계**이며 하나의
+fresh session에서 연속으로 수행합니다. spec이 없는 상태로 판정됐다면 그 세션이
+`/to-spec` 후 이어서 `/to-tickets`까지 마치고, 기능의 ticket을 한 번에 전부
+발행하는 것이 정상 경로입니다. 기능이 작다는 이유로 spec이나 ticket을
+slice별로 나눠 여러 기획 세션에서 만들지 않습니다. fresh session으로 나누는
+단위는 ticket 하나당 구현 세션 하나, 그리고 구현과 분리된 검증 세션입니다.
+
 prototype은 필수이며 production 구현이 아니라 설계 질문에 답하는 throwaway
 code입니다. 전체 시안은 `prototype/<feature>-<slug>` branch에 보존하고,
 main에는 결정 artifact인 `prototype.md`와 선택 시안의 `prototype/` 정적 참조를
