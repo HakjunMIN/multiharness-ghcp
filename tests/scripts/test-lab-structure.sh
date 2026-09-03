@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 
-for index in 0 1 2 3 4 5 6 7 9; do
+for index in 0 1 2 3 4 5 6 7 8 9 10; do
   lab="$(ls docs/labs/lab${index}-*.md)"
   for section in '## 이 랩에서 배우는 것' '## 종료 조건' '## 막힐 때'; do
     grep -Fq "$section" "$lab" || {
@@ -14,29 +14,63 @@ for index in 0 1 2 3 4 5 6 7 9; do
   done
 done
 
-lab7="docs/labs/lab7-verification.md"
+lab2="docs/labs/lab2-prototype.md"
 for requirement in \
-  '/code-review main' \
-  'npm run test:e2e' \
-  'npm run test:e2e:live' \
-  'Playwright'; do
-  grep -Fq "$requirement" "$lab7" || {
-    printf 'FAIL: %s is missing verification step %s\n' \
-      "$lab7" "$requirement" >&2
+  'docs/work/<feature>/prototype/' \
+  'tokens.md' \
+  '나눔고딕' \
+  '상태별 스크린샷'; do
+  grep -Fq "$requirement" "$lab2" || {
+    printf 'FAIL: %s is missing prototype requirement %s\n' \
+      "$lab2" "$requirement" >&2
     exit 1
   }
 done
 
-# 검증 랩이 실행하는 suite를 만들어 내는 랩이 없으면 Lab 7을 재현할 수 없다.
-lab3="docs/labs/lab3-acceptance-scenarios.md"
+lab4="docs/labs/lab4-api-acceptance.md"
+for requirement in \
+  'TestClient' \
+  'pytest -m e2e' \
+  '실제 APIM' \
+  '실패'; do
+  grep -Fq "$requirement" "$lab4" || {
+    printf 'FAIL: %s is missing API acceptance requirement %s\n' \
+      "$lab4" "$requirement" >&2
+    exit 1
+  }
+done
+
+lab6="docs/labs/lab6-browser-acceptance.md"
 for requirement in \
   'npm run test:e2e' \
   'test:e2e:live' \
   'Playwright' \
   'route interception'; do
-  grep -Fq "$requirement" "$lab3" || {
+  grep -Fq "$requirement" "$lab6" || {
     printf 'FAIL: %s is missing acceptance scenario step %s\n' \
-      "$lab3" "$requirement" >&2
+      "$lab6" "$requirement" >&2
+    exit 1
+  }
+done
+
+lab7="docs/labs/lab7-frontend-integration.md"
+for requirement in 'tokens.md' 'landmark' '스크린샷' 'HANDOFF'; do
+  grep -Fq "$requirement" "$lab7" || {
+    printf 'FAIL: %s is missing frontend integration requirement %s\n' \
+      "$lab7" "$requirement" >&2
+    exit 1
+  }
+done
+
+lab9="docs/labs/lab9-verification.md"
+for requirement in \
+  '/code-review main' \
+  'pytest -m e2e' \
+  'npm run test:e2e' \
+  'npm run test:e2e:live'; do
+  grep -Fq "$requirement" "$lab9" || {
+    printf 'FAIL: %s is missing verification step %s\n' \
+      "$lab9" "$requirement" >&2
     exit 1
   }
 done

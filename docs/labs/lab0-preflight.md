@@ -59,7 +59,7 @@ Terra 검증에는 GitHub 로그인과 Copilot Pro+ 혹은 Business, Enterprise�
 
 VS Code Chat view(또는 Agents 창)에서 다음 권장 조합을 확인합니다.
 
-- Copilot + GPT-5.6 Sol: 요구사항 디스커버리와 선택적 prototype
+- Copilot + GPT-5.6 Sol: 요구사항 디스커버리와 필수 prototype
 - Claude + Claude Opus 4.8: 설계, 아키텍처
 - Copilot + GPT-5.6 Sol: 구현
 - Codex + GPT-5.6 Terra: 독립 검증
@@ -83,6 +83,7 @@ WORKSHOP_CODEX_TERRA_CONFIRMED=1 \
 - 두 서버가 시작되고 health가 설정된 브랜드를 반환한다.
 - API 기본 테스트와 web test/build가 통과한다.
 - `.env`가 무시되며 APIM key가 채팅이나 commit에 없다.
+- Python `e2e`가 실제 APIM을 호출하는 운영자 승인 gate임을 확인했다.
 
 ## 막힐 때
 

@@ -5,7 +5,7 @@
 - 구현 전에 제품 상담 경계와 동작 질문을 해소한다.
 - 공유 용어는 `CONTEXT.md`, 되돌리기 어려운 결정은 ADR에 남긴다.
 - 승인된 발견 결과를 다음 세션이 읽을 discovery 문서로 발행한다.
-- unit, recorded contract, live test의 책임을 분리한다.
+- unit, recorded contract, gated e2e test의 책임을 분리한다.
 
 ## Runtime card
 
@@ -31,7 +31,7 @@ Microsoft Agent Framework Python backend와 React frontend로 제품 상담 agen
  - POST /api/consult의 request/response fields
  - 공개 웹 근거 전달 경계, 근거 없음/상충 시 행동
  - React 질문/응답/citation/loading/error 상태
- - deterministic unit/recorded contract/live APIM test seams.
+ - deterministic unit/recorded contract/gated APIM e2e test seams.
  - 기타 필요한 요구사항 결정할 것들. 
  - 프론트엔드 디자인 스타일
 ```
@@ -42,7 +42,8 @@ Microsoft Agent Framework Python backend와 React frontend로 제품 상담 agen
 - Foundry IQ의 공개 웹 근거가 답변 합성에 전달되는 경계
 - 근거가 없거나 상충하면 답을 꾸며내지 않는 규칙
 - React가 질문, loading, answer, citations, 오류를 표시하는 규칙
-- live APIM 없이 red-green이 가능한 adapter seam
+- 실제 APIM 없이 red-green이 가능한 adapter seam
+- 필수 prototype이 비교할 UI 상태와 디자인 방향
 
 ## 산출물
 
