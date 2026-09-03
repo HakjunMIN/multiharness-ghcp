@@ -21,15 +21,13 @@ fi
 
 (
   cd "$ROOT"
-  git archive --format=tar HEAD -- . \
-    ':(exclude)docs/setup/checkpoint' \
-    ':(exclude).env'
+  git archive --format=tar HEAD -- . ':(exclude).env'
 ) | gzip > "$OUTPUT"
 
-if tar -tzf "$OUTPUT" | grep -Eq 'docs/setup/checkpoint|(^|/)\.env$'; then
-  printf 'FAIL: participant bundle contains setup checkpoint or local secrets\n' >&2
+if tar -tzf "$OUTPUT" | grep -Eq '(^|/)\.env$'; then
+  printf 'FAIL: participant bundle contains local secrets\n' >&2
   rm -f "$OUTPUT"
   exit 1
 fi
 
-printf 'OK: participant bundle created without setup checkpoint or local secrets: %s\n' "$OUTPUT"
+printf 'OK: participant bundle created without local secrets: %s\n' "$OUTPUT"

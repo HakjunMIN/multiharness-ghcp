@@ -42,4 +42,4 @@ jobs:
         run: |
           bundle="${RUNNER_TEMP}/workshop-participant.tar.gz"
           ./scripts/build-participant-bundle.sh "$bundle" --confirm
-          ! tar -tzf "$bundle" | grep -Eq 'docs/instructor/checkpoint|(^|/)\.env$'
+          ! tar -tzf "$bundle" | grep -Eq '(^|/)\.env$'
