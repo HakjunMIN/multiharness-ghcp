@@ -56,7 +56,6 @@ app/web/src/styles.css
 app/web/src/test/setup.ts
 app/web/tsconfig.json
 app/web/vite.config.ts
-docs/00-concepts.md
 docs/adr/README.md
 docs/agents/issue-tracker.md
 docs/setup/azure-setup.md

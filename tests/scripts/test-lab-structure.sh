@@ -83,7 +83,7 @@ fi
 
 if grep -rInE '[0-9]일차|Day [0-9]|2일 hands-on|시간표' \
   docs/labs docs/reference docs/setup docs/templates docs/uat docs/agents \
-  README.md AGENTS.md CONTEXT.md docs/00-concepts.md 2>/dev/null; then
+  README.md AGENTS.md CONTEXT.md 2>/dev/null; then
   printf 'FAIL: day-based schedule framing remains\n' >&2
   exit 1
 fi

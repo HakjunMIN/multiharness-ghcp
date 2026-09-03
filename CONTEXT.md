@@ -6,8 +6,8 @@
 
 작업 규칙은 [AGENTS.md](AGENTS.md), 되돌리기 어려운 결정은
 [docs/adr/](docs/adr/README.md)를 따릅니다. 실행 환경 용어(host,
-harness, model, Session Target, fresh session)는 도메인 용어가 아니므로
-[개념](docs/00-concepts.md)에 있습니다.
+harness, model, Session Target, fresh session)는
+[에이전틱 개발 워크플로](docs/reference/workflow.md)에서 정의합니다.
 
 ## 고정 전제
 

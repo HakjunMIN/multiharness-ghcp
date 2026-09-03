@@ -135,9 +135,11 @@ npx skills@latest add anthropics/skills@frontend-design \
 ```
 
 spec, ticket, defect 규약은 [local work item tracker](docs/agents/issue-tracker.md)를
-따릅니다. `CONTEXT.md`, [`docs/adr/`](docs/adr/README.md),
-[`docs/work/`](docs/work/README.md)는 비어 있는 상태로 시작하며 참가자가 랩을
-진행하면서 직접 채웁니다.
+따릅니다. 공유 용어는 `CONTEXT.md`, 되돌리기 어려운 결정은
+[`docs/adr/`](docs/adr/README.md), 기능별 진행 상태와 산출물은
+[`docs/work/`](docs/work/README.md)에 기록합니다. `docs/work/`에는 현재 진행 중인
+랩의 discovery와 spec 같은 산출물이 있을 수 있으며, 기능별 root 아래에 계속
+누적합니다.
 
 ## 선택: `/workflow` conductor
 
