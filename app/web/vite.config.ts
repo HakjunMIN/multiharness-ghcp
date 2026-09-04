@@ -13,6 +13,9 @@ export default defineConfig({
     },
   },
   test: {
+    // vitest는 src/의 단위 테스트만 수집한다. e2e/의 Playwright 시나리오는
+    // npm run test:browser가 별도 runner로 실행한다.
+    include: ["src/**/*.{test,spec}.{ts,tsx}"],
     environment: "jsdom",
     setupFiles: "./src/test/setup.ts",
   },

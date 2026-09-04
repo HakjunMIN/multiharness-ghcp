@@ -1,7 +1,13 @@
+/* 서체는 CDN에서 받아오고, 네트워크가 없으면 OS 기본 한글 서체로 대체한다.
+   Playwright deterministic suite는 서체를 인수 기준으로 삼지 않는다. */
 @import url("https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=Nanum+Gothic:wght@400;700&display=swap");
 
 :root {
-  font-family: "Nanum Gothic", sans-serif;
+  --font-body: "Nanum Gothic", "NanumGothic", "Apple SD Gothic Neo",
+    "Malgun Gothic", sans-serif;
+  --font-display: "Gowun Batang", "Apple SD Gothic Neo", "Batang", serif;
+
+  font-family: var(--font-body);
   color: #17201d;
   background: #f2f4ed;
   font-synthesis: none;
@@ -50,7 +56,7 @@ header {
 
 h1 {
   margin: 0.75rem 0 0;
-  font-family: "Gowun Batang", serif;
+  font-family: var(--font-display);
   font-size: clamp(2.5rem, 5rem, 5rem);
   letter-spacing: 0;
 }

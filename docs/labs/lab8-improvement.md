@@ -29,7 +29,7 @@ Lab 6에서 남긴 no-evidence와 오류 Playwright 시나리오를 모두 green
 
 ```bash
 (cd app/api && uv run --frozen pytest -q)
-(cd app/web && npm test && npm run build && npm run test:e2e)
+(cd app/web && npm test && npm run build && npm run test:browser)
 ./scripts/check-repo.sh
 ```
 

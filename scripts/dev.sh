@@ -14,7 +14,7 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
-(cd "$ROOT/app/api" && uv run uvicorn consult.main:app --reload --port 8000) &
+(cd "$ROOT/app/api" && uv run --frozen uvicorn consult.main:app --reload --port 8000) &
 pids+=("$!")
 (cd "$ROOT/app/web" && npm run dev -- --host 127.0.0.1 --port 5173) &
 pids+=("$!")

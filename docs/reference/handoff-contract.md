@@ -12,17 +12,18 @@
 문서에 흩어져 있어 다음 세션이 어디서부터 검증해야 하는지 알 수 없기
 때문입니다. 독립 검증은 구현 세션과 분리된 **fresh verifier** 세션에서
 시작하며 구현 세션의 대화를 전달받지 않습니다. 권장 runtime은 Codex지만 다른
-조합도 사용할 수 있습니다. `HANDOFF`를 만들 때는 아래 7개 필드를 자체
-점검합니다.
+조합도 사용할 수 있습니다. 복사해 쓸 골격은
+[HANDOFF 템플릿](../templates/handoff.md)에 있고, `HANDOFF`를 만들 때는 아래
+7개 필드를 자체 점검합니다.
 
 ```markdown
 ## HANDOFF
-- from/to: <실제로 사용한 호스트>/<하네스>/<모델>/<스킬> → <권장 또는 예정 조합>
+- from/to: <실제로 사용한 호스트>/<하네스>/<모델>/<스킬> → <다음 fresh session의 권장 조합>
 - artifacts: <커밋된 레포 경로 목록. 채팅 인용 금지>
 - done: <완료된 것>
 - not done: <남은 것>
 - decisions: <local spec/ADR 경로>
-- verify: <복붙 실행 가능한 명령>
+- verify: <복붙 실행 가능한 명령> (expected: green | red - 이유)
 - risks: <다음 사람이 밟을 지뢰>
 ```
 
@@ -34,7 +35,11 @@
 - `done`: 수신자가 이미 끝난 작업을 반복하지 않게 한다.
 - `not done`: 남은 범위를 명시해 “거의 완료” 같은 모호한 상태를 없앤다.
 - `decisions`: 구현의 근거와 열린 질문을 추적 가능한 local work item에 연결한다.
-- `verify`: 수신자가 첫 5분 안에 현재 상태가 정상인지 확인할 수 있게 한다.
+- `verify`: 수신자가 첫 5분 안에 현재 상태가 **기대와 일치하는지** 확인할 수
+  있게 한다. 이 과정은 contract-first이므로 인수 시나리오 세션은 의도적으로
+  실패하는 테스트를 남긴다. 따라서 `verify`는 명령만으로 부족하고 기대 결과를
+  함께 적어야 한다. `expected: red`면 red가 정상이고, green이 나오면 시나리오가
+  약하다는 신호다.
 - `risks`: 무엇이 이미 실패했는지는 송신자만 알고 있으므로, 같은 실패를 반복하지 않게 한다.
 
 ## 나쁜 예와 좋은 예
@@ -43,7 +48,8 @@
 |---|---|---|
 | `artifacts` | `artifacts: 아까 만든 API` | `artifacts: app/api/src/consult/main.py, app/api/tests/test_consult.py` |
 | `done` | `done: 거의 다 함` | `done: 근거 없음 처리와 경계값 테스트 구현` |
-| `verify` | `verify: 테스트해 보기` | `verify: cd app/api && uv run --frozen pytest -q` |
+| `verify` | `verify: 테스트해 보기` | `verify: cd app/api && uv run --frozen pytest -q` (expected: green) |
+| `verify` | `verify: npm run test:browser` | `verify: cd app/web && npm run test:browser` (expected: red - frontend 미구현, 5개 시나리오 모두 실패) |
 | `risks` | `risks: 없음` | `risks: live smoke는 개인 APIM key가 있어야 실행 가능` |
 
 나쁜 예는 채팅 문맥과 기억에 의존한다. 좋은 예는 새 세션의 수신자가 파일, 커밋, 명령만으로 상태를 재구성할 수 있다.

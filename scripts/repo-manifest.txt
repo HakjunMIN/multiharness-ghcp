@@ -13,8 +13,10 @@ app/api/pyproject.toml
 app/api/uv.lock
 app/api/src/consult
 app/api/tests
+app/web/e2e
 app/web/package.json
 app/web/package-lock.json
+app/web/playwright.config.ts
 app/web/src
 docs/adr/README.md
 docs/agents/issue-tracker.md

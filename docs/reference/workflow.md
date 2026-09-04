@@ -53,9 +53,9 @@ prototype의 시각 언어를 화면까지 연결합니다. 각 구현은 commit
 Copilot-backed, model인 GPT-5.6 Terra를 선택합니다. local spec과 acceptance
 matrix를 먼저 읽고
 `/code-review main`을 수행한 뒤 API 기본 suite, 운영자 gate의
-`pytest -m e2e`, network-free `npm run test:e2e`, 운영자 gate의
-`npm run test:e2e:live`를 실행합니다. Python e2e는 실제 APIM을 호출하지만
-JavaScript `test:e2e`는 route interception을 사용합니다. 네 결과는 UAT
+`pytest -m e2e`, network-free `npm run test:browser`, 운영자 gate의
+`npm run test:browser:live`를 실행합니다. Python e2e는 실제 APIM을 호출하지만
+JavaScript `test:browser`는 route interception을 사용합니다. 네 결과는 UAT
 report에서 분리합니다.
 
 권장 조합을 대체할 때도 역할별 fresh session을 유지합니다. 특히 verifier는

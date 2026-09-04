@@ -42,8 +42,8 @@ done
 
 lab6="docs/labs/lab6-browser-acceptance.md"
 for requirement in \
-  'npm run test:e2e' \
-  'test:e2e:live' \
+  'npm run test:browser' \
+  'test:browser:live' \
   'Playwright' \
   'route interception'; do
   grep -Fq "$requirement" "$lab6" || {
@@ -66,8 +66,8 @@ lab9="docs/labs/lab9-verification.md"
 for requirement in \
   '/code-review main' \
   'pytest -m e2e' \
-  'npm run test:e2e' \
-  'npm run test:e2e:live'; do
+  'npm run test:browser' \
+  'npm run test:browser:live'; do
   grep -Fq "$requirement" "$lab9" || {
     printf 'FAIL: %s is missing verification step %s\n' \
       "$lab9" "$requirement" >&2

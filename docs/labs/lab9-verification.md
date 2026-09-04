@@ -3,7 +3,8 @@
 ## 이 랩에서 배우는 것
 
 - 구현 문맥을 상속하지 않는 verifier를 운영한다.
-- API 통합, API e2e, React browser deterministic, browser live 결과를 분리한다.
+- web 단위/빌드, API 통합, API e2e, React browser deterministic, browser live
+  결과를 분리한다.
 - 결함을 재현 근거와 local defect 문서로 넘기고 구현은 고치지 않는다.
 
 ## Runtime card
@@ -28,18 +29,19 @@ standards와 spec finding을 분리하고 production implementation을 수정하
 
 ## 실행 검증
 
-다음 네 결과를 UAT report에 별도로 기록합니다.
+다음 다섯 결과를 UAT report에 별도로 기록합니다.
 
 ```bash
+(cd app/web && npm test && npm run build)
 (cd app/api && uv run --frozen pytest -q)
 (cd app/api && uv run --frozen pytest -m e2e -q)
-(cd app/web && npm run test:e2e)
-(cd app/web && npm run test:e2e:live)
+(cd app/web && npm run test:browser)
+(cd app/web && npm run test:browser:live)
 ```
 
-첫 번째와 세 번째는 외부 네트워크 없이 실행합니다. Python `pytest -m e2e`는
-실제 APIM을 호출하며, JavaScript `npm run test:e2e`는 같은 이름이지만 route
-interception을 씁니다. 두 번째와 네 번째는 운영자가 승인하고 gitignored
+첫 번째, 두 번째와 네 번째는 외부 네트워크 없이 실행합니다. Python
+`pytest -m e2e`는 실제 APIM을 호출하며, JavaScript `npm run test:browser`는
+route interception을 씁니다. 세 번째와 다섯 번째는 운영자가 승인하고 gitignored
 `.env`가 준비된 gate에서만 실행합니다. gate가 없으면 실행하지 않은 이유와
 승인 주체를 기록합니다.
 
@@ -51,7 +53,7 @@ Standards/Spec finding을 기록합니다.
 ## 종료 조건
 
 - standards, spec, black-box UAT verdict가 분리된 report가 있다.
-- 네 suite 결과 또는 gated suite의 not-run 이유가 별도로 기록됐다.
+- 다섯 suite 결과 또는 gated suite의 not-run 이유가 별도로 기록됐다.
 - 발견한 결함마다 재현 근거와 local defect가 있다.
 - verifier가 production implementation을 수정하지 않았다.
 

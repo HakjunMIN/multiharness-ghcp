@@ -59,6 +59,19 @@ if [ -f app/web/package.json ]; then
     else
       warn_ "web test/build 실패" "환경이 아니라 작업 중 코드 문제일 수 있습니다. 확인하세요: cd app/web && npm test && npm run build"
     fi
+
+    # Lab 6의 브라우저 인수 시나리오는 Chromium 바이너리가 있어야 시작할 수 있다.
+    # 설치 자체는 toolchain이므로 실패하면 FAIL로 막는다.
+    if (cd app/web && npx playwright install chromium >/dev/null 2>&1); then
+      ok "Playwright Chromium 설치"
+      if (cd app/web && npm run test:browser >/dev/null 2>&1); then
+        ok "브라우저 runway smoke 통과"
+      else
+        warn_ "브라우저 runway smoke 실패" "환경이 아니라 작업 중 코드 문제일 수 있습니다. 확인하세요: cd app/web && npm run test:browser"
+      fi
+    else
+      bad "Playwright Chromium 설치 실패" "실행해서 원인을 확인하세요: cd app/web && npx playwright install chromium"
+    fi
   fi
 else
   bad "app/web/package.json 없음" "리포 루트에서 실행하세요."

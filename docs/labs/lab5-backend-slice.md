@@ -23,6 +23,14 @@ Context: backend ticket 하나의 fresh session
 /implement docs/work/<feature>/tickets/<backend-ticket>.md
 ```
 
+Microsoft Agent Framework 코드를 쓰거나 고칠 때는 이 저장소의 project-scope
+스킬을 함께 호출합니다. 고정 APIM 경계와 설치된 패키지 버전을 기준으로
+작업하게 해 줍니다.
+
+```text
+/microsoft-agent-framework
+```
+
 Lab 4의 focused RED를 확인하고 최소 구현으로 green을 만듭니다. production
 runtime은 `APIM_BASE_URL`과 `APIM_KEY`만 사용하며 별도 model endpoint나 model
 ID 설정을 추가하지 않습니다. Foundry IQ retrieval, Microsoft Agent Framework

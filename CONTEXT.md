@@ -35,7 +35,7 @@ Lab 1에서 채웁니다. 관찰 가능한 형태로 씁니다.
 
 ## 테스트 경계
 
-Lab 1에서 채웁니다. network-free unit/contract test와 `live` marker로 분리한
+Lab 1에서 채웁니다. network-free unit/contract test와 `e2e` marker로 분리한
 APIM smoke의 책임을 씁니다.
 
 ## 관련 결정

@@ -63,7 +63,8 @@ endpoint나 model ID runtime 설정을 추가하지 않습니다.
 6. fresh backend 구현 세션에서 `/implement` (권장: Copilot)
 7. fresh 브라우저 인수 세션에서 실패하는 Playwright 시나리오 작성
 8. fresh frontend 통합 세션에서 `/implement`하고 prototype 시각 일치 확인
-9. 구현과 분리된 fresh 검증 세션에서 `/code-review main`과 UAT (권장: Codex)
+9. fresh UX·오류 개선 세션에서 접근성과 오류 상태를 관찰 가능한 기준으로 개선
+10. 구현과 분리된 fresh 검증 세션에서 `/code-review main`과 UAT (권장: Codex)
 
 역할이 바뀌면 agent runtime도 새 세션에서 선택합니다. 새 세션은 이전 대화
 history를 상속하지 않는다고 전제하며, chat handoff만으로 역할 경계를 넘지
@@ -121,20 +122,26 @@ durable artifact, 구현과 검증의 분리는 그대로 적용됩니다.
 
    ```markdown
    ## HANDOFF
-   - from/to: <현재 harness/model> → <다음 fresh session의 harness/model>
+   - from/to: <실제로 사용한 호스트>/<하네스>/<모델>/<스킬> → <다음 fresh session의 권장 조합>
    - artifacts: <구현 commit과 변경된 개별 파일 경로>
    - done: <완료한 ticket과 관찰 가능한 동작>
    - not done: <다음 ticket 또는 남은 범위>
    - decisions: <spec, ticket, CONTEXT.md, ADR 경로>
-   - verify: <다음 세션이 첫 단계로 실행할 복사 가능한 명령>
+   - verify: <다음 세션이 첫 단계로 실행할 복사 가능한 명령> (expected: green | red - 이유)
    - risks: <실패한 시도, 외부 의존성, e2e gate 등 남은 위험>
    ```
+
+   `verify`에는 명령과 함께 **기대 결과**를 적습니다. 인수 시나리오 세션은
+   의도적으로 실패하는 테스트를 남기므로 `expected: red`가 정상이며, 이때
+   왜 red인지(예: 아직 구현하지 않은 frontend)를 함께 적습니다. 다음 세션은
+   실행 결과가 이 기대와 **일치하는지**를 확인합니다.
 
 4. `HANDOFF`만 별도 documentation commit으로 남깁니다. 현재 구현 commit SHA를
    문서가 가리킬 수 있도록 구현 commit과 분리합니다. 이전 `HANDOFF`는 git
    history로 보존됩니다.
 5. 다음 fresh session은 `HANDOFF`의 artifact와 commit이 실제 repository 상태와
-   일치하는지 확인하고 `verify` 명령을 가장 먼저 실행합니다.
+   일치하는지 확인하고 `verify` 명령을 가장 먼저 실행합니다. 실행 결과가
+   `expected`와 다르면 그 차이를 먼저 해소하고 다음 작업을 시작합니다.
 
 credential, 질문·답변 원문과 provider payload는 구현 commit이나 `HANDOFF`에
 포함하지 않습니다.
@@ -176,5 +183,9 @@ items, commits와 `HANDOFF`를 남기고, 다음 세션은 이것만으로 상�
 for test in tests/scripts/test-*.sh; do "$test"; done
 ./scripts/check-repo.sh
 ```
+
+브라우저 인수 시나리오는 `(cd app/web && npm run test:browser)`로 실행합니다.
+인수 시나리오를 작성한 뒤 frontend를 구현하기 전까지는 이 명령이 실패하는
+것이 정상이며, 그 기대 결과를 `HANDOFF`의 `verify`에 적습니다.
 
 실제 APIM smoke는 운영자가 지정한 gate에서만 `(cd app/api && uv run --frozen pytest -m e2e -q)`로 실행합니다.

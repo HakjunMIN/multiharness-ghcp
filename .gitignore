@@ -11,6 +11,8 @@ __pycache__/
 .pytest_cache/
 app/web/dist/
 app/web/test-results/
+app/web/playwright-report/
+app/web/blob-report/
 *.tsbuildinfo
 
 # per-harness local overrides (machine-specific, not shared)

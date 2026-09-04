@@ -13,6 +13,12 @@
 
 ## Spec findings
 
+## Web unit and build results
+
+- Command: `(cd app/web && npm test && npm run build)`
+- Result: pass/fail
+- Secret-safe evidence:
+
 ## API unit and integration results
 
 - Command: `(cd app/api && uv run --frozen pytest -q)`
@@ -29,6 +35,8 @@
 
 ## Deterministic Playwright results
 
+- Command: `(cd app/web && npm run test:browser)`
+
 | ID | Behavior | Evidence | Verdict |
 | --- | --- | --- | --- |
 | UAT-01 | React submits a question and renders an answer after loading | UI interaction + response | pass/fail |
@@ -40,7 +48,7 @@
 ## Gated live Playwright results
 
 - Gate approved by:
-- Command: `(cd app/web && npm run test:e2e:live)`
+- Command: `(cd app/web && npm run test:browser:live)`
 - Tested route:
 - Result: pass/fail/not run
 - Not-run reason:

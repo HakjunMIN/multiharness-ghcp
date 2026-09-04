@@ -30,9 +30,14 @@ domain behavior는 `POST /api/consult`만 사용합니다. `tokens.md`의 CSS �
 나눔고딕 본문 서체를 `app/web/src/styles.css`로 옮기고 상태별 landmark와
 접근성 이름을 유지합니다. React test는 token과 landmark를 assert합니다.
 
+서체 파일은 Google Fonts CDN에서 받아옵니다. 이는 "domain behavior는
+`POST /api/consult`만 사용한다"는 규칙의 명시적 예외이며, 오프라인에서는
+`--font-body` fallback으로 OS 기본 한글 서체가 쓰입니다. 서체 로딩 여부를
+test나 인수 기준으로 삼지 않습니다.
+
 ```bash
 (cd app/api && uv run --frozen pytest -q)
-(cd app/web && npm test && npm run build && npm run test:e2e)
+(cd app/web && npm test && npm run build && npm run test:browser)
 ./scripts/check-repo.sh
 ```
 

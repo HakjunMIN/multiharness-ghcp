@@ -47,7 +47,7 @@ Microsoft Agent Framework Python backend와 React frontend로 제품 상담 agen
 
 ## 산출물
 
-Lab 2의 Claude 세션은 이 대화를 물려받지 않습니다. 세 가지를 커밋합니다.
+Lab 2의 fresh prototype 세션은 이 대화를 물려받지 않습니다. 세 가지를 커밋합니다.
 
 - `docs/work/<feature>/discovery.md`: 승인된 결정, 확인한 사실과 출처, 제약,
   의존성, 열린 질문, 관련 `CONTEXT.md`와 ADR 링크

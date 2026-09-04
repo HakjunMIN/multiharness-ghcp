@@ -30,12 +30,22 @@ Mutli Harness를 이용하여 Microsoft Agent Framework backend와 React fronten
 사용하지만 spec, ticket, defect는 모두 저장소의 local work item으로 관리하므로
 remote tracker 권한과 연결은 요구하지 않습니다.
 
+터미널 A에서 환경을 준비하고 dev server를 띄웁니다. `./scripts/dev.sh`는
+종료하기 전까지 터미널을 붙잡고 있으므로 이 터미널은 그대로 둡니다.
+
 ```bash
 git clone <repo-url>
 cd <repo>
 ./scripts/preflight.sh
 cp .env.example .env
 ./scripts/dev.sh
+```
+
+터미널 B를 새로 열어 두 server가 응답하는지 확인합니다.
+
+```bash
+curl http://127.0.0.1:8000/healthz
+curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:5173/
 ```
 
 운영자가 전달한 다섯 runtime 값은 `.env`에만 둡니다. 커밋된 예시는 non-routable입니다.
@@ -154,11 +164,13 @@ model picker**에서 model을 별도로 고릅니다. 공식 절차는
   있습니다.
 
 이 과정의 에이전틱 개발 워크플로는 특정 스킬 세트에 종속되지 않습니다.
-Matt Pocock 스킬과 Anthropic의 `frontend-design`은 `.agents/skills/`에 포함된
-project-scope 샘플 구현체입니다. 설치 계약은 `./scripts/check-repo.sh`로
-확인합니다. 복원이 필요할 때만 잠금 파일에서 `npx skills experimental_install`을
-실행하고, 선택 설치를 다시 만들어야 하면 Matt Pocock 스킬 12개와
-`frontend-design`을 함께 지정합니다.
+`.agents/skills/`에는 project-scope 스킬 15개가 미리 설치되어 있습니다. 외부
+13개(Matt Pocock 12개와 Anthropic `frontend-design`)는 `skills-lock.json`으로
+잠기고, 이 저장소가 직접 작성한 2개(`workflow`, `microsoft-agent-framework`)는
+소스가 없으므로 잠금 파일에 등록하지 않습니다. 설치 계약은
+`./scripts/check-repo.sh`로 확인합니다. 복원이 필요할 때만 잠금 파일에서
+`npx skills experimental_install`을 실행하고, 선택 설치를 다시 만들어야 하면
+Matt Pocock 스킬 12개와 `frontend-design`을 함께 지정합니다.
 
 ```bash
 npx skills@latest add mattpocock/skills \
@@ -197,20 +209,20 @@ Session Target으로 직접 합니다.
 
 ## Labs
 
-1. [Runway preflight](docs/labs/lab0-preflight.md)
-2. [Discovery](docs/labs/lab1-discovery.md)
-3. [Prototype](docs/labs/lab2-prototype.md)
-4. [Spec and tickets](docs/labs/lab3-spec-tickets.md)
-5. [API acceptance scenarios](docs/labs/lab4-api-acceptance.md)
-6. [Backend consultation slice](docs/labs/lab5-backend-slice.md)
-7. [Browser acceptance scenarios](docs/labs/lab6-browser-acceptance.md)
-8. [Frontend and backend integration](docs/labs/lab7-frontend-integration.md)
-9. [Consultation UX improvement](docs/labs/lab8-improvement.md)
-10. [Independent verification](docs/labs/lab9-verification.md)
-11. [Cloud agent (선택)](docs/labs/lab10-cloud-agent.md)
+- [Lab 0 - Runway preflight](docs/labs/lab0-preflight.md)
+- [Lab 1 - Discovery](docs/labs/lab1-discovery.md)
+- [Lab 2 - Prototype](docs/labs/lab2-prototype.md)
+- [Lab 3 - Spec and tickets](docs/labs/lab3-spec-tickets.md)
+- [Lab 4 - API acceptance scenarios](docs/labs/lab4-api-acceptance.md)
+- [Lab 5 - Backend consultation slice](docs/labs/lab5-backend-slice.md)
+- [Lab 6 - Browser acceptance scenarios](docs/labs/lab6-browser-acceptance.md)
+- [Lab 7 - Frontend and backend integration](docs/labs/lab7-frontend-integration.md)
+- [Lab 8 - Consultation UX improvement](docs/labs/lab8-improvement.md)
+- [Lab 9 - Independent verification](docs/labs/lab9-verification.md)
+- [Lab 10 - Cloud agent (선택)](docs/labs/lab10-cloud-agent.md)
 
 Lab 10은 선택입니다. Copilot cloud agent와 cloud partner agent는 별도 plan과
-정책이 필요하므로 조건이 갖춰진 참가자만 진행하고 Lab 0~7의 평가 경로에는
+정책이 필요하므로 조건이 갖춰진 참가자만 진행하고 Lab 0~9의 평가 경로에는
 포함하지 않습니다.
 
 ## 검증
@@ -218,5 +230,10 @@ Lab 10은 선택입니다. Copilot cloud agent와 cloud partner agent는 별도 
 ```bash
 (cd app/api && uv run --frozen pytest -q)
 (cd app/web && npm test && npm run build)
+(cd app/web && npm run test:browser)
 ./scripts/check-repo.sh
 ```
+
+`npm run test:browser`는 Lab 6에서 인수 시나리오를 작성한 뒤 frontend 구현
+전까지 **red**가 정상입니다. runway 상태에서는 선탑재된 smoke 시나리오가
+green입니다.

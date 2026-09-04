@@ -140,7 +140,9 @@ harness/model을 고르고, 실제 조합을 `HANDOFF`와 UAT report에 기록�
   git diff --quiet HEAD -- <path>
   ```
 
-- `HANDOFF`의 `verify` 명령을 실제로 실행해 통과한다
+- `HANDOFF`의 `verify` 명령을 실제로 실행해 결과가 `expected`와 일치한다.
+  인수 시나리오 세션 직후라면 `expected: red`가 정상이며, red 자체를 gate
+  미통과로 판정하지 않는다. `expected`가 없으면 gate 미통과다.
 - `HANDOFF`는 구현 commit과 분리된 documentation commit이다
 
 </gate>
@@ -168,7 +170,7 @@ harness/model을 고르고, 실제 조합을 `HANDOFF`와 UAT report에 기록�
 - blockers: <없음 또는 먼저 닫아야 할 항목>
 - next session: <권장 harness> / <권장 model> (fresh session)
 - next command: <붙여넣을 명령 한 줄>
-- verify first: <새 세션이 가장 먼저 실행할 명령>
+- verify first: <새 세션이 가장 먼저 실행할 명령과 기대 결과>
 ```
 
 `next session`이 지금 세션의 harness/model과 다르면, **New Chat으로 fresh
@@ -192,6 +194,9 @@ session을 여는 것**이 다음 행동이라고 명시합니다. 기존 세션
 for test in tests/scripts/test-*.sh; do "$test"; done
 ./scripts/check-repo.sh
 ```
+
+브라우저 인수 시나리오는 `(cd app/web && npm run test:browser)`로 확인하며,
+frontend 구현 전에는 red가 정상입니다.
 
 실제 APIM smoke는 운영자가 지정한 gate에서만 다음 명령으로 실행합니다.
 

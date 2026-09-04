@@ -13,3 +13,4 @@
 | APIM 429 | 해당 key의 reset을 기다리거나 운영자가 quota를 조정한다. 다른 key를 공유하지 않는다 |
 | APIM 5xx | 운영자가 backend와 Azure AI Search resource health를 확인한다 |
 | 응답에 citation이 없다 | Web Knowledge Source 접근과 smoke question을 확인한다 |
+| 한글이 나눔고딕이 아닌 기본 서체로 보인다 | 서체는 Google Fonts CDN에서 받아오므로 오프라인이면 OS 기본 한글 서체로 대체된다. `app/web/src/styles.css`의 `--font-body` fallback이 동작한 정상 상태이며, 서체는 인수 기준이 아니다. 로컬 서체를 강제하려면 나눔고딕을 OS에 설치한다 |

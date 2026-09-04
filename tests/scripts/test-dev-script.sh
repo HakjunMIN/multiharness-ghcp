@@ -3,7 +3,7 @@ set -euo pipefail
 
 grep -Fxq '.env' .gitignore
 grep -Fxq 'BRAND_NAME=한빛전자' .env.example
-grep -Fq 'uv run uvicorn consult.main:app' scripts/dev.sh
+grep -Fq 'uv run --frozen uvicorn consult.main:app' scripts/dev.sh
 grep -Fq 'npm run dev' scripts/dev.sh
 grep -Fq 'trap cleanup EXIT INT TERM' scripts/dev.sh
 if grep -Fq 'wait -n' scripts/dev.sh; then

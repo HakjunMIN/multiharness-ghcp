@@ -30,13 +30,16 @@ secret-safe 오류 envelope도 기록합니다. 기본 테스트는 외부 네�
 않습니다.
 
 별도의 `pytest.mark.e2e` 시나리오는 실제 APIM과 Foundry IQ를 호출합니다.
+질문은 하드코딩하지 말고 `.env`의 `LIVE_SMOKE_QUESTION`을 읽어 사용합니다.
+값이 없으면 시나리오를 통과시키지 말고 실패시킵니다. 실제 질문 문구와 응답
+원문은 fixture나 로그에 남기지 않습니다.
 명시적인 `pytest -m e2e` 실행에 credential이 없으면 조용히 skip하거나
 통과하지 않고 실패해야 합니다. 이 suite는 운영자가 gate를 승인하기 전에는
 실행하지 않습니다.
 
-Python `uv run --frozen pytest -m e2e -q`는 실제 APIM을 호출합니다. 뒤의
-JavaScript `npm run test:e2e`는 이름은 같지만 route interception을 사용하는
-network-free 브라우저 suite입니다.
+Python `uv run --frozen pytest -m e2e -q`는 실제 APIM을 호출합니다. Lab 6의
+JavaScript `npm run test:browser`는 route interception을 사용하는 network-free
+브라우저 suite이며 이름을 분리해 두었습니다.
 
 ```bash
 (cd app/api && uv run --frozen pytest -q) || true
@@ -46,7 +49,7 @@ network-free 브라우저 suite입니다.
 ## 종료 조건
 
 - TestClient 통합 시나리오가 answer, citations, no-evidence, 오류를 덮는다.
-- 실제 APIM용 `e2e` 시나리오가 기본 suite에서 제외된다.
+- 실제 APIM용 `e2e` 시나리오가 기본 suite에서 제외되고 `LIVE_SMOKE_QUESTION`을 사용한다.
 - 현재 실패가 미구현 동작 때문이라는 재현 근거가 있다.
 - production code를 수정하지 않고 시나리오와 `HANDOFF`를 커밋했다.
 

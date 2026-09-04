@@ -17,7 +17,7 @@ VS Code에서 별도 cloud session을 만들고 bounded prompt, 정확한 파일
 검증 명령을 전달합니다. APIM key, 고객 식별 정보, 질문·답변 원문과 provider
 payload를 prompt나 log에 포함하지 않습니다.
 
-Python `e2e` marker가 붙은 테스트와 `npm run test:e2e:live`는 cloud session에서
+Python `e2e` marker가 붙은 테스트와 `npm run test:browser:live`는 cloud session에서
 실행하지 않습니다. 결과 diff를 local에서 검토하고 network-free suite와
 `./scripts/check-repo.sh`를 다시 실행합니다.
 

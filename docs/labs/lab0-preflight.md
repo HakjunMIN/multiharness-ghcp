@@ -29,28 +29,53 @@ git remote -v
 
 ## 실행
 
+터미널 A에서 환경을 점검하고 `.env`를 만듭니다.
+
 ```bash
 ./scripts/preflight.sh
 cp .env.example .env
 # 운영자가 준 APIM 값을 .env에 직접 넣는다. 채팅이나 커밋에 붙이지 않는다.
-./scripts/dev.sh
-curl http://127.0.0.1:8000/healthz
 ```
 
-preflight는 toolchain과 의존성 설치만 FAIL로 막습니다. runway test나 build
-실패는 환경이 아니라 작업 중 코드 문제일 수 있으므로 WARN으로 보고하며,
-랩 진행을 막지 않습니다.
+preflight는 toolchain과 의존성 설치만 FAIL로 막습니다. Node, uv, git,
+web/API 의존성 설치와 Playwright Chromium 설치가 여기에 해당합니다. runway
+test나 build 실패는 환경이 아니라 작업 중 코드 문제일 수 있으므로 WARN으로
+보고하며, 랩 진행을 막지 않습니다.
 
-별도 터미널에서 API 기본 테스트와 web 테스트를 실행한다.
+이어서 터미널 A에서 두 서버를 띄웁니다. `dev.sh`는 종료할 때까지 터미널을
+점유하므로 이 터미널은 그대로 둡니다.
+
+```bash
+./scripts/dev.sh
+```
+
+터미널 B에서 두 서버의 health를 확인합니다.
+
+```bash
+curl http://127.0.0.1:8000/healthz
+curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:5173/
+```
+
+첫 명령은 설정된 브랜드가 포함된 JSON을, 두 번째 명령은 `200`을 반환해야
+합니다.
+
+같은 터미널 B에서 API 기본 테스트와 web 테스트를 실행합니다.
 
 ```bash
 (cd app/api && uv run --frozen pytest -q)
 (cd app/web && npm test && npm run build)
+(cd app/web && npm run test:browser)
 git check-ignore .env
 ```
 
-합의된 project-scope 스킬 13개(Matt Pocock 12개와 Anthropic `frontend-design`)는
-`.agents/skills/`에 미리 설치되어 있습니다. 잠금 파일과 설치 상태를 확인합니다.
+`npm run test:browser`는 Lab 6에서 쓸 Playwright runway가 동작하는지 확인하는
+예제 시나리오입니다. 여기서는 통과해야 하며, Lab 6에서 실제 인수 시나리오로
+교체합니다.
+
+합의된 project-scope 스킬 15개(외부 13개: Matt Pocock 12개와 Anthropic
+`frontend-design`, 이 저장소에서 직접 작성한 2개: `workflow`,
+`microsoft-agent-framework`)는 `.agents/skills/`에 미리 설치되어 있습니다.
+잠금 파일과 설치 상태를 확인합니다.
 
 ```text
 ./scripts/check-repo.sh
@@ -85,7 +110,7 @@ WORKSHOP_CODEX_TERRA_CONFIRMED=1 \
 - 리포를 clone했고 최종 PR이 필요하면 자신의 fork를 origin으로 설정했다.
 - 필수 project skill을 확인했고 네 역할의 권장 harness/model 가용성을 점검했다.
 - 두 서버가 시작되고 health가 설정된 브랜드를 반환한다.
-- API 기본 테스트와 web test/build가 통과한다.
+- API 기본 테스트, web test/build와 브라우저 runway smoke가 통과한다.
 - `.env`가 무시되며 APIM key가 채팅이나 commit에 없다.
 - Python `e2e`가 실제 APIM을 호출하는 운영자 승인 gate임을 확인했다.
 
@@ -94,5 +119,8 @@ WORKSHOP_CODEX_TERRA_CONFIRMED=1 \
 - 권장 모델이나 harness가 없으면 대체 조합과 실제 선택을 durable artifact에 기록한다.
 - 역할에 필요한 skill 자체가 없으면 운영자에게 알린다.
 - health만 실패하면 APIM보다 먼저 8000 포트와 Python 환경을 확인한다.
+- 5173이 응답하지 않으면 터미널 A의 `dev.sh`가 아직 살아 있는지 확인한다.
+- `npm run test:browser`가 브라우저를 못 찾으면 `cd app/web && npx playwright
+  install chromium`을 실행한다.
 - `.env`가 추적되면 값을 지우고 운영자에게 key rotation을 요청한다.
 - 최종 PR 단계에서 push 권한이 없으면 자신의 fork를 origin으로 설정한다.

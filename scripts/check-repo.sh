@@ -4,9 +4,14 @@ set -euo pipefail
 # Repository asset integrity gate.
 #  1) every anchor in the manifest exists
 #  2) no customer identifiers or committed secrets. placeholder 금지는
-#     교재(docs, scripts, 루트 문서)에만 적용하고 참가자 코드인 app/은 제외한다.
-#  3) relative markdown links resolve to real files
+#     교재(docs, scripts, 루트 문서)에만 적용하고 참가자 코드인 app/과
+#     참가자 산출물인 docs/work/<feature>/는 제외한다.
+#  3) relative markdown links resolve to real files. 참가자 산출물인
+#     docs/work/<feature>/는 아직 만들지 않은 artifact를 미리 링크하는 것이
+#     정상이므로 제외한다.
 #  4) shell scripts parse, are executable, and follow the house style
+#  5) greenfield runway dependencies stay pinned
+#  6) project skill installation contract holds
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
@@ -39,9 +44,15 @@ targets=("${doc_targets[@]}")
 [ -d app ] && targets+=(app)
 
 if [ ${#doc_targets[@]} -gt 0 ]; then
+  # docs/work/<feature>/는 참가자가 만드는 discovery, spec, ticket, defect
+  # 산출물이다. 열린 질문에 TODO를 적는 것이 정상이므로 교재 placeholder
+  # 금지에서 제외한다. docs/work/README.md는 교재이므로 명시 인자로 되살린다.
+  placeholder_targets=("${doc_targets[@]}")
+  [ -f docs/work/README.md ] && placeholder_targets+=(docs/work/README.md)
   if hits=$(grep -rInE '\b(TBD|TODO|FIXME)\b|작성 예정' \
-        "${doc_targets[@]}" \
+        "${placeholder_targets[@]}" \
         --exclude-dir=superpowers --exclude-dir=node_modules \
+        --exclude-dir=work \
         --exclude-dir=.venv --exclude-dir=__pycache__ \
         --exclude=repo-manifest.txt --exclude=check-repo.sh 2>/dev/null); then
     err "placeholder found:"$'\n'"$hits"
@@ -84,6 +95,7 @@ done < <(
   find . -name '*.md' \
     -not -path '*/node_modules/*' \
     -not -path './docs/superpowers/*' \
+    -not -path './docs/work/*/*' \
     -not -path './.agents/skills/*' \
     -not -path './.github/skills/*' \
     -not -path './.git/*'
@@ -126,7 +138,7 @@ for (const group of [project.dependencies, project.devDependencies]) {
 }
 PIN
 
-# --- 7) optional project skill installation contract ---
+# --- 6) optional project skill installation contract ---
 if [ -f scripts/check-project-skills.mjs ]; then
   node scripts/check-project-skills.mjs >/dev/null ||
     err "project skill installation contract failed"

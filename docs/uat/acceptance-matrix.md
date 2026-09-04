@@ -11,8 +11,8 @@
 | UAT-05 | `/api/consult`가 answer와 citations envelope를 반환한다 | intercepted request/response capture | 실제 request/response envelope | pass/fail |
 
 React와 API는 모두 필수 UAT 범위입니다. Python `pytest -m e2e`와 browser
-`npm run test:e2e:live` 호출은 개인 APIM key로 정해진
+`npm run test:browser:live` 호출은 개인 APIM key로 정해진
 window에만 수행하고 key, origin credential, provider payload를 evidence에
-남기지 않습니다. JavaScript `npm run test:e2e`는 이름과 달리 route
+남기지 않습니다. JavaScript `npm run test:browser`는 route
 interception을 사용하는 deterministic suite입니다. 각 verdict를 서로 대체하지
 않습니다.
