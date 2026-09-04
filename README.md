@@ -1,6 +1,18 @@
-# Greenfield Product Consultation Agent
+# Agentic Workflow with Multi Harness
 
-Microsoft Agent Framework Python backend와 React frontend로 공개 웹 근거 기반 제품 상담 app을 만드는 hands-on 과정입니다. Foundry IQ retrieval과 model endpoint는 운영자가 관리하는 APIM 뒤에 있으며, 참가자는 origin credentials를 받지 않습니다.
+[![GitHub CI](https://github.com/HakjunMIN/multiharness-ghcp/actions/workflows/verify.yml/badge.svg?branch=main)](https://github.com/HakjunMIN/multiharness-ghcp/actions/workflows/verify.yml)
+[![API tests](https://img.shields.io/badge/API%20tests-pytest-0A9EDC?logo=pytest&logoColor=white)](https://github.com/HakjunMIN/multiharness-ghcp/blob/main/app/api/pyproject.toml)
+[![Web tests](https://img.shields.io/badge/Web%20tests-Vitest-6E9F18?logo=vitest&logoColor=white)](https://github.com/HakjunMIN/multiharness-ghcp/blob/main/app/web/package.json)
+[![Quality gate](https://img.shields.io/badge/quality-repository%20gate-1F6FEB?logo=github)](https://github.com/HakjunMIN/multiharness-ghcp/blob/main/scripts/check-repo.sh)
+
+
+<p align="center">
+  <img src="docs/assets/multi-harness-overview.png"
+       alt="하나의 GitHub Copilot 구독으로 여러 하네스와 모델을 선택하는 개발 환경"
+       width="1200">
+</p>
+
+Mutli Harness를 이용하여 Microsoft Agent Framework backend와 React frontend로 공개 웹 근거 기반 제품 상담 app을 만드는 hands-on 과정입니다. Foundry IQ retrieval과 model endpoint는 운영자가 관리하는 APIM 뒤에 있으며, 참가자는 origin credentials를 받지 않습니다.
 
 ## 완성할 앱
 
@@ -41,41 +53,59 @@ discovery -> mandatory prototype -> spec/tickets
 <summary><strong>전체 흐름 다이어그램 펼쳐보기</strong></summary>
 
 ```mermaid
-flowchart LR
-    START["Lab 0 · Runway preflight<br/>환경·스킬·기본 test 검증"]
-    DISCOVERY["Lab 1 · Discovery<br/>Copilot fresh session<br/>/grill-with-docs"]
-    DISCOVERY_STATE[("discovery.md<br/>CONTEXT.md · ADR")]
-    PROTOTYPE["Lab 2 · Prototype<br/>Copilot fresh session<br/>/prototype"]
-    PROTOTYPE_STATE[("prototype.md · prototype/<br/>throwaway branch ref")]
-    PLANNING["Lab 3 · Spec과 tickets<br/>Claude fresh session<br/>/to-spec → /to-tickets"]
-    PLAN_STATE[("spec.md · tickets/")]
-    API_ACCEPTANCE["Lab 4 · API 인수 시나리오<br/>실패하는 TestClient + gated e2e"]
-    BACKEND["Lab 5 · Backend slice<br/>Copilot fresh session"]
-    BACKEND_HANDOFF[("backend commit<br/>HANDOFF")]
-    BROWSER_ACCEPTANCE["Lab 6 · 브라우저 인수 시나리오<br/>실패하는 Playwright"]
-    FRONTEND["Lab 7 · Frontend·통합<br/>prototype 이식"]
-    HANDOFF[("frontend commit<br/>HANDOFF")]
-    IMPROVE["Lab 8 · UX·오류 개선<br/>ticket별 Copilot fresh session"]
-    TICKETS{"완료할 ticket이 남았나?"}
-    VERIFY["Lab 9 · 독립 검증<br/>Codex fresh session<br/>/code-review main + UAT"]
-    DEFECT{"미해결 defect?"}
-    DEFECT_STATE[("defects/")]
-    DEFECT_FIX["Defect 수정<br/>Copilot fresh session<br/>/implement defect"]
-    DEFECT_HANDOFF[("수정 commit<br/>HANDOFF")]
-    COMPLETE["완료<br/>UAT report · acceptance matrix"]
-    CLOUD_DECISION{"Cloud 실습 조건 충족?"}
-    CLOUD["Lab 10 · 선택 Cloud agent<br/>비밀이 필요 없는 bounded task"]
+flowchart TB
+    subgraph DISCOVER["발견 · Prototype · 기획"]
+        direction LR
+        START["Lab 0 · Runway preflight<br/>환경·스킬·기본 test 검증"]
+        DISCOVERY["Lab 1 · Discovery<br/>Copilot fresh session<br/>/grill-with-docs"]
+        DISCOVERY_STATE[("discovery.md<br/>CONTEXT.md · ADR")]
+        PROTOTYPE["Lab 2 · Prototype<br/>Copilot fresh session<br/>/prototype"]
+        PROTOTYPE_STATE[("prototype.md · prototype/<br/>throwaway branch ref")]
+        PLANNING["Lab 3 · Spec과 tickets<br/>Claude fresh session<br/>/to-spec → /to-tickets"]
+        START --> DISCOVERY --> DISCOVERY_STATE --> PROTOTYPE --> PROTOTYPE_STATE --> PLANNING
+    end
 
-    START --> DISCOVERY --> DISCOVERY_STATE --> PROTOTYPE --> PROTOTYPE_STATE --> PLANNING
-    PLANNING --> PLAN_STATE --> API_ACCEPTANCE --> BACKEND --> BACKEND_HANDOFF
-    BACKEND_HANDOFF --> BROWSER_ACCEPTANCE --> FRONTEND --> HANDOFF --> IMPROVE --> TICKETS
-    TICKETS -- "예" --> IMPROVE
-    TICKETS -- "아니요" --> VERIFY --> DEFECT
-    DEFECT -- "예" --> DEFECT_STATE --> DEFECT_FIX --> DEFECT_HANDOFF --> VERIFY
-    DEFECT -- "아니요" --> COMPLETE --> CLOUD_DECISION
-    CLOUD_DECISION -- "예" --> CLOUD
-    CLOUD_DECISION -- "아니요" --> END["종료"]
-    CLOUD --> END
+    subgraph BUILD["인수 시나리오 · 구현"]
+        direction LR
+        PLAN_STATE[("spec.md · tickets/")]
+        API_ACCEPTANCE["Lab 4 · API 인수 시나리오<br/>실패하는 TestClient + gated e2e"]
+        BACKEND["Lab 5 · Backend slice<br/>Copilot fresh session"]
+        BACKEND_HANDOFF[("backend commit<br/>HANDOFF")]
+        BROWSER_ACCEPTANCE["Lab 6 · 브라우저 인수 시나리오<br/>실패하는 Playwright"]
+        FRONTEND["Lab 7 · Frontend·통합<br/>prototype 이식"]
+        HANDOFF[("frontend commit<br/>HANDOFF")]
+        IMPROVE["Lab 8 · UX·오류 개선<br/>ticket별 Copilot fresh session"]
+        TICKETS{"완료할 ticket이 남았나?"}
+        PLAN_STATE --> API_ACCEPTANCE --> BACKEND --> BACKEND_HANDOFF
+        BACKEND_HANDOFF --> BROWSER_ACCEPTANCE --> FRONTEND --> HANDOFF --> IMPROVE --> TICKETS
+        TICKETS -- "예" --> IMPROVE
+    end
+
+    subgraph REVIEW["독립 검증 · Defect 수정"]
+        direction LR
+        VERIFY["Lab 9 · 독립 검증<br/>Codex fresh session<br/>/code-review main + UAT"]
+        DEFECT{"미해결 defect?"}
+        DEFECT_STATE[("defects/")]
+        DEFECT_FIX["Defect 수정<br/>Copilot fresh session<br/>/implement defect"]
+        DEFECT_HANDOFF[("수정 commit<br/>HANDOFF")]
+        COMPLETE["완료<br/>UAT report · acceptance matrix"]
+        VERIFY --> DEFECT
+        DEFECT -- "예" --> DEFECT_STATE --> DEFECT_FIX --> DEFECT_HANDOFF --> VERIFY
+        DEFECT -- "아니요" --> COMPLETE
+    end
+
+    subgraph OPTIONAL["선택 Cloud 실습"]
+        direction LR
+        CLOUD_DECISION{"Cloud 실습 조건 충족?"}
+        CLOUD["Lab 10 · 선택 Cloud agent<br/>비밀이 필요 없는 bounded task"]
+        END["종료"]
+        CLOUD_DECISION -- "예" --> CLOUD --> END
+        CLOUD_DECISION -- "아니요" --> END
+    end
+
+    DISCOVER --> BUILD
+    BUILD -- "ticket 완료" --> REVIEW
+    REVIEW --> OPTIONAL
 
     classDef artifact fill:#eef5ed,stroke:#426257,color:#17201d;
     classDef decision fill:#fff4dc,stroke:#b7791f,color:#17201d;
