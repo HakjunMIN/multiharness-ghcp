@@ -47,7 +47,7 @@ artifact와 `CONTEXT.md`, ADR로 복구합니다.
 
 | 필드 | 나쁜 예 | 좋은 예 |
 |---|---|---|
-| `artifacts` | `artifacts: 아까 만든 API` | `artifacts: app/api/src/consult/main.py, app/api/tests/test_consult.py` |
+| `artifacts` | `artifacts: 아까 만든 API` | `artifacts: commit: 9f2c1ab; files: app/api/src/consult/main.py, app/api/tests/test_consult.py` |
 | `done` | `done: 거의 다 함` | `done: 근거 없음 처리와 경계값 테스트 구현` |
 | `verify` | `verify: 테스트해 보기` | `verify: cd app/api && uv run --frozen pytest -q` (expected: green) |
 | `verify` | `verify: npm run test:browser` | `verify: cd app/web && npm run test:browser` (expected: red - frontend 미구현, 5개 시나리오 모두 실패) |
