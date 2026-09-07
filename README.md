@@ -1,4 +1,4 @@
-# Agentic Workflow with Multi Harness
+# AI Native Workflow with Multi Harness
 
 [![GitHub CI](https://github.com/HakjunMIN/multiharness-ghcp/actions/workflows/verify.yml/badge.svg?branch=main)](https://github.com/HakjunMIN/multiharness-ghcp/actions/workflows/verify.yml)
 [![API tests](https://img.shields.io/badge/API%20tests-pytest-0A9EDC?logo=pytest&logoColor=white)](https://github.com/HakjunMIN/multiharness-ghcp/blob/main/app/api/pyproject.toml)
