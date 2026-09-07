@@ -20,7 +20,7 @@ artifact와 `CONTEXT.md`, ADR로 복구합니다.
 ```markdown
 ## HANDOFF
 - from/to: <실제로 사용한 호스트>/<하네스>/<모델>/<스킬> → <다음 fresh session의 권장 조합>
-- artifacts: <구현 commit과 변경된 개별 파일 경로. 채팅 인용 금지>
+- artifacts: commit: <구현 SHA>; files: <변경된 개별 파일 경로. 채팅 인용 금지>
 - done: <완료된 것>
 - not done: <남은 것>
 - decisions: <local spec/ADR 경로>
@@ -69,7 +69,10 @@ artifact와 `CONTEXT.md`, ADR로 복구합니다.
 credential, 질문·답변 원문, provider payload는 구현 commit이나 `HANDOFF`에
 포함하지 않습니다.
 
-`artifacts`에는 디렉터리가 아닌 개별 파일을 적는다. 각 파일이 현재 커밋에 존재하고 staged/unstaged 변경이 없는지 다음 명령으로 확인한다.
+`artifacts`에서 `commit`과 `files`를 구분합니다. 구현 SHA는
+`git rev-parse --verify <sha>^{commit}`으로 확인하며 파일 경로로 검사하지 않습니다.
+`files`에는 디렉터리가 아닌 개별 파일을 적습니다. 각 파일이 현재 커밋에 존재하고
+staged/unstaged 변경이 없는지 다음 명령으로 확인합니다.
 
 ```bash
 git ls-tree -r --name-only HEAD -- <path> | grep -Fx <path>

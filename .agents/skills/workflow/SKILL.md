@@ -125,7 +125,9 @@ main에는 결정 artifact인 `prototype.md`와 선택 시안의 `prototype/` �
 
 - ticket 상태가 `done`으로 갱신된 구현 commit이 있다
 - 루트 `HANDOFF`에 `docs/reference/handoff-contract.md`의 7개 필드가 모두 있다
-- `artifacts`가 디렉터리가 아닌 개별 파일 경로이며 HEAD에 존재하고 clean하다
+- `artifacts`의 `commit`은 `git rev-parse --verify <sha>^{commit}`으로 확인한다.
+  `files`만 아래 경로 검사에 사용하며, 디렉터리가 아닌 개별 파일로 HEAD에
+  존재하고 clean해야 한다. SHA를 파일 경로로 검사하지 않는다.
 
   ```bash
   git ls-tree -r --name-only HEAD -- <path> | grep -Fx <path>

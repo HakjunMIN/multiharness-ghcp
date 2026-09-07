@@ -9,7 +9,7 @@ documentation commit으로 남깁니다.
 ```markdown
 ## HANDOFF
 - from/to: <실제로 사용한 호스트>/<하네스>/<모델>/<스킬> → <다음 fresh session의 권장 조합>
-- artifacts: <구현 commit SHA와 변경된 개별 파일 경로. 디렉터리 금지>
+- artifacts: commit: <구현 SHA>; files: <변경된 개별 파일 경로. 디렉터리 금지>
 - done: <완료한 ticket과 관찰 가능한 동작>
 - not done: <다음 ticket 또는 남은 범위>
 - decisions: <spec, ticket, CONTEXT.md, ADR 경로>
@@ -22,7 +22,7 @@ documentation commit으로 남깁니다.
 ```markdown
 ## HANDOFF
 - from/to: VS Code/Copilot/GPT-5.6 Sol/implement → VS Code/Copilot/GPT-5.6 Sol/implement
-- artifacts: 9f2c1ab, app/api/src/consult/main.py, app/api/tests/test_consult.py, docs/work/consult/tickets/02-consult-endpoint.md
+- artifacts: commit: 9f2c1ab; files: app/api/src/consult/main.py, app/api/tests/test_consult.py, docs/work/consult/tickets/02-consult-endpoint.md
 - done: 02-consult-endpoint. POST /api/consult가 answer와 citations envelope를 반환한다
 - not done: 03-browser-acceptance. React UI는 아직 runway 상태다
 - decisions: docs/work/consult/spec.md, docs/adr/0002-retrieval-boundary.md

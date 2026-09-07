@@ -188,7 +188,12 @@ assert.match(skill("domain-modeling"), /Preserve this repository's existing sect
 assert.match(skill("frontend-design"), /나눔고딕/);
 assert.match(skill("code-review"), /read-only/);
 assert.match(skill("research"), /verified facts, inference and unknowns/);
+assert.match(skill("research").split("---")[1], /only when authorized/);
 assert.match(skill("diagnosing-bugs"), /only an implementation session may fix production/);
+for (const file of ["docs/reference/handoff-contract.md", "docs/templates/handoff.md"]) {
+  assert.match(read(file), /- artifacts: commit: .*; files:/);
+}
+assert.match(skill("workflow"), /SHA를 파일 경로로 검사하지 않는다/);
 NODE
 
 printf 'OK: project skill contract tests passed\n'
