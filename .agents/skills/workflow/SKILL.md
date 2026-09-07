@@ -6,11 +6,8 @@ disable-model-invocation: true
 
 # Workflow
 
-`AGENTS.md`와 `docs/reference/workflow.md`의 워크플로를 조율하는 **선택적**
-conductor입니다. 참가자는 `/grill-with-docs`, `/prototype`, `/to-spec`,
-`/to-tickets`, `/implement`, `/code-review`를 직접 실행해도 되고, 어디에
-있는지 모를 때 `/workflow`로 다음 한 걸음만 받아도 됩니다. 이 스킬은 하위
-스킬을 대체하거나 수정하지 않고 **참조만** 합니다.
+`AGENTS.md`의 **선택적** conductor입니다. 아래 단계 판정과 gate만 담당하며,
+개별 스킬의 절차를 복제하지 않습니다.
 
 ## 이 스킬이 하지 않는 것
 
@@ -53,17 +50,17 @@ feature를 지정하지 않고 `docs/work/` 아래 feature root가 둘 이상이
 
 위에서부터 **처음 일치하는 행**이 현재 단계입니다.
 
-| 조건 | 단계 | 다음 명령 | 권장 조합 |
-| --- | --- | --- | --- |
-| 미해결 defect가 `defects/`에 있음 | implementation (defect) | `/implement docs/work/<feature>/defects/<NN>-<slug>.md` | Copilot / GPT-5.6 Sol |
-| `discovery.md` 없음 | discovery | `/grill-with-docs` | Copilot / GPT-5.6 Sol |
-| `prototype.md`에 `Status: decided`가 없거나 `prototype/` 정적 참조가 없음 | prototype | `/prototype` | Copilot / GPT-5.6 Sol |
-| `spec.md` 없음 | planning (spec) | `/to-spec` | Claude / Claude Opus 4.8 |
-| `tickets/`에 ticket 없음 | planning (tickets) | `/to-tickets` | Claude / Claude Opus 4.8 |
-| `in-progress` ticket이 있음 | implementation (resume) | `HANDOFF`의 `verify`를 먼저 실행한 뒤 `/implement <ticket>` | Copilot / GPT-5.6 Sol |
-| frontier ticket이 있음 | implementation | `/implement docs/work/<feature>/tickets/<NN>-<slug>.md` | Copilot / GPT-5.6 Sol |
-| 모든 ticket이 `done`이고 UAT report 없음 | verification | `/code-review main` 후 독립 UAT | Codex / GPT-5.6 Terra |
-| 위 어디에도 해당 없음 | complete | 남은 위험만 보고 | — |
+| 조건 | 단계 | 다음 명령 |
+| --- | --- | --- |
+| 미해결 defect가 `defects/`에 있음 | implementation (defect) | `/implement docs/work/<feature>/defects/<NN>-<slug>.md` |
+| `discovery.md` 없음 | discovery | `/grill-with-docs` |
+| `prototype.md`에 `Status: decided`가 없거나 `prototype/` 정적 참조가 없음 | prototype | `/prototype` |
+| `spec.md` 없음 | planning (spec) | `/to-spec` |
+| `tickets/`에 ticket 없음 | planning (tickets) | `/to-tickets` |
+| `in-progress` ticket이 있음 | implementation (resume) | `HANDOFF`의 `verify`를 먼저 실행한 뒤 `/implement <ticket>` |
+| frontier ticket이 있음 | implementation | `/implement docs/work/<feature>/tickets/<NN>-<slug>.md` |
+| 모든 ticket이 `done`이고 UAT report 없음 | verification | `/code-review main` 후 독립 UAT |
+| 위 어디에도 해당 없음 | complete 후보 | verification → complete gate 확인 후 남은 위험 보고 |
 
 **frontier ticket**은 상태가 `ready-for-agent`이고 `Blocked by`의 ticket이
 모두 `done`인 ticket입니다. 여러 개면 번호가 가장 작은 것을 제안합니다.
@@ -71,21 +68,16 @@ feature를 지정하지 않고 `docs/work/` 아래 feature root가 둘 이상이
 `blocked` 상태 ticket만 남았다면 단계를 진행시키지 말고 무엇이 gate인지
 blockers에 적어 보고합니다.
 
-planning (spec)과 planning (tickets)는 **같은 기획 역할의 두 단계**이며 하나의
-fresh session에서 연속으로 수행합니다. spec이 없는 상태로 판정됐다면 그 세션이
-`/to-spec` 후 이어서 `/to-tickets`까지 마치고, 기능의 ticket을 한 번에 전부
-발행하는 것이 정상 경로입니다. 기능이 작다는 이유로 spec이나 ticket을
-slice별로 나눠 여러 기획 세션에서 만들지 않습니다. fresh session으로 나누는
-단위는 ticket 하나당 구현 세션 하나, 그리고 구현과 분리된 검증 세션입니다.
+planning의 `/to-spec` → `/to-tickets`는 한 fresh session에서 기능 전체를
+발행합니다. 구현은 ticket마다, 검증은 구현과 분리된 fresh session입니다.
 
 prototype은 필수이며 production 구현이 아니라 설계 질문에 답하는 throwaway
 code입니다. 전체 시안은 `prototype/<feature>-<slug>` branch에 보존하고,
 main에는 결정 artifact인 `prototype.md`와 선택 시안의 `prototype/` 정적 참조를
 남깁니다.
 
-권장 조합은 기본값입니다. 사용할 수 없으면 필요한 스킬을 지원하는 다른
-harness/model을 고르고, 실제 조합을 `HANDOFF`와 UAT report에 기록하라고
-안내합니다.
+권장 조합은 `docs/reference/model-harness-matrix.md`에서 읽습니다. 필요한
+스킬을 지원하는 대체 조합도 허용하며 실제 조합을 `HANDOFF`와 UAT report에 기록합니다.
 
 ### 3. 이전 단계의 exit gate를 검증한다
 
@@ -173,33 +165,14 @@ harness/model을 고르고, 실제 조합을 `HANDOFF`와 UAT report에 기록�
 - verify first: <새 세션이 가장 먼저 실행할 명령과 기대 결과>
 ```
 
-`next session`이 지금 세션의 harness/model과 다르면, **New Chat으로 fresh
-session을 여는 것**이 다음 행동이라고 명시합니다. 기존 세션의 Session Target을
-바꾸는 handoff는 conversation history를 옮기므로 사용하지 않습니다.
+역할이 달라지거나 다른 ticket을 시작하면 harness/model이 같아도 **New Chat으로
+fresh session을 엽니다**. 모델만 다르다는 이유로 역할이 같다고도, 다르다고도
+판정하지 않습니다. 기존 세션의 history를 옮기는 handoff는 사용하지 않습니다.
 
 ### 5. 실행 여부를 정한다
 
-- `/workflow status`이면 여기서 멈춘다.
-- 판정된 단계가 현재 세션의 역할과 **같으면** 사용자 확인을 받은 뒤 해당
-  하위 스킬을 그대로 실행한다.
-- **다르면** 실행하지 않는다. status card만 남기고 세션을 닫으라고 안내한다.
+- `/workflow`, `/workflow <feature>`, `/workflow status`는 status card에서 멈춘다.
+- `/workflow run`만 gate 통과, 같은 역할·ticket, 사용자 확인 후 하위 스킬을 실행한다.
+- 역할·ticket이 다르거나 현재 역할을 확인할 수 없으면 실행하지 않고 fresh session을 안내한다.
 
-## 검증 명령
-
-단계 gate에서 필요할 때 실행합니다.
-
-```bash
-(cd app/api && uv run --frozen pytest -q)
-(cd app/web && npm test && npm run build)
-for test in tests/scripts/test-*.sh; do "$test"; done
-./scripts/check-repo.sh
-```
-
-브라우저 인수 시나리오는 `(cd app/web && npm run test:browser)`로 확인하며,
-frontend 구현 전에는 red가 정상입니다.
-
-실제 APIM smoke는 운영자가 지정한 gate에서만 다음 명령으로 실행합니다.
-
-```bash
-(cd app/api && uv run --frozen pytest -m e2e -q)
-```
+검증 명령과 live 실행 gate는 `AGENTS.md`의 Verification commands를 따릅니다.

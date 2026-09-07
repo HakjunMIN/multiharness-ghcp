@@ -81,4 +81,16 @@ for file in README.md docs/reference/workflow.md; do
   grep -Fq '/workflow' "$file" || fail "$file does not document the optional conductor"
 done
 
+for phrase in \
+  '/workflow status`는 status card에서 멈춘다' \
+  '/workflow run`만 gate 통과' \
+  'harness/model이 같아도' \
+  'docs/reference/model-harness-matrix.md'; do
+  grep -Fq "$phrase" "$conductor" ||
+    fail "workflow skill is missing routing semantics: $phrase"
+done
+if grep -Eq 'GPT-[0-9]|Claude Opus [0-9]' "$conductor"; then
+  fail "workflow skill must read model recommendations from the matrix"
+fi
+
 printf 'OK: workflow conductor skill contract passed\n'

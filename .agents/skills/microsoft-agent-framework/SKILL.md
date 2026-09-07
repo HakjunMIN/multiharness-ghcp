@@ -81,7 +81,7 @@ APIM decides the actual deployment.
   or the underlying transport.
 - Tests must not depend on a real `.env`; `Settings.from_env` already skips
   `load_dotenv` under pytest.
-- Any test that reaches live APIM belongs behind the `live` pytest marker.
+- Any test that reaches live APIM belongs behind the operator-gated `e2e` pytest marker.
 
 ## Workflow
 
@@ -101,7 +101,7 @@ APIM decides the actual deployment.
 - Request and response handling matches `docs/reference/apim-payloads.md`,
   including the double-encoded retrieve `text` payload and the
   `type == "message"` / `output_text` filtering of the responses output list.
-- Default tests still pass offline; live checks stay behind the `live` marker.
+- Default tests still pass offline; live checks stay behind the operator-gated `e2e` marker.
 
 Upstream source: `github/awesome-copilot` `skills/microsoft-agent-framework`,
 adapted for this repository's fixed APIM boundary.
