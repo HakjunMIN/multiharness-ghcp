@@ -28,6 +28,11 @@ endpoint나 model ID runtime 설정을 추가하지 않습니다.
 - `KNOWLEDGE_BASE_NAME`의 실습 기본값은 `workshop-products`입니다.
 - 두 API 모두 `APIM_KEY`를 `Ocp-Apim-Subscription-Key` header로 전달합니다.
 - 실제 `APIM_BASE_URL`과 `APIM_KEY`는 gitignored 루트 `.env`에만 둡니다.
+- 두 API의 request/response payload 정본은
+  [`docs/reference/apim-payloads.md`](docs/reference/apim-payloads.md)입니다.
+  retrieval이나 synthesis adapter, 그 fixture를 만들거나 고치기 전에 이 문서를
+  먼저 읽고 응답 shape을 추측하지 않습니다. 실제 응답과 다르면 코드보다 이
+  문서를 먼저 갱신합니다.
 
 ## 범위
 

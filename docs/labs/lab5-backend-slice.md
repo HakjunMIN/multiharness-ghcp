@@ -31,6 +31,12 @@ Microsoft Agent Framework 코드를 쓰거나 고칠 때는 이 저장소의 pro
 /microsoft-agent-framework
 ```
 
+두 APIM endpoint의 request/response payload는
+[`../reference/apim-payloads.md`](../reference/apim-payloads.md)에 고정되어
+있습니다. adapter를 쓰기 전에 읽으세요. retrieve 응답의 근거 본문은 이중
+인코딩된 JSON 문자열이고, responses 응답의 `output`은 답변 message가 아닌
+항목을 포함할 수 있습니다.
+
 Lab 4의 focused RED를 확인하고 최소 구현으로 green을 만듭니다. production
 runtime은 `APIM_BASE_URL`과 `APIM_KEY`만 사용하며 별도 model endpoint나 model
 ID 설정을 추가하지 않습니다. Foundry IQ retrieval, Microsoft Agent Framework

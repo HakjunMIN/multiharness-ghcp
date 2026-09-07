@@ -19,6 +19,9 @@
    ```
 
    endpoint, key, resource name을 제거한 응답을 contract test fixture 후보로 보관한다.
+   응답 shape이 [`../reference/apim-payloads.md`](../reference/apim-payloads.md)와
+   다르면 실습 전에 그 문서를 먼저 갱신한다. 참가자는 이 문서를 정본으로 삼아
+   adapter와 fixture를 만든다.
 
 ## D-1 운영 점검
 

@@ -36,6 +36,9 @@ including the upstream guidance to prefer Azure AI Foundry clients or
   MAF model client. Keep retrieval separate from the MAF chat client.
 - Read settings through `consult.settings.Settings.from_env()`. Never read APIM
   env vars ad hoc, never hardcode them, and never log `APIM_KEY` or a real base URL.
+- The request and response payload shapes for both endpoints are fixed in
+  `docs/reference/apim-payloads.md`. Read it before writing or changing a
+  retrieval or synthesis adapter, or its fixtures. Do not guess the wire format.
 
 ### Wiring the client
 
@@ -82,7 +85,8 @@ APIM decides the actual deployment.
 
 ## Workflow
 
-1. Read `AGENTS.md` and the relevant ticket before changing agent code.
+1. Read `AGENTS.md`, `docs/reference/apim-payloads.md`, and the relevant ticket
+   before changing agent code.
 2. Confirm the installed package versions in `app/api/pyproject.toml`, then check
    the installed package source or current docs before using an unfamiliar API.
 3. Keep every model call inside the APIM boundary above.
@@ -94,6 +98,9 @@ APIM decides the actual deployment.
   `Ocp-Apim-Subscription-Key` header, and no other provider path exists.
 - No new model endpoint, model-ID, or credential setting was introduced.
 - Retrieval stays a separate HTTP call from the MAF chat client.
+- Request and response handling matches `docs/reference/apim-payloads.md`,
+  including the double-encoded retrieve `text` payload and the
+  `type == "message"` / `output_text` filtering of the responses output list.
 - Default tests still pass offline; live checks stay behind the `live` marker.
 
 Upstream source: `github/awesome-copilot` `skills/microsoft-agent-framework`,

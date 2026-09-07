@@ -21,6 +21,7 @@ app/web/src
 docs/adr/README.md
 docs/agents/issue-tracker.md
 docs/labs
+docs/reference/apim-payloads.md
 docs/reference/handoff-contract.md
 docs/reference/model-harness-matrix.md
 docs/reference/sources.md

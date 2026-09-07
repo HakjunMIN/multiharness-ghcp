@@ -29,6 +29,11 @@ structured citations까지 in-process 전체 흐름을 검증합니다. no-evide
 secret-safe 오류 envelope도 기록합니다. 기본 테스트는 외부 네트워크를 쓰지
 않습니다.
 
+APIM 응답을 흉내 내는 stub과 fixture는
+[`../reference/apim-payloads.md`](../reference/apim-payloads.md)의 shape을
+그대로 씁니다. 응답 구조를 임의로 단순화하면 Lab 5에서 green이 된 구현이
+실제 APIM에서 깨집니다.
+
 별도의 `pytest.mark.e2e` 시나리오는 실제 APIM과 Foundry IQ를 호출합니다.
 질문은 하드코딩하지 말고 `.env`의 `LIVE_SMOKE_QUESTION`을 읽어 사용합니다.
 값이 없으면 시나리오를 통과시키지 말고 실패시킵니다. 실제 질문 문구와 응답
