@@ -1,0 +1,33 @@
+## HANDOFF
+- from/to: GitHub cloud sandbox/Copilot task agent/주 세션 모델 미노출/research + code-review → fresh review session/사용 가능한 harness·model/code-review
+- artifacts: commit: 36eb516 (선행 변경 cdf5c96, 8957501 포함); files:
+  AGENTS.md,
+  .agents/skills/code-review/SKILL.md,
+  .agents/skills/codebase-design/DEEPENING.md,
+  .agents/skills/codebase-design/DESIGN-IT-TWICE.md,
+  .agents/skills/diagnosing-bugs/SKILL.md,
+  .agents/skills/domain-modeling/SKILL.md,
+  .agents/skills/frontend-design/SKILL.md,
+  .agents/skills/grill-with-docs/SKILL.md,
+  .agents/skills/implement/SKILL.md,
+  .agents/skills/microsoft-agent-framework/SKILL.md,
+  .agents/skills/prototype/LOGIC.md,
+  .agents/skills/prototype/SKILL.md,
+  .agents/skills/prototype/UI.md,
+  .agents/skills/research/SKILL.md,
+  .agents/skills/tdd/SKILL.md,
+  .agents/skills/to-spec/SKILL.md,
+  .agents/skills/to-spec/agents/openai.yaml,
+  .agents/skills/to-tickets/SKILL.md,
+  .agents/skills/workflow/SKILL.md,
+  docs/reference/handoff-contract.md,
+  docs/reference/model-harness-matrix.md,
+  docs/reference/workflow.md,
+  docs/templates/handoff.md,
+  tests/scripts/test-project-skills.sh,
+  tests/scripts/test-workflow-skill.sh
+- done: 제품 ticket이 아닌 저장소 스킬 유지보수. 15개 project skill·관련 문서 정적 감사, 중복 축약과 계약 충돌 수정, 회귀 검사 보강. 기존 script suite 8개와 check-repo 통과, secret scan 검출 없음. Standards sub-agent(gpt-6-astra) 지적 0건; Spec sub-agent(gpt-5.6-sol)의 research 승인·HANDOFF SHA/파일 구분 지적 2건 수정. AGENTS 196→121줄, SKILL.md 합계 9,853→7,236 공백 기준 단어(토큰/품질 지표 아님).
+- not done: Astra/Fable 5.1 반복 A/B 실행과 모델별 품질·토큰 실측, 제품 기능 구현·UAT. 앱 코드·의존성은 변경하지 않아 앱 build/test 및 live APIM은 실행하지 않음.
+- decisions: AGENTS.md, docs/reference/workflow.md의 스킬·문서 감사, docs/reference/model-harness-matrix.md의 비교 검증, docs/reference/handoff-contract.md. 제품 spec/ticket·ADR은 이번 유지보수 범위가 아님.
+- verify: 저장소 루트에서 `(for test in tests/scripts/test-*.sh; do "$test" || exit; done) && ./scripts/check-repo.sh` (expected: green - network-free 문서·스킬·스크립트 계약 검사)
+- risks: CodeQL은 지원 언어 변경이 없어 분석하지 않음(보안 통과 판정 아님). 정적 검사와 diff 리뷰는 모델 행동 평가를 대체하지 않음. upstream skill update는 local 수정을 덮어쓸 수 있으므로 계약을 재검사할 것. 요청된 feat/skill-opt-astra 대신 환경에서 지정한 copilot/featskill-opt-astra 브랜치 사용.
