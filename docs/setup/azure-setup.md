@@ -6,7 +6,12 @@
 
 1. Agentic retrieval을 지원하는 public Azure 지역에 Azure AI Search를 만든다. Web Knowledge Source는 private cloud와 sovereign cloud에서 지원되지 않으므로 해당 환경에서는 이 실습을 진행하지 않는다.
 2. 웹 요약에 사용할 모델 deployment를 만들고 용량을 확인한다. knowledge base가 참조할 수 있는 모델은 `gpt-5.4` 계열까지이므로 그보다 새 모델만 있는 프로젝트라면 `gpt-5.4-mini` 같은 지원 모델을 따로 배포한다. 참가자 채팅용 모델은 이 제약과 무관하다.
-3. 공개 제품 근거를 검색하도록 Web Knowledge Source를 만든다.
+3. 공개 제품 근거를 검색하도록 Web Knowledge Source를 만든다. 검색 범위를 공식
+   홈페이지로만 제한하지 않고, 제조사·공공기관과 함께 편집 책임이 확인되는 국내
+   주요 포털·언론·전문 사이트와 사용자 콘텐츠를 포함한다. 네이버 블로그 같은
+   사용자 콘텐츠는 서로 독립적인 두 출처가 일치할 때만 적격 근거가 되므로 단일
+   블로그 결과만 반환되는 구성은 피한다. 세부 채택 규칙은
+   [근거 출처 정책](../work/evidence-source-policy/discovery.md)을 따른다.
 4. 이 source와 모델을 참조하는 knowledge base를 만들고 retrieve API를 `2026-04-01`로 고정한다.
 5. OpenAI-compatible 모델 base route를 `${APIM_BASE_URL}/model/v1`에 두고 `workshop-model` alias를 실제 deployment로 rewrite한다. 답변 합성은 `${APIM_BASE_URL}/model/v1/responses`를 호출한다. Agent Framework는 `/chat/completions`가 아니라 **`/responses`** 를 사용하므로 이 operation을 반드시 노출한다. Foundry IQ 근거 검색은 `${APIM_BASE_URL}/search/knowledgebases/{name}/retrieve`로 노출한다.
 6. backend로 전달하기 전에 참가자의 `Authorization`과 `Ocp-Apim-Subscription-Key` header를 제거한다. APIM managed identity 또는 Key Vault-backed named value로 origin 인증을 policy 안에서 주입한다.
@@ -27,6 +32,8 @@
 
 - 모델 deployment와 Search query capacity가 참가자 수를 감당하는지 확인한다.
 - 각 key로 `workshop-model` alias와 retrieve route를 한 번씩 호출한다.
+- 공식 홈페이지 밖의 합의된 국내 주요 사이트가 검색되며, 사용자 콘텐츠를
+  확인할 때 서로 독립적인 결과를 둘 이상 얻을 수 있는지 대표 질문으로 점검한다.
 - 잘못된 key가 401 또는 403, rate limit이 429를 내는지 확인한다.
 - APIM 로그에 subscription key나 원문 credential이 기록되지 않는지 확인한다.
 - teardown 시각과 key rotation 담당자를 지정한다.
