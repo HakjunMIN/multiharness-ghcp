@@ -59,13 +59,9 @@ When the user states how something works, check whether the code agrees. If you 
 
 ### Update CONTEXT.md inline
 
-When a term is resolved, update `CONTEXT.md` without waiting for the end of the session.
-Preserve this repository's existing sections; [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md)
-is guidance for definitions, not a replacement template.
+When a term is resolved, update `CONTEXT.md` right there. Don't batch these up: capture them as they happen. Use the format in [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md).
 
-Keep shared terms, fixed assumptions, behavior rules, test boundaries and decision
-links in `CONTEXT.md`. Implementation detail and task tracking belong in the spec,
-local work items or ADRs, not a scratch section in the glossary.
+`CONTEXT.md` should be totally devoid of implementation details. Do not treat `CONTEXT.md` as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else.
 
 ### Offer ADRs sparingly
 

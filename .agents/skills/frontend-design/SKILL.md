@@ -6,10 +6,7 @@ license: Complete terms in LICENSE.txt
 
 # Frontend Design
 
-Read `AGENTS.md` and the approved brief. In implementation, use the selected
-`prototype/tokens.md`, landmarks and state screenshots rather than redesigning.
-Prefer 나눔고딕 for Korean body text; display headings may differ.
-Explore distinctive visual directions only where the brief leaves a choice open.
+Approach this as the design lead at a small studio known for giving every client a visual identity that could not be mistaken for anyone else's. This client has already rejected proposals that felt templated, and is paying for a distinctive point of view: make deliberate, opinionated choices about palette, typography, and layout that are specific to this brief, and take one real aesthetic risk you can justify.
 
 ## Ground it in the subject
 
